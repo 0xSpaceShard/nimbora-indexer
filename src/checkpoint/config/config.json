@@ -1,0 +1,22 @@
+{
+    "network_node_url": "https://starknet-mainnet.infura.io/v3/45b760728eb445518fe738142cb15fa4",
+    "decimal_types": {
+      "BigDecimalVP": {
+        "p": 60,
+        "d": 0
+      }
+    },
+    "sources": [
+      {
+        "contract": "0x073314940630fd6dcda0d772d4c972c4e0a9946bef9dabf4ef84eda8ef542b82",
+        "start": 440000,
+        "deploy_fn": "handleDeploy",
+        "abi": "Starkgate",
+        "events": [{
+          "name": "withdraw_initiated",
+          "fn": "handleWithdrawInitiated"
+        }]
+      }
+    ]
+  }
+  

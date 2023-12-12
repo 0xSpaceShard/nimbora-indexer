@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
-import { CheckpointService } from './checkpoint.service.ts';
 import { CheckpointController } from './checkpoint.controller';
-import { DataSource } from 'typeorm';
-import { Withdraw, WithdrawSchema } from '../schemas/withdraw.schema.ts';
+import { Withdraw, WithdrawSchema } from '../schemas/withdraw.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AppService } from 'app.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Withdraw.name, schema: WithdrawSchema }]),
   ],
   controllers: [CheckpointController],
-  providers: [CheckpointService],
+  providers: [AppService],
 })
 export class CheckpointModule {
-  constructor(private dataSource: DataSource) {}
+  constructor() {}
 }

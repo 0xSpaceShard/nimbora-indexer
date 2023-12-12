@@ -12,9 +12,7 @@ export class CheckpointController {
     private checkpoint: Checkpoint;
 
     constructor(private readonly appService: AppService) {
-        const dir = __dirname.endsWith('dist/src') ? '../' : '';
-        const schemaFile = path.join(__dirname, `${dir}../src/graphql_schema/schema.gql`);
-        const schema = fs.readFileSync(schemaFile, 'utf8');
+        const schema = "";
         const checkpointOptions = {
             logLevel: LogLevel.Info,
             resetOnConfigChange: true,

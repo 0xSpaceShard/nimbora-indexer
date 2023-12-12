@@ -1,5 +1,4 @@
 import type { CheckpointWriter } from '@snapshot-labs/checkpoint';
-import { CheckpointService } from 'checkpoint/checkpoint.service';
 
 export const handleWithdrawInitiated: CheckpointWriter = async ({ tx, block, blockNumber, event, eventIndex, mysql }) => {
     console.log("Handle Withdraw Initiated");
@@ -27,6 +26,6 @@ export const handleWithdrawInitiated: CheckpointWriter = async ({ tx, block, blo
         created_at: timestamp,
         created_at_block: blockNumber
     };
-    CheckpointService.create(withdraws);
-    // await mysql.queryAsync('INSERT IGNORE INTO withdraws SET ?', [withdraws]);
+
+    // TODO: Use CheckpointService to inject data into DB
 }

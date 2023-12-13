@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://localhost:27017/withdraws'),
+        MongooseModule.forRoot('mongodb://localhost:27017/withdraws'), // TODO: Env var
         CheckpointModule,
     ],
     controllers: [AppController],

@@ -9,7 +9,7 @@ import { Withdraw } from '../schemas/withdraw.schema';
 export class CheckpointService {
     constructor(@InjectModel('Withdraw') private readonly withdrawModel: Model<Withdraw>) {}
     
-    async create(withdraw: { id: any; amount: any; l1_recipient: any; caller_address: any; created_at: any; created_at_block: number; }) {
+    async writeWithdraw(withdraw: { id: any; amount: any; l1_recipient: any; caller_address: any; created_at: any; created_at_block: number; }) {
         const createdWithsdraw = new this.withdrawModel(withdraw);
         return createdWithsdraw.save();
     }

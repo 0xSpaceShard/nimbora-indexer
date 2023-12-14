@@ -1,21 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { DataSource } from 'typeorm';
-import { Withdraw } from '../schemas/withdraw.schema';
+import { DataSource, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Withdraw } from 'withdraw/withdraw.entity';
 
 
 @Injectable()
 export class CheckpointService {
-    constructor(@InjectModel('Withdraw') private readonly withdrawModel: Model<Withdraw>) {}
+    constructor(@InjectRepository(Withdraw) private readonly withdrawRepository: Repository<Withdraw>) {}
     
-    async writeWithdraw(withdraw: { id: any; amount: any; l1_recipient: any; caller_address: any; created_at: any; created_at_block: number; }) {
-        const createdWithsdraw = new this.withdrawModel(withdraw);
-        return createdWithsdraw.save();
+    async writeWithdraw(withdraw: Withdraw): Promise<Withdraw> {
+        return this.withdrawRepository.save(withdraw);
+    }
+
+    async findOne(id: string): Promise<Withdraw | null> {
+
+        return this.withdrawRepository.findOneBy({ id });
     }
     
-    async getWithdrawals(): Promise<Withdraw[]> {
-        return this.withdrawModel.find().exec();
+    async findAll(): Promise<Withdraw[]> {
+        return this.withdrawRepository.find();
     }
 }
 

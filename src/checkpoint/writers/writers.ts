@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { CheckpointWriter } from '@snapshot-labs/checkpoint';
-import Checkpoint from '@snapshot-labs/checkpoint';
 import { CheckpointService } from 'checkpoint/checkpoint.service';
-import { mongo } from 'mongoose';
 
 @Injectable()
 export class CheckpointWriters {

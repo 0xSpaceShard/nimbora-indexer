@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { CheckpointController } from './checkpoint.controller';
-import { Withdraw, WithdrawSchema } from '../schemas/withdraw.schema';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CheckpointService } from './checkpoint.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Withdraw } from 'withdraw/withdraw.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Withdraw.name, schema: WithdrawSchema }]),
+    TypeOrmModule.forFeature([Withdraw]),
   ],
   controllers: [CheckpointController],
   providers: [CheckpointService],

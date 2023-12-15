@@ -4,6 +4,8 @@ import { CheckpointModule } from './checkpoint/checkpoint.module';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Withdraw } from 'withdraw/withdraw.entity';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
     imports: [
@@ -17,6 +19,14 @@ import { Withdraw } from 'withdraw/withdraw.entity';
             entities: [Withdraw],
             synchronize: true,
         }),
+        GraphQLModule.forRoot<ApolloDriverConfig>({
+            driver: ApolloDriver,
+            typePaths: ['./**/*.graphql'],
+            definitions: {
+                path: './src/graphql.ts',
+                outputAs: 'class',
+            },
+        }), 
         CheckpointModule,
     ],
     controllers: [AppController],

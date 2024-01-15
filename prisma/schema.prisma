@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model liquity_lending_batches {
+  nonce Int @id
+  hash String
+  network String
+  address String
+  amountEth String
+  amountLusd String
+  timestamp Int
+  cursor Int
+}
+
+model sink_metadata {
+  sink String @id
+  cursor Int
+  filter String
+}

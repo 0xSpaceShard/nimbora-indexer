@@ -18,8 +18,5 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true
-  },
-  "ts-node": {
-    "esm": true
   }
 }

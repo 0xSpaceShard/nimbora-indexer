@@ -39,3 +39,4 @@ generated
 dist
 node_modules
 .checkpoint
+package-lock.json

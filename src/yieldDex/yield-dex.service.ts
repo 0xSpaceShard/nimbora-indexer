@@ -18,12 +18,13 @@ export class YieldDexService {
     });
   }
 
-  static async handleSetFeeRecipient({ block, rawEvent, tx }: CheckpointWriter) {
-    if (!block || !rawEvent) return;
+  // static async handleSetFeeRecipient({ block, rawEvent, tx }: CheckpointWriter) {
+  //   if (!block || !rawEvent) return;
 
-    const { data } = rawEvent as any;
-    const feeRecipient = new FeeRecipient(tx.transaction_hash);
-    feeRecipient.recipient = data[0];
-    await feeRecipient.save();
-  }
+  //   const { data } = rawEvent as any;
+  //   const feeRecipient = new FeeRecipient(tx.transaction_hash);
+  //   feeRecipient.recipient = data[0];
+  //   console.log("Saving fee recipient through YieldDexService")
+  //   await feeRecipient.save();
+  // }
 }

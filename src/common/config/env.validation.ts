@@ -41,35 +41,16 @@ export class EnvironmentVariables {
   @Transform(({ value }) => Number(value))
   GLOBAL_THROTTLE_LIMIT = 100;
 
-  @IsNumber()
-  @Transform(({ value }) => Number(value))
-  START_BLOCK: number;
-
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => value == 'true')
   RESET_DATABASE = false;
 
-  // @IsString()
-  // L2_ALCHEMY_RPC_URL: string;
-
-  // @IsString()
-  // L2_INFURA_RPC_URL: string;
-
-  // @IsOptional()
-  // @IsString()
-  // L2_NIMBORA_RPC_URL: string;
-
-  @IsOptional()
   @IsString()
-  MONGO_URL = 'mongodb://mongo:27017';
-
-  @IsOptional()
-  @IsString()
-  APIBARA_STREAM_URL = 'goerli.starknet.a5a.ch';
+  STARKNET_RPC: string;
 
   @IsString()
-  APIBARA_TOKEN_API: string;
+  DATABASE_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {

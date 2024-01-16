@@ -1,0 +1,6 @@
+scalar BigInt
+
+type FeeRecipient {
+  id: ID!
+  recipient: String!
+}

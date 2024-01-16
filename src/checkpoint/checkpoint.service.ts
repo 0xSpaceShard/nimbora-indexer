@@ -1,13 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import Checkpoint, {
+  CheckpointConfig,
+  CheckpointOptions,
+  CheckpointWriters,
+  LogLevel,
+} from '@snapshot-labs/checkpoint';
+import * as fs from 'fs';
+import * as path from 'path';
+
+import { ConfigService } from 'common/config';
 
 @Injectable()
-export class AppService {
-    constructor(private dataSource: DataSource) {}
+export class CheckpointService {
+  checkpoint: Checkpoint;
+  schema: string;
 
-    async getWithdrawals() {
-        const withdrawals = await this.dataSource.query('SELECT * FROM withdrawals');
-        return withdrawals;
+  constructor(readonly configService: ConfigService) {}
+
+  async start(
+    config: CheckpointConfig,
+    writer: CheckpointWriters,
+    schemaPath: string,
+    restart = false,
+    opts?: CheckpointOptions,
+  ) {
+    const schemaFile = path.join(process.cwd(), schemaPath);
+    this.schema = fs.readFileSync(schemaFile, 'utf8');
+
+    this.checkpoint = new Checkpoint(
+      { ...config, network_node_url: this.configService.get('STARKNET_RPC') },
+      writer,
+      this.schema,
+      {
+        logLevel: LogLevel.Info,
+        prettifyLogs: true,
+        ...opts,
+        dbConnection: this.configService.get('DATABASE_URL'),
+      },
+    );
+    if (restart) {
+      await this.reset();
     }
-}
+    await this.checkpoint.start();
+  }
 
+  async reset() {
+    await this.checkpoint.reset();
+    await this.checkpoint.resetMetadata();
+  }
+}

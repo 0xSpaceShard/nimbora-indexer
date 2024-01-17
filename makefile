@@ -1,6 +1,8 @@
+include .env
+
 checkpoint-gen:
 	yarn checkpoint generate \
-		-c src/config/checkpoint/config.json \
+		-c src/config/checkpoint/poolingManager.json \
 		-s src/schema/checkpoint/schema.gql && \
 		rm -rf src/types/generated && \
 		mkdir -p src/types/generated/ && \
@@ -13,4 +15,4 @@ dev-up: dev-down
 	docker compose -f docker-compose.yml up
 
 dev-down:
-	docker compose -f docker-compose.yml down
+	docker compose -f docker-compose.yml down -v

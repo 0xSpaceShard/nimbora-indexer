@@ -49,8 +49,19 @@ export class EnvironmentVariables {
   @IsString()
   STARKNET_RPC: string;
 
+  @IsOptional()
   @IsString()
-  DATABASE_URL: string;
+  DATABASE_URL = 'postgres://postgres:postgres@postgres:5432';
+
+  @IsOptional()
+  @IsString()
+  DATABASE_NAME = 'indexer';
+
+  @IsString()
+  YIELD_DEX_L2_POOLING_MANAGER: string;
+
+  @IsNumber()
+  YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK: number;
 }
 
 export function validate(config: Record<string, unknown>) {

@@ -35,7 +35,7 @@ export class CheckpointService {
         logLevel: LogLevel.Info,
         prettifyLogs: true,
         ...opts,
-        dbConnection: this.configService.get('DATABASE_URL'),
+        dbConnection: this.configService.get('DATABASE_URL') + '/' + this.configService.get('DATABASE_NAME'),
       },
     );
     if (restart) {

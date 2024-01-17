@@ -4,6 +4,50 @@
     {
       "name": "FeesRecipientUpdated",
       "fn": "handleSetFeeRecipient"
+    },
+    {
+      "name": "NewL1ReportHash",
+      "fn": "handleNewL1ReportHash"
+    },
+    {
+      "name": "NewL2Report",
+      "fn": "handleNewL2Report"
+    },
+    {
+      "name": "StrategyRegistered",
+      "fn": "handleRegisterStrategy"
+    },
+    {
+      "name": "DepositLimitUpdated",
+      "fn": "handleDepositLimitUpdated"
+    },
+    {
+      "name": "WithdrawLimitUpdated",
+      "fn": "handleWithdrawLimitUpdated"
+    },
+    {
+      "name": "PerformanceFeeUpdated",
+      "fn": "handlePerformanceFeeUpdated"
+    },
+    {
+      "name": "WithdrawalEpochUpdated",
+      "fn": "handleWithdrawalEpochUpdated"
+    },
+    {
+      "name": "DustLimitUpdated",
+      "fn": "handleDustLimitUpdated"
+    },
+    {
+      "name": "Deposit",
+      "fn": "handleDeposit"
+    },
+    {
+      "name": "RequestWithdrawal",
+      "fn": "handleRequestWithdrawal"
+    }, 
+    {
+      "name": "ClaimWithdrawal",
+      "fn": "handleClaimWithdrawal"
     }
   ]
 }

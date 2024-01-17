@@ -49,7 +49,6 @@ export const yieldDexWriters: CheckpointWriters = {
 
     const { data } = rawEvent as any;
     const strategy = new StrategyRegistered(tx.transaction_hash);
-    console.log(data)
     strategy.tokenManager = data[0];
     strategy.token = data[1];
     strategy.l1Strategy = data[2];

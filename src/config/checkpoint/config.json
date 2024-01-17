@@ -1,0 +1,59 @@
+{
+  "sources": [
+    {
+      "contract": "0x041518f8e459d255e893ff02f8f69cf173fc2e1282361c8f4866cbb22d5852a6",
+      "start": 931209,
+      "deploy_fn": "handleDeploy",
+      "events": [
+        {
+          "name": "FeesRecipientUpdated",
+          "fn": "handleSetFeeRecipient"
+        },
+        {
+          "name": "NewL1ReportHash",
+          "fn": "handleNewL1ReportHash"
+        },
+        {
+          "name": "NewL2Report",
+          "fn": "handleNewL2Report"
+        },
+        {
+          "name": "StrategyRegistered",
+          "fn": "handleRegisterStrategy"
+        },
+        {
+          "name": "DepositLimitUpdated",
+          "fn": "handleDepositLimitUpdated"
+        },
+        {
+          "name": "WithdrawLimitUpdated",
+          "fn": "handleWithdrawLimitUpdated"
+        },
+        {
+          "name": "PerformanceFeeUpdated",
+          "fn": "handlePerformanceFeeUpdated"
+        },
+        {
+          "name": "WithdrawalEpochUpdated",
+          "fn": "handleWithdrawalEpochUpdated"
+        },
+        {
+          "name": "DustLimitUpdated",
+          "fn": "handleDustLimitUpdated"
+        },
+        {
+          "name": "Deposit",
+          "fn": "handleDeposit"
+        },
+        {
+          "name": "RequestWithdrawal",
+          "fn": "handleRequestWithdrawal"
+        }, 
+        {
+          "name": "ClaimWithdrawal",
+          "fn": "handleClaimWithdrawal"
+        }
+      ]
+    }
+  ]
+}

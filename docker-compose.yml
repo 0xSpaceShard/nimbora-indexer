@@ -1,11 +1,5 @@
 version: '3.6'
 services:
-  mongo:
-    image: mongo@sha256:44b18181b2a5449f477cab21e1697ba1a4bf5d269fc810e9cb35e83f3059ed33
-    container_name: mongo
-    restart: always
-    volumes:
-      - mongo_data:/data/db
   postgres:
     image: postgres:15
     restart: always
@@ -15,6 +9,7 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DATABASE_NAME}
 
   graphql-engine:
     image: hasura/graphql-engine:v2.30.0
@@ -22,8 +17,8 @@ services:
       - '8080:8080'
     restart: always
     environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
-      PG_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/indexer
+      PG_DATABASE_URL: postgres://postgres:postgres@postgres:5432/indexer
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
@@ -52,3 +47,4 @@ services:
 volumes:
   db_data:
   mongo_data:
+  etcd_data:

@@ -1,6 +1,7 @@
 import { CheckpointWriters } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import { 
+  BridgeInteractionInfo,
   ClaimWithdrawal, Deposit, DepositLimitUpdated, DustLimitUpdated, FeeRecipient, 
   L1ReportHash, NewL2Report, PerformanceFeeUpdated, RequestWithdrawal, 
   StrategyL2Report, StrategyRegistered, WithdrawLimitUpdated, WithdrawalEpochUpdated 
@@ -31,16 +32,39 @@ export const yieldDexWriters: CheckpointWriters = {
 
     const { data } = rawEvent as any;
     const l2Report = new NewL2Report(tx.transaction_hash);
+    l2Report.newEpoch = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
+    
     var reports = [];
-    for (let i = 0; i < data.length; i++) {
+    var bridgeDeposits = [];
+    var bridgeWithdraws = [];
+    for (let i = 0; i< data[2].length; i++) {
+      const newBridgeDeposit = new BridgeInteractionInfo(i.toString());
+      newBridgeDeposit.l1Bridge = data[i][0];
+      newBridgeDeposit.amount = uint256.uint256ToBN({high: data[i][2], low:data[i][1]}).toString();
+
+      bridgeDeposits.push(newBridgeDeposit);
+    }
+    for (let i = 0; i < data[3].length; i++) {
       const strategyReport = new StrategyL2Report(i.toString());
       strategyReport.l1Strategy = data[i][0];
       strategyReport.actionId = uint256.uint256ToBN({high: data[i][2], low:data[i][1]}).toString();
       strategyReport.amount = uint256.uint256ToBN({high: data[i][4], low:data[i][3]}).toString();
       strategyReport.newSharePrice = uint256.uint256ToBN({high: data[i][6], low:data[i][5]}).toString();
+
+      reports.push(strategyReport);
+    }
+    for (let i = 0; i < data[4].length; i++) {
+      const newBridgeWithdraw = new BridgeInteractionInfo(i.toString());
+      newBridgeWithdraw.l1Bridge = data[i][0];
+      newBridgeWithdraw.amount = uint256.uint256ToBN({high: data[i][2], low:data[i][1]}).toString();
+
+      bridgeWithdraws.push(newBridgeWithdraw);
     }
 
+    l2Report.newBridgeDeposit = bridgeDeposits;
     l2Report.newL2Report = reports;
+    l2Report.newBridgeWithdraw = bridgeWithdraws;
+
     await l2Report.save();
   },
 

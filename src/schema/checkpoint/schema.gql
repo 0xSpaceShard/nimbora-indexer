@@ -83,6 +83,12 @@ type ClaimWithdrawal {
   underlyingAmount: String!
 }
 
+type BridgeInteractionInfo {
+  id: ID!
+  l1Bridge: String!
+  amount: String!
+}
+
 type StrategyL2Report {
   id: ID!
   l1Strategy: String!
@@ -93,5 +99,8 @@ type StrategyL2Report {
 
 type NewL2Report {
   id: ID!
+  newEpoch: String!
+  newBridgeDeposit: [BridgeInteractionInfo!]
   newL2Report: [StrategyL2Report!]
+  newBridgeWithdraw: [BridgeInteractionInfo!]
 }

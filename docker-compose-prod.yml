@@ -1,17 +1,5 @@
 version: '3.6'
 services:
-  multi-indexer:
-    image: multi-indexer:latest
-    environment:
-      - NETWORK=goerli
-      - YIELD_DEX_L2_POOLING_MANAGER=0x041518f8e459d255e893ff02f8f69cf173fc2e1282361c8f4866cbb22d5852a6
-      - YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK=931209
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432
-      - DATABASE_NAME=indexer
-      - STARKNET_RPC=https://starknet-goerli.infura.io/v3/45b760728eb445518fe738142cb15fa4
-      - AUTH_TOKEN=dna_nHbd6l3Gwh3ZZDe8bho8
-    depends_on:
-      - postgres
   postgres:
     image: postgres:15
     restart: always
@@ -55,6 +43,31 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
+  multi-indexer:
+    image: shardlabs/multi-indexer:${BRANCH}
+    container_name: multi-indexer:${BRANCH}
+    restart: always
+    environment:
+      NETWORK: ${NETWORK}
+      YIELD_DEX_L2_POOLING_MANAGER: ${YIELD_DEX_L2_POOLING_MANAGER}
+      YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK: ${YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK}
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_NAME: ${DATABASE_NAME}
+      STARKNET_RPC: ${STARKNET_RPC}
+      AUTH_TOKEN: ${AUTH_TOKEN}
+    logging:
+      driver: "json-file"
+      options:
+        tag: '{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}'
+        max-size: "10m"
+        max-file: "3"
+    ports:
+      - '${INDEXER_ENDPOINT}:${INDEXER_PORT}:${INDEXER_PORT}'
+      - '${METRICS_ENDPOINT}:${METRICS_PORT}:${METRICS_PORT}'
+    depends_on:
+      - postgres
+      - graphql-engine
+      - data-connector-agent
 
 volumes:
   db_data:

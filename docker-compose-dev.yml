@@ -43,6 +43,28 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
+  
+  multi-indexer:
+    build: 
+      context: .
+      target: development
+    restart: always
+    environment:
+      NETWORK: ${NETWORK}
+      YIELD_DEX_L2_POOLING_MANAGER: ${YIELD_DEX_L2_POOLING_MANAGER}
+      YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK: ${YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK}
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_NAME: ${DATABASE_NAME}
+      STARKNET_RPC_URL: ${STARKNET_RPC}
+      AUTH_TOKEN: ${AUTH_TOKEN}
+    ports:
+      - '${INDEXER_PORT}:${INDEXER_PORT}'
+      - '${METRICS_PORT}:${METRICS_PORT}'
+    command: yarn run start:dev
+    depends_on:
+      - postgres
+      - graphql-engine
+      - data-connector-agent
 
 volumes:
   db_data:

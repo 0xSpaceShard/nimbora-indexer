@@ -17,8 +17,8 @@ services:
       - '8080:8080'
     restart: always
     environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/indexer
-      PG_DATABASE_URL: postgres://postgres:postgres@postgres:5432/indexer
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: ${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME}
+      PG_DATABASE_URL: ${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME}
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
@@ -31,7 +31,7 @@ services:
     image: hasura/graphql-data-connector:v2.30.0
     restart: always
     ports:
-      - 8081:8081
+      - ${DATA_CONNECTOR_AGENT_PORT}:${DATA_CONNECTOR_AGENT_PORT}
     environment:
       QUARKUS_LOG_LEVEL: ERROR # FATAL, ERROR, WARN, INFO, DEBUG, TRACE
       ## https://quarkus.io/guides/opentelemetry#configuration-reference

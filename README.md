@@ -4,9 +4,12 @@
 $ yarn install
 ```
 
-## Running the app
+## Running the app (local)
 
 ```bash
+# start database and GraphQL deps
+$ make dev-up
+
 # development
 $ yarn run start
 
@@ -28,6 +31,16 @@ $ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
+```
+
+## Docker
+
+```bash
+# Build the multi-indexer image
+docker build -t multi-indexer .
+
+# Run docker compose
+make prod-up
 ```
 
 ## License

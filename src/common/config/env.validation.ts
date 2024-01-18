@@ -61,6 +61,7 @@ export class EnvironmentVariables {
   YIELD_DEX_L2_POOLING_MANAGER: string;
 
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK: number;
 }
 

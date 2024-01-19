@@ -1,16 +1,16 @@
 scalar BigInt
 
-type FeeRecipient {
+type fee_recipient {
   id: ID!
   recipient: String!
 }
 
-type L1ReportHash {
+type l1_report_hash {
   id: ID!
   hash: String!
 }
 
-type StrategyRegistered {
+type strategy_registered {
   id: ID!
   tokenManager: String!
   token: String!
@@ -23,39 +23,39 @@ type StrategyRegistered {
   maxWithdrawal: String!
 }
 
-type DepositLimitUpdated {
+type deposit_limit_updated {
   id: ID!
   l1Strategy: String!
   newMinDepositLimit: String!
   newMaxDepositLimit: String!
 }
 
-type WithdrawLimitUpdated {
+type withdraw_limit_updated {
   id: ID!
   l1Strategy: String!
   newMinWithdrawLimit: String!
   newMaxWithdrawLimit: String!
 }
 
-type PerformanceFeeUpdated {
+type performance_fee_updated {
   id: ID!
   l1Strategy: String!
   newPerfomanceFees: String!
 }
 
-type WithdrawalEpochUpdated {
+type withdrawal_epoch_updated {
   id: ID!
   l1Strategy: String!
   newWithdrawalEpochDelay: String!
 }
 
-type DustLimitUpdated {
+type dust_limit_updated {
   id: ID!
   l1Strategy: String!
   newDustLimit: String!
 }
 
-type Deposit {
+type deposit {
   id: ID!
   l1Strategy: String!
   caller: String!
@@ -65,7 +65,7 @@ type Deposit {
   referal: String!
 }
 
-type RequestWithdrawal {
+type request_withdrawal {
   id: ID!
   l1Strategy: String!
   caller: String!
@@ -75,7 +75,7 @@ type RequestWithdrawal {
   epoch: String!
 }
 
-type ClaimWithdrawal {
+type claim_withdrawal {
   id: ID!
   l1Strategy: String!
   caller: String!
@@ -83,13 +83,13 @@ type ClaimWithdrawal {
   underlyingAmount: String!
 }
 
-type BridgeInteractionInfo {
+type bridge_interaction_info {
   id: ID!
   l1Bridge: String!
   amount: String!
 }
 
-type StrategyL2Report {
+type strategy_l2_report {
   id: ID!
   l1Strategy: String!
   actionId: String!
@@ -97,12 +97,12 @@ type StrategyL2Report {
   newSharePrice: String!
 }
 
-type NewL2Report {
+type new_l2_report {
   id: ID!
   timestamp: Int!
   blockNumber: Int!
   newEpoch: String!
-  newBridgeDeposit: [BridgeInteractionInfo!]
-  newL2Report: [StrategyL2Report!]
-  newBridgeWithdraw: [BridgeInteractionInfo!]
+  newBridgeDeposit: [bridge_interaction_info!]
+  newL2Report: [strategy_l2_report!]
+  newBridgeWithdraw: [bridge_interaction_info!]
 }

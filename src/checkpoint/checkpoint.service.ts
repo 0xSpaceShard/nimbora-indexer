@@ -28,7 +28,7 @@ export class CheckpointService {
     this.schema = fs.readFileSync(schemaFile, 'utf8');
 
     this.checkpoint = new Checkpoint(
-      { ...config, network_node_url: this.configService.get('STARKNET_RPC') },
+      { ...config, network_node_url: this.configService.get('ALCHEMY_RPC_URL') },
       writer,
       this.schema,
       {

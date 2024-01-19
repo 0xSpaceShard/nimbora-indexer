@@ -4,7 +4,7 @@ import * as PoolingManager from 'config/checkpoint/poolingManager.json';
 
 export const yieldDexConfig = (configService: ConfigService): CheckpointConfig => {
   return {
-    network_node_url: configService.get('STARKNET_RPC'),
+    network_node_url: configService.get('ALCHEMY_RPC_URL'),
     sources: [
       {
         contract: configService.get('YIELD_DEX_L2_POOLING_MANAGER'),

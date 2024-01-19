@@ -47,7 +47,7 @@ export class EnvironmentVariables {
   RESET_DATABASE = false;
 
   @IsString()
-  STARKNET_RPC: string;
+  ALCHEMY_RPC_URL: string;
 
   @IsOptional()
   @IsString()

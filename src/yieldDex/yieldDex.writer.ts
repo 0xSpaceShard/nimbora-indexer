@@ -34,56 +34,48 @@ export const yieldDexWriters: CheckpointWriters = {
     const l2Report = new NewL2Report(tx.transaction_hash);
     l2Report.newEpoch = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
     
-    var reports = [];
     var bridgeDeposits = [];
+    var reports = [];
     var bridgeWithdraws = [];
+
     var index = parseInt(data[2]);
     var eventPointer = 3;
 
     for (let i = 0; i < index; i++) {
-      const bridgeDeposit = new BridgeInteractionInfo(tx.transaction_hash);
-      bridgeDeposit.l1Bridge = data[eventPointer++];
-      const amountLow = data[eventPointer++];
-      const amountHigh = data[eventPointer++];
-      bridgeDeposit.amount = uint256.uint256ToBN({high: amountHigh, low:amountLow}).toString();
-
-      bridgeDeposits.push(bridgeDeposit);
+      bridgeDeposits.push(JSON.stringify({
+        l1Bridge: data[eventPointer++], 
+        amount: uint256.uint256ToBN({
+          low:data[eventPointer++], 
+          high: data[eventPointer++]
+        }).toString()
+      }));
     }
     index = parseInt(data[eventPointer++]);
 
     for (let i = 0; i < index; i++) {
-      const strategyL2Report = new StrategyL2Report(tx.transaction_hash);
-      strategyL2Report.l1Strategy = data[eventPointer++];
-      const actionLow = data[eventPointer++];
-      const actionHigh = data[eventPointer++];
-      strategyL2Report.actionId = uint256.uint256ToBN({high: actionHigh, low:actionLow}).toString();
-
-      const amountLow = data[eventPointer++];
-      const amountHigh = data[eventPointer++];
-      strategyL2Report.amount = uint256.uint256ToBN({high: amountHigh, low:amountLow}).toString();
-
-      const newSharePriceLow = data[eventPointer++];
-      const newSharePriceHigh = data[eventPointer++];
-      strategyL2Report.newSharePrice = uint256.uint256ToBN({high: newSharePriceHigh, low:newSharePriceLow}).toString();
-
-      reports.push(strategyL2Report);
+      reports.push(JSON.stringify({
+        l1Strategy: data[eventPointer++],
+        actionId: uint256.uint256ToBN({low:data[eventPointer++], high: data[eventPointer++]}).toString(),
+        amount: uint256.uint256ToBN({low:data[eventPointer++], high: data[eventPointer++]}).toString(),
+        newSharePrice: uint256.uint256ToBN({low:data[eventPointer++], high: data[eventPointer++]}).toString()
+      }));
     }
     index = parseInt(data[eventPointer++]);
-    
-    for (let i = 0; i < index; i++) {
-      const bridgeWithdraw = new BridgeInteractionInfo(tx.transaction_hash);
-      bridgeWithdraw.l1Bridge = data[eventPointer++];
-      const amountLow = data[eventPointer++];
-      const amountHigh = data[eventPointer++];
-      bridgeWithdraw.amount = uint256.uint256ToBN({high: amountHigh, low:amountLow}).toString();
 
-      bridgeWithdraws.push(bridgeWithdraw);
+    for (let i = 0; i < index; i++) {
+      bridgeWithdraws.push(JSON.stringify({
+        l1Bridge: data[eventPointer++], 
+        amount: uint256.uint256ToBN({
+          low:data[eventPointer++], 
+          high: data[eventPointer++]
+        }).toString()
+      }));
     }    
 
     l2Report.newBridgeDeposit = bridgeDeposits;
     l2Report.newL2Report = reports;
     l2Report.newBridgeWithdraw = bridgeWithdraws;
-
+    
     await l2Report.save();
   },
 
@@ -112,6 +104,8 @@ export const yieldDexWriters: CheckpointWriters = {
     depositLimit.l1Strategy = data[0];
     depositLimit.newMinDepositLimit = uint256.uint256ToBN({high: data[2], low:data[1]}).toString();
     depositLimit.newMaxDepositLimit = uint256.uint256ToBN({high: data[4], low:data[3]}).toString();
+
+    await depositLimit.save();
   },
 
   handleWithdrawLimitUpdated: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -122,6 +116,8 @@ export const yieldDexWriters: CheckpointWriters = {
     withdrawLimit.l1Strategy = data[0];
     withdrawLimit.newMinWithdrawLimit = uint256.uint256ToBN({high: data[2], low:data[1]}).toString();
     withdrawLimit.newMaxWithdrawLimit = uint256.uint256ToBN({high: data[4], low:data[3]}).toString();
+
+    await withdrawLimit.save();
   },
 
   handlePerformanceFeeUpdated: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -131,6 +127,8 @@ export const yieldDexWriters: CheckpointWriters = {
     const performance = new PerformanceFeeUpdated(tx.transaction_hash);
     performance.l1Strategy = data[0];
     performance.newPerfomanceFees = uint256.uint256ToBN({high: data[2], low:data[1]}).toString();
+
+    await performance.save();
   },
 
   handleWithdrawalEpochUpdated: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -140,6 +138,8 @@ export const yieldDexWriters: CheckpointWriters = {
     const withdrawal = new WithdrawalEpochUpdated(tx.transaction_hash);
     withdrawal.l1Strategy = data[0];
     withdrawal.newWithdrawalEpochDelay = uint256.uint256ToBN({high: data[2], low:data[1]}).toString();
+
+    await withdrawal.save();
   },
 
   handleDustLimitUpdated: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -149,6 +149,8 @@ export const yieldDexWriters: CheckpointWriters = {
     const dustLimit = new DustLimitUpdated(tx.transaction_hash);
     dustLimit.l1Strategy = data[0];
     dustLimit.newDustLimit = uint256.uint256ToBN({high: data[2], low:data[1]}).toString();
+
+    await dustLimit.save();
   },
 
   handleDeposit: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -162,6 +164,8 @@ export const yieldDexWriters: CheckpointWriters = {
     deposit.assets = uint256.uint256ToBN({high: data[4], low:data[3]}).toString();
     deposit.shares = uint256.uint256ToBN({high: data[6], low:data[5]}).toString();
     deposit.referal = data[7];
+
+    await deposit.save();
   },
 
   handleRequestWithdrawal: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -175,6 +179,8 @@ export const yieldDexWriters: CheckpointWriters = {
     requestWithdrawal.shares = uint256.uint256ToBN({high: data[5], low:data[4]}).toString();
     requestWithdrawal.withdrawalId = uint256.uint256ToBN({high: data[7], low:data[6]}).toString();
     requestWithdrawal.epoch = uint256.uint256ToBN({high: data[9], low:data[8]}).toString();
+
+    await requestWithdrawal.save();
   },
 
   handleClaimWithdrawal: async ({ tx, block, rawEvent }: CheckpointWriter) => {
@@ -186,5 +192,7 @@ export const yieldDexWriters: CheckpointWriters = {
     claimWithdrawal.caller = data[1];
     claimWithdrawal.claimId = uint256.uint256ToBN({high: data[3], low:data[2]}).toString();
     claimWithdrawal.underlyingAmount = uint256.uint256ToBN({high: data[5], low:data[4]}).toString();
+
+    await claimWithdrawal.save();
   }
 };

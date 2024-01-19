@@ -43,9 +43,9 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
-  
+
   multi-indexer:
-    build: 
+    build:
       context: .
       target: development
     restart: always
@@ -60,7 +60,10 @@ services:
     ports:
       - '${INDEXER_PORT}:${INDEXER_PORT}'
       - '${METRICS_PORT}:${METRICS_PORT}'
-    command: yarn run start:dev
+    command: yarn run start:prod
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       - postgres
       - graphql-engine

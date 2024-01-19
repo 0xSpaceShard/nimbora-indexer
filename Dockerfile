@@ -8,8 +8,11 @@ COPY . .
 
 RUN yarn install --frozen-lockfile --non-interactive && yarn cache clean
 
+RUN yarn generate
+
 RUN yarn run build
 
+RUN ls
 
 ################
 ## PRODUCTION ##
@@ -28,4 +31,4 @@ USER node
 HEALTHCHECK --interval=60s --timeout=10s --retries=3 \
     CMD sh -c "wget -nv -t1 --spider http://localhost:$PORT/health" || exit 1
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:prod"]

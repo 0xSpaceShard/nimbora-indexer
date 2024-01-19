@@ -1,0 +1,12 @@
+dist
+node_modules
+.github
+.husky
+.eslintrc.js
+.prettierrc
+LICENCE
+Makefile
+README.md
+generated
+docker-copmose-dev.yml
+docker-copmose-prod.yml

@@ -43,9 +43,10 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
+
   multi-indexer:
-    image: shardlabs/multi-indexer:${BRANCH}
-    container_name: multi-indexer:${BRANCH}
+    image: spaceshard/nimbora-yielddex-indexer:latest
+    container_name: multi-indexer
     restart: always
     environment:
       NETWORK: ${NETWORK}
@@ -56,14 +57,14 @@ services:
       STARKNET_RPC: ${STARKNET_RPC}
       AUTH_TOKEN: ${AUTH_TOKEN}
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
         tag: '{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}'
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
     ports:
-      - '${INDEXER_ENDPOINT}:${INDEXER_PORT}:${INDEXER_PORT}'
-      - '${METRICS_ENDPOINT}:${METRICS_PORT}:${METRICS_PORT}'
+      - '${INDEXER_PORT}:${INDEXER_PORT}'
+      - '${METRICS_PORT}:${METRICS_PORT}'
     depends_on:
       - postgres
       - graphql-engine

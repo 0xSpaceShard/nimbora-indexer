@@ -1,10 +1,9 @@
 import { CheckpointWriters } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import { 
-  BridgeInteractionInfo,
   ClaimWithdrawal, Deposit, DepositLimitUpdated, DustLimitUpdated, FeeRecipient, 
   L1ReportHash, NewL2Report, PerformanceFeeUpdated, RequestWithdrawal, 
-  StrategyL2Report, StrategyRegistered, WithdrawLimitUpdated, WithdrawalEpochUpdated 
+  StrategyRegistered, WithdrawLimitUpdated, WithdrawalEpochUpdated 
 } from 'types/generated/models';
 import { uint256 } from 'starknet';
 

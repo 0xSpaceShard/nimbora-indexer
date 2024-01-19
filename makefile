@@ -27,3 +27,5 @@ prod-up: prod-down
 
 prod-down:
 	docker compose -f docker-compose-prod.yml down -v
+
+.PHONY: checkpoint-gen 

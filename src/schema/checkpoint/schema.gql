@@ -99,6 +99,8 @@ type StrategyL2Report {
 
 type NewL2Report {
   id: ID!
+  timestamp: Int!
+  blockNumber: Int!
   newEpoch: String!
   newBridgeDeposit: [BridgeInteractionInfo!]
   newL2Report: [StrategyL2Report!]

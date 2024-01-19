@@ -71,6 +71,8 @@ export const yieldDexWriters: CheckpointWriters = {
       }));
     }    
 
+    l2Report.timestamp = block.timestamp;
+    l2Report.blockNumber = block.block_number;
     l2Report.newBridgeDeposit = bridgeDeposits;
     l2Report.newL2Report = reports;
     l2Report.newBridgeWithdraw = bridgeWithdraws;

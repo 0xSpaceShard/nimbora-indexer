@@ -37,29 +37,48 @@ export const yieldDexWriters: CheckpointWriters = {
     var reports = [];
     var bridgeDeposits = [];
     var bridgeWithdraws = [];
-    for (let i = 0; i< data[2].length; i++) {
-      const newBridgeDeposit = new BridgeInteractionInfo(i.toString());
-      newBridgeDeposit.l1Bridge = data[i][0];
-      newBridgeDeposit.amount = uint256.uint256ToBN({high: data[i][2], low:data[i][1]}).toString();
+    var index = parseInt(data[2]);
+    var eventPointer = 3;
 
-      bridgeDeposits.push(newBridgeDeposit);
-    }
-    for (let i = 0; i < data[3].length; i++) {
-      const strategyReport = new StrategyL2Report(i.toString());
-      strategyReport.l1Strategy = data[i][0];
-      strategyReport.actionId = uint256.uint256ToBN({high: data[i][2], low:data[i][1]}).toString();
-      strategyReport.amount = uint256.uint256ToBN({high: data[i][4], low:data[i][3]}).toString();
-      strategyReport.newSharePrice = uint256.uint256ToBN({high: data[i][6], low:data[i][5]}).toString();
+    for (let i = 0; i < index; i++) {
+      const bridgeDeposit = new BridgeInteractionInfo(tx.transaction_hash);
+      bridgeDeposit.l1Bridge = data[eventPointer++];
+      const amountLow = data[eventPointer++];
+      const amountHigh = data[eventPointer++];
+      bridgeDeposit.amount = uint256.uint256ToBN({high: amountHigh, low:amountLow}).toString();
 
-      reports.push(strategyReport);
+      bridgeDeposits.push(bridgeDeposit);
     }
-    for (let i = 0; i < data[4].length; i++) {
-      const newBridgeWithdraw = new BridgeInteractionInfo(i.toString());
-      newBridgeWithdraw.l1Bridge = data[i][0];
-      newBridgeWithdraw.amount = uint256.uint256ToBN({high: data[i][2], low:data[i][1]}).toString();
+    index = parseInt(data[eventPointer++]);
 
-      bridgeWithdraws.push(newBridgeWithdraw);
+    for (let i = 0; i < index; i++) {
+      const strategyL2Report = new StrategyL2Report(tx.transaction_hash);
+      strategyL2Report.l1Strategy = data[eventPointer++];
+      const actionLow = data[eventPointer++];
+      const actionHigh = data[eventPointer++];
+      strategyL2Report.actionId = uint256.uint256ToBN({high: actionHigh, low:actionLow}).toString();
+
+      const amountLow = data[eventPointer++];
+      const amountHigh = data[eventPointer++];
+      strategyL2Report.amount = uint256.uint256ToBN({high: amountHigh, low:amountLow}).toString();
+
+      const newSharePriceLow = data[eventPointer++];
+      const newSharePriceHigh = data[eventPointer++];
+      strategyL2Report.newSharePrice = uint256.uint256ToBN({high: newSharePriceHigh, low:newSharePriceLow}).toString();
+
+      reports.push(strategyL2Report);
     }
+    index = parseInt(data[eventPointer++]);
+    
+    for (let i = 0; i < index; i++) {
+      const bridgeWithdraw = new BridgeInteractionInfo(tx.transaction_hash);
+      bridgeWithdraw.l1Bridge = data[eventPointer++];
+      const amountLow = data[eventPointer++];
+      const amountHigh = data[eventPointer++];
+      bridgeWithdraw.amount = uint256.uint256ToBN({high: amountHigh, low:amountLow}).toString();
+
+      bridgeWithdraws.push(bridgeWithdraw);
+    }    
 
     l2Report.newBridgeDeposit = bridgeDeposits;
     l2Report.newL2Report = reports;

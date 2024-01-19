@@ -8,6 +8,10 @@ $ yarn install
 
 ## Running the app (local)
 
+# Setup
+
+Clone the `.env.example` file and rename it to `.env` updating its content according to your needs
+
 **Start database and GraphQL dependencies:** Before you can run the multi-indexer, you need to start its dependencies. This can be done by running the command make dev-up in the terminal.
 
 ```bash

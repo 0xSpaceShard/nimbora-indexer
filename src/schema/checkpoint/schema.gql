@@ -4,3 +4,105 @@ type FeeRecipient {
   id: ID!
   recipient: String!
 }
+
+type L1ReportHash {
+  id: ID!
+  hash: String!
+}
+
+type StrategyRegistered {
+  id: ID!
+  tokenManager: String!
+  token: String!
+  l1Strategy: String!
+  underlying: String!
+  performanceFees: String!
+  minDeposit: String!
+  maxDeposit: String!
+  minWithdrawal: String!
+  maxWithdrawal: String!
+}
+
+type DepositLimitUpdated {
+  id: ID!
+  l1Strategy: String!
+  newMinDepositLimit: String!
+  newMaxDepositLimit: String!
+}
+
+type WithdrawLimitUpdated {
+  id: ID!
+  l1Strategy: String!
+  newMinWithdrawLimit: String!
+  newMaxWithdrawLimit: String!
+}
+
+type PerformanceFeeUpdated {
+  id: ID!
+  l1Strategy: String!
+  newPerfomanceFees: String!
+}
+
+type WithdrawalEpochUpdated {
+  id: ID!
+  l1Strategy: String!
+  newWithdrawalEpochDelay: String!
+}
+
+type DustLimitUpdated {
+  id: ID!
+  l1Strategy: String!
+  newDustLimit: String!
+}
+
+type Deposit {
+  id: ID!
+  l1Strategy: String!
+  caller: String!
+  receiver: String!
+  assets: String!
+  shares: String!
+  referal: String!
+}
+
+type RequestWithdrawal {
+  id: ID!
+  l1Strategy: String!
+  caller: String!
+  assets: String!
+  shares: String!
+  withdrawalId: String!
+  epoch: String!
+}
+
+type ClaimWithdrawal {
+  id: ID!
+  l1Strategy: String!
+  caller: String!
+  claimId: String!
+  underlyingAmount: String!
+}
+
+type BridgeInteractionInfo {
+  id: ID!
+  l1Bridge: String!
+  amount: String!
+}
+
+type StrategyL2Report {
+  id: ID!
+  l1Strategy: String!
+  actionId: String!
+  amount: String!
+  newSharePrice: String!
+}
+
+type NewL2Report {
+  id: ID!
+  timestamp: Int!
+  blockNumber: Int!
+  newEpoch: String!
+  newBridgeDeposit: [BridgeInteractionInfo!]
+  newL2Report: [StrategyL2Report!]
+  newBridgeWithdraw: [BridgeInteractionInfo!]
+}

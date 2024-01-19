@@ -31,7 +31,6 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 .env
-generated
 .env
 .env.testnet
 .env.mainnet

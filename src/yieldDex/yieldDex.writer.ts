@@ -3,7 +3,7 @@ import { CheckpointWriter } from 'types';
 import { 
   ClaimWithdrawal, Deposit, DepositLimitUpdated, DustLimitUpdated, FeeRecipient, 
   L1ReportHash, NewL2Report, PerformanceFeeUpdated, RequestWithdrawal, 
-  StrategyRegistered, WithdrawLimitUpdated, WithdrawalEpochUpdated 
+  StrategyRegistered, Transfer, WithdrawLimitUpdated, WithdrawalEpochUpdated, Approval 
 } from 'types/generated/models';
 import { uint256 } from 'starknet';
 
@@ -80,7 +80,7 @@ export const yieldDexWriters: CheckpointWriters = {
     await l2Report.save();
   },
 
-  handleRegisterStrategy: async ({ tx, block, rawEvent , eventIndex}: CheckpointWriter) => {
+  handleRegisterStrategy: async ({ tx, block, rawEvent , eventIndex, instance}: CheckpointWriter) => {
     if (!block || !rawEvent) return;
 
     const { data } = rawEvent as any;
@@ -94,6 +94,12 @@ export const yieldDexWriters: CheckpointWriters = {
     strategy.maxDeposit = uint256.uint256ToBN({high: data[9], low:data[8]}).toString();
     strategy.minWithdrawal = uint256.uint256ToBN({high: data[11], low:data[10]}).toString();
     strategy.maxWithdrawal = uint256.uint256ToBN({high: data [13], low:data[12]}).toString();
+
+    instance.executeTemplate('ERC20', {
+      contract: strategy.token,
+      start: block.block_number,
+    });
+
     await strategy.save();
   },
 
@@ -195,5 +201,28 @@ export const yieldDexWriters: CheckpointWriters = {
     claimWithdrawal.underlyingAmount = uint256.uint256ToBN({high: data[5], low:data[4]}).toString();
 
     await claimWithdrawal.save();
+  },
+
+  handleTransfer: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+    if (!block || !rawEvent) return;
+
+    const { data, keys, from_address } = rawEvent as any;
+    const transfer = new Transfer(`${tx.transaction_hash}_${eventIndex}`);
+    transfer.constractAddress = from_address;
+    transfer.from = keys[1];
+    transfer.to = keys[2];
+    transfer.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
+    await transfer.save();
+  },
+
+  handleApproval: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+    if (!block || !rawEvent) return;
+
+    const { data, keys, from_address } = rawEvent as any;
+    const approve = new Approval(`${tx.transaction_hash}_${eventIndex}`);
+    approve.constractAddress = from_address;
+    approve.owner = keys[1];
+    approve.spender = keys[2];
+    approve.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
   }
 };

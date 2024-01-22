@@ -3,6 +3,7 @@ import { CheckpointService } from 'checkpoint/checkpoint.service';
 import { yieldDexConfig } from './yield-dex.config';
 import { yieldDexWriters } from './yieldDex.writer';
 import PoolingManager from '../abi/PoolingManager.json';
+import ERC20 from '../abi/ERC20.json';
 import { ConfigService } from 'common/config';
 
 @Injectable()
@@ -18,6 +19,7 @@ export class YieldDexService {
       {
         abis: {
           PoolingManager,
+          ERC20
         },
       },
     );

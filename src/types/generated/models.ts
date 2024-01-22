@@ -7,7 +7,7 @@ export class FeeRecipient extends Model {
     super(FeeRecipient.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('recipient', '');
+    this.initialSet('recipient', "");
   }
 
   static async loadEntity(id: string): Promise<FeeRecipient | null> {
@@ -18,7 +18,9 @@ export class FeeRecipient extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -49,7 +51,7 @@ export class L1ReportHash extends Model {
     super(L1ReportHash.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('hash', '');
+    this.initialSet('hash', "");
   }
 
   static async loadEntity(id: string): Promise<L1ReportHash | null> {
@@ -60,7 +62,9 @@ export class L1ReportHash extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -91,15 +95,15 @@ export class StrategyRegistered extends Model {
     super(StrategyRegistered.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('tokenManager', '');
-    this.initialSet('token', '');
-    this.initialSet('l1Strategy', '');
-    this.initialSet('underlying', '');
-    this.initialSet('performanceFees', '');
-    this.initialSet('minDeposit', '');
-    this.initialSet('maxDeposit', '');
-    this.initialSet('minWithdrawal', '');
-    this.initialSet('maxWithdrawal', '');
+    this.initialSet('tokenManager', "");
+    this.initialSet('token', "");
+    this.initialSet('l1Strategy', "");
+    this.initialSet('underlying', "");
+    this.initialSet('performanceFees', "");
+    this.initialSet('minDeposit', "");
+    this.initialSet('maxDeposit', "");
+    this.initialSet('minWithdrawal', "");
+    this.initialSet('maxWithdrawal', "");
   }
 
   static async loadEntity(id: string): Promise<StrategyRegistered | null> {
@@ -110,7 +114,9 @@ export class StrategyRegistered extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -205,9 +211,9 @@ export class DepositLimitUpdated extends Model {
     super(DepositLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newMinDepositLimit', '');
-    this.initialSet('newMaxDepositLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newMinDepositLimit', "");
+    this.initialSet('newMaxDepositLimit', "");
   }
 
   static async loadEntity(id: string): Promise<DepositLimitUpdated | null> {
@@ -218,7 +224,9 @@ export class DepositLimitUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -265,9 +273,9 @@ export class WithdrawLimitUpdated extends Model {
     super(WithdrawLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newMinWithdrawLimit', '');
-    this.initialSet('newMaxWithdrawLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newMinWithdrawLimit', "");
+    this.initialSet('newMaxWithdrawLimit', "");
   }
 
   static async loadEntity(id: string): Promise<WithdrawLimitUpdated | null> {
@@ -278,7 +286,9 @@ export class WithdrawLimitUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -325,8 +335,8 @@ export class PerformanceFeeUpdated extends Model {
     super(PerformanceFeeUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newPerfomanceFees', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newPerfomanceFees', "");
   }
 
   static async loadEntity(id: string): Promise<PerformanceFeeUpdated | null> {
@@ -337,7 +347,9 @@ export class PerformanceFeeUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -376,8 +388,8 @@ export class WithdrawalEpochUpdated extends Model {
     super(WithdrawalEpochUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newWithdrawalEpochDelay', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newWithdrawalEpochDelay', "");
   }
 
   static async loadEntity(id: string): Promise<WithdrawalEpochUpdated | null> {
@@ -388,7 +400,9 @@ export class WithdrawalEpochUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -427,8 +441,8 @@ export class DustLimitUpdated extends Model {
     super(DustLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newDustLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newDustLimit', "");
   }
 
   static async loadEntity(id: string): Promise<DustLimitUpdated | null> {
@@ -439,7 +453,9 @@ export class DustLimitUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -478,12 +494,12 @@ export class Deposit extends Model {
     super(Deposit.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('receiver', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('referal', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('receiver', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('referal', "");
   }
 
   static async loadEntity(id: string): Promise<Deposit | null> {
@@ -494,7 +510,9 @@ export class Deposit extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -565,12 +583,12 @@ export class RequestWithdrawal extends Model {
     super(RequestWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('withdrawalId', '');
-    this.initialSet('epoch', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('withdrawalId', "");
+    this.initialSet('epoch', "");
   }
 
   static async loadEntity(id: string): Promise<RequestWithdrawal | null> {
@@ -581,7 +599,9 @@ export class RequestWithdrawal extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -652,10 +672,10 @@ export class ClaimWithdrawal extends Model {
     super(ClaimWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('claimId', '');
-    this.initialSet('underlyingAmount', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('claimId', "");
+    this.initialSet('underlyingAmount', "");
   }
 
   static async loadEntity(id: string): Promise<ClaimWithdrawal | null> {
@@ -666,7 +686,9 @@ export class ClaimWithdrawal extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -721,8 +743,8 @@ export class BridgeInteractionInfo extends Model {
     super(BridgeInteractionInfo.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Bridge', '');
-    this.initialSet('amount', '');
+    this.initialSet('l1Bridge', "");
+    this.initialSet('amount', "");
   }
 
   static async loadEntity(id: string): Promise<BridgeInteractionInfo | null> {
@@ -733,7 +755,9 @@ export class BridgeInteractionInfo extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -772,10 +796,10 @@ export class StrategyL2Report extends Model {
     super(StrategyL2Report.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('actionId', '');
-    this.initialSet('amount', '');
-    this.initialSet('newSharePrice', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('actionId', "");
+    this.initialSet('amount', "");
+    this.initialSet('newSharePrice', "");
   }
 
   static async loadEntity(id: string): Promise<StrategyL2Report | null> {
@@ -786,7 +810,9 @@ export class StrategyL2Report extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -843,7 +869,7 @@ export class NewL2Report extends Model {
     this.initialSet('id', id);
     this.initialSet('timestamp', 0);
     this.initialSet('blockNumber', 0);
-    this.initialSet('newEpoch', '');
+    this.initialSet('newEpoch', "");
     this.initialSet('newBridgeDeposit', null);
     this.initialSet('newL2Report', null);
     this.initialSet('newBridgeWithdraw', null);
@@ -857,7 +883,9 @@ export class NewL2Report extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -918,5 +946,147 @@ export class NewL2Report extends Model {
 
   set newBridgeWithdraw(value: string[] | null) {
     this.set('newBridgeWithdraw', JSON.stringify(value));
+  }
+}
+
+export class Transfer extends Model {
+  static tableName = 'transfers';
+
+  constructor(id: string) {
+    super(Transfer.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('constractAddress', "");
+    this.initialSet('from', "");
+    this.initialSet('to', "");
+    this.initialSet('value', "");
+  }
+
+  static async loadEntity(id: string): Promise<Transfer | null> {
+    const entity = await super._loadEntity(Transfer.tableName, id);
+    if (!entity) return null;
+
+    const model = new Transfer(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get constractAddress(): string {
+    return this.get('constractAddress');
+  }
+
+  set constractAddress(value: string) {
+    this.set('constractAddress', value);
+  }
+
+  get from(): string {
+    return this.get('from');
+  }
+
+  set from(value: string) {
+    this.set('from', value);
+  }
+
+  get to(): string {
+    return this.get('to');
+  }
+
+  set to(value: string) {
+    this.set('to', value);
+  }
+
+  get value(): string {
+    return this.get('value');
+  }
+
+  set value(value: string) {
+    this.set('value', value);
+  }
+}
+
+export class Approval extends Model {
+  static tableName = 'approvals';
+
+  constructor(id: string) {
+    super(Approval.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('constractAddress', "");
+    this.initialSet('owner', "");
+    this.initialSet('spender', "");
+    this.initialSet('value', "");
+  }
+
+  static async loadEntity(id: string): Promise<Approval | null> {
+    const entity = await super._loadEntity(Approval.tableName, id);
+    if (!entity) return null;
+
+    const model = new Approval(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get constractAddress(): string {
+    return this.get('constractAddress');
+  }
+
+  set constractAddress(value: string) {
+    this.set('constractAddress', value);
+  }
+
+  get owner(): string {
+    return this.get('owner');
+  }
+
+  set owner(value: string) {
+    this.set('owner', value);
+  }
+
+  get spender(): string {
+    return this.get('spender');
+  }
+
+  set spender(value: string) {
+    this.set('spender', value);
+  }
+
+  get value(): string {
+    return this.get('value');
+  }
+
+  set value(value: string) {
+    this.set('value', value);
   }
 }

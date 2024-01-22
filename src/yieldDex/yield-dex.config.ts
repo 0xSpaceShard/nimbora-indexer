@@ -1,6 +1,7 @@
 import { CheckpointConfig } from '@snapshot-labs/checkpoint';
 import { ConfigService } from 'common/config';
 import * as PoolingManager from 'config/checkpoint/poolingManager.json';
+import * as ERC20Template from 'config/checkpoint/erc20Template.json';
 
 export const yieldDexConfig = (configService: ConfigService): CheckpointConfig => {
   return {
@@ -12,5 +13,6 @@ export const yieldDexConfig = (configService: ConfigService): CheckpointConfig =
         ...PoolingManager,
       },
     ],
+    templates: ERC20Template
   };
 };

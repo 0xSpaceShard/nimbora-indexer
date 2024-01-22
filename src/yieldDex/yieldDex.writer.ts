@@ -98,7 +98,7 @@ export const yieldDexWriters: CheckpointWriters = {
     instance.executeTemplate('ERC20', {
       contract: strategy.token,
       start: block.block_number,
-    });
+    }, true);
 
     await strategy.save();
   },

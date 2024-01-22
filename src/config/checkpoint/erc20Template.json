@@ -1,5 +1,6 @@
 {
     "ERC20": {
+        "abi": "ERC20",
         "events": [
             {
                 "name": "Transfer",

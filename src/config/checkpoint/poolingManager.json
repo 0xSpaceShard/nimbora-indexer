@@ -1,4 +1,5 @@
 {
+  "abi": "PoolingManager",
   "deploy_fn": "handleDeploy",
   "events": [
     {

@@ -60,6 +60,34 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Supported Events
+
+| PoolingManager | Status |
+|------------|--------|
+| FactoryUpdated    | ⏳     |
+| FeesRecipientUpdated    | ✅     |
+| L1PoolingManagerUpdated    | ⏳     |
+| NewL1ReportHash    | ✅     |
+| NewL2Report   | ✅     |
+| StrategyRegistered    | ✅     |
+| UnderlyingRegistered    | ⏳     |
+| DepositLimitUpdated   | ✅     |
+| WithdrawalLimitUpdated    | ✅     |
+| PerformanceFeesUpdated    | ✅     |
+| WithdrawalEpochUpdated   | ✅     |
+| DustLimitUpdated   | ✅     |
+| Deposit   | ✅     |
+| RequestWithdrawal    | ✅     |
+| ClaimWithdrawal   | ✅     |
+| TokenManagerClassHashUpdated    | ⏳     |
+| TokenClassHashUpdated    | ⏳     |
+
+| ERC20 | Status |
+|------------|--------|
+| Transfer   | ✅     |
+| Approval   | ✅     |
+
+
 ## License
 
 Nest is [MIT licensed](LICENSE).

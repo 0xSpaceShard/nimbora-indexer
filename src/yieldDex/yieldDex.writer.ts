@@ -209,8 +209,8 @@ export const yieldDexWriters: CheckpointWriters = {
     const { data, keys, from_address } = rawEvent as any;
     const transfer = new Transfer(`${tx.transaction_hash}_${eventIndex}`);
     transfer.constractAddress = from_address;
-    transfer.from = keys[1];
-    transfer.to = keys[2];
+    transfer.from = keys[0];
+    transfer.to = keys[1];
     transfer.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
 
     await transfer.save();
@@ -222,8 +222,8 @@ export const yieldDexWriters: CheckpointWriters = {
     const { data, keys, from_address } = rawEvent as any;
     const approve = new Approval(`${tx.transaction_hash}_${eventIndex}`);
     approve.constractAddress = from_address;
-    approve.owner = keys[1];
-    approve.spender = keys[2];
+    approve.owner = keys[0];
+    approve.spender = keys[1];
     approve.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
 
     await approve.save();

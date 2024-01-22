@@ -106,3 +106,19 @@ type NewL2Report {
   newL2Report: [StrategyL2Report!]
   newBridgeWithdraw: [BridgeInteractionInfo!]
 }
+
+type Transfer {
+  id: ID!
+  constractAddress: String!
+  from: String!
+  to: String!
+  value: String!
+}
+
+type Approval {
+  id: ID!
+  constractAddress: String!
+  owner: String!
+  spender: String!
+  value: String!
+}

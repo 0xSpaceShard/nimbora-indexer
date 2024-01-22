@@ -3,13 +3,20 @@ import { CheckpointWriter } from 'types';
 import { 
   ClaimWithdrawal, Deposit, DepositLimitUpdated, DustLimitUpdated, FeeRecipient, 
   L1ReportHash, NewL2Report, PerformanceFeeUpdated, RequestWithdrawal, 
-  StrategyRegistered, WithdrawLimitUpdated, WithdrawalEpochUpdated 
+  StrategyRegistered, Transfer, WithdrawLimitUpdated, WithdrawalEpochUpdated, Approval 
 } from 'types/generated/models';
 import { uint256 } from 'starknet';
+
+async function checkExists(entity: any, id: string) {
+  const exists = await entity.loadEntity(id);
+  if (exists) return true;
+  return false;
+}
 
 export const yieldDexWriters: CheckpointWriters = {
   handleSetFeeRecipient: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(FeeRecipient, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const feeRecipient = new FeeRecipient(`${tx.transaction_hash}_${eventIndex}`);
@@ -19,6 +26,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handleNewL1ReportHash: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(L1ReportHash, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const l1ReportHash = new L1ReportHash(`${tx.transaction_hash}_${eventIndex}`);
@@ -28,6 +36,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handleNewL2Report: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(NewL2Report, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const l2Report = new NewL2Report(`${tx.transaction_hash}_${eventIndex}`);
@@ -80,8 +89,9 @@ export const yieldDexWriters: CheckpointWriters = {
     await l2Report.save();
   },
 
-  handleRegisterStrategy: async ({ tx, block, rawEvent , eventIndex}: CheckpointWriter) => {
+  handleRegisterStrategy: async ({ tx, block, rawEvent , eventIndex, instance}: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(StrategyRegistered, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const strategy = new StrategyRegistered(`${tx.transaction_hash}_${eventIndex}`);
@@ -94,11 +104,18 @@ export const yieldDexWriters: CheckpointWriters = {
     strategy.maxDeposit = uint256.uint256ToBN({high: data[9], low:data[8]}).toString();
     strategy.minWithdrawal = uint256.uint256ToBN({high: data[11], low:data[10]}).toString();
     strategy.maxWithdrawal = uint256.uint256ToBN({high: data [13], low:data[12]}).toString();
+
+    await instance.executeTemplate('ERC20', {
+      contract: strategy.token,
+      start: block.block_number,
+    });
+
     await strategy.save();
   },
 
   handleDepositLimitUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(DepositLimitUpdated, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const depositLimit = new DepositLimitUpdated(`${tx.transaction_hash}_${eventIndex}`);
@@ -111,6 +128,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handleWithdrawLimitUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(WithdrawLimitUpdated, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const withdrawLimit = new WithdrawLimitUpdated(`${tx.transaction_hash}_${eventIndex}`);
@@ -123,6 +141,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handlePerformanceFeeUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(PerformanceFeeUpdated, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const performance = new PerformanceFeeUpdated(`${tx.transaction_hash}_${eventIndex}`);
@@ -134,6 +153,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handleWithdrawalEpochUpdated: async ({ tx, block, rawEvent , eventIndex}: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(WithdrawalEpochUpdated, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const withdrawal = new WithdrawalEpochUpdated(`${tx.transaction_hash}_${eventIndex}`);
@@ -145,6 +165,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handleDustLimitUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(DustLimitUpdated, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const dustLimit = new DustLimitUpdated(`${tx.transaction_hash}_${eventIndex}`);
@@ -154,8 +175,9 @@ export const yieldDexWriters: CheckpointWriters = {
     await dustLimit.save();
   },
 
-  handleDeposit: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+  handleDeposit: async ({ tx, block, rawEvent, eventIndex, instance }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(Deposit, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const deposit = new Deposit(`${tx.transaction_hash}_${eventIndex}`);
@@ -167,10 +189,14 @@ export const yieldDexWriters: CheckpointWriters = {
     deposit.referal = data[7];
 
     await deposit.save();
+    
+    console.log("#### Deposit stored!!!!");
+    console.log(`${tx.transaction_hash}_${eventIndex}`);
   },
 
   handleRequestWithdrawal: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(RequestWithdrawal, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const requestWithdrawal = new RequestWithdrawal(`${tx.transaction_hash}_${eventIndex}`);
@@ -186,6 +212,7 @@ export const yieldDexWriters: CheckpointWriters = {
 
   handleClaimWithdrawal: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
     if (!block || !rawEvent) return;
+    if (await checkExists(ClaimWithdrawal, `${tx.transaction_hash}_${eventIndex}`)) return;
 
     const { data } = rawEvent as any;
     const claimWithdrawal = new ClaimWithdrawal(`${tx.transaction_hash}_${eventIndex}`);
@@ -195,5 +222,33 @@ export const yieldDexWriters: CheckpointWriters = {
     claimWithdrawal.underlyingAmount = uint256.uint256ToBN({high: data[5], low:data[4]}).toString();
 
     await claimWithdrawal.save();
+  },
+
+  handleTransfer: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+    if (!block || !rawEvent) return;
+    if (await checkExists(Transfer, `${tx.transaction_hash}_${eventIndex}`)) return;
+
+    const { data, keys, from_address } = rawEvent as any;
+    const transfer = new Transfer(`${tx.transaction_hash}_${eventIndex}`);
+    transfer.constractAddress = from_address;
+    transfer.from = keys[0];
+    transfer.to = keys[1];
+    transfer.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
+
+    await transfer.save();
+  },
+
+  handleApproval: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+    if (!block || !rawEvent) return;
+    if (await checkExists(Approval, `${tx.transaction_hash}_${eventIndex}`)) return;
+
+    const { data, keys, from_address } = rawEvent as any;
+    const approve = new Approval(`${tx.transaction_hash}_${eventIndex}`);
+    approve.constractAddress = from_address;
+    approve.owner = keys[0];
+    approve.spender = keys[1];
+    approve.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
+
+    await approve.save();
   }
 };

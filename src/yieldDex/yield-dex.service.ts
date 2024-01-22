@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CheckpointService } from 'checkpoint/checkpoint.service';
 import { yieldDexConfig } from './yield-dex.config';
 import { yieldDexWriters } from './yieldDex.writer';
-import PoolingManager from '../abi/PoolingManager.json';
+import * as poolingManager from '../abi/PoolingManager.json';
+import * as erc20 from '../abi/ERC20.json';
 import { ConfigService } from 'common/config';
+import { CheckpointOptions } from '@snapshot-labs/checkpoint';
 
 @Injectable()
 export class YieldDexService {
@@ -17,7 +19,8 @@ export class YieldDexService {
       true,
       {
         abis: {
-          PoolingManager,
+          PoolingManager: poolingManager,
+          ERC20: erc20
         },
       },
     );

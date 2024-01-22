@@ -1,0 +1,15 @@
+{
+    "ERC20": {
+        "abi": "ERC20",
+        "events": [
+            {
+                "name": "Transfer",
+                "fn": "handleTransfer"
+            },
+            {
+                "name": "Approval",
+                "fn": "handleApproval"
+            }
+        ]
+    }
+}

@@ -212,6 +212,7 @@ export const yieldDexWriters: CheckpointWriters = {
     transfer.from = keys[1];
     transfer.to = keys[2];
     transfer.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
+
     await transfer.save();
   },
 
@@ -224,5 +225,7 @@ export const yieldDexWriters: CheckpointWriters = {
     approve.owner = keys[1];
     approve.spender = keys[2];
     approve.value = uint256.uint256ToBN({high: data[1], low:data[0]}).toString();
+
+    await approve.save();
   }
 };

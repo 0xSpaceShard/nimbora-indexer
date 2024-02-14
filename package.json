@@ -45,7 +45,7 @@
     "@nestjs/throttler": "^4.0.0",
     "@prisma/client": "^5.8.0",
     "@snapshot-labs/checkpoint": "^0.1.0-beta.26",
-    "@typechain/ethers-v6": "^0.4.0",
+    "@typechain/ethers-v6": "^0.5.1",
     "@types/cron": "^2.0.1",
     "@types/lodash": "^4.14.194",
     "@types/pg": "^8.10.9",

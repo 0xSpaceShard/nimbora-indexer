@@ -43,7 +43,7 @@
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/terminus": "^9.2.1",
     "@nestjs/throttler": "^4.0.0",
-    "@prisma/client": "^5.8.0",
+    "@prisma/client": "^5.8.1",
     "@snapshot-labs/checkpoint": "^0.1.0-beta.26",
     "@typechain/ethers-v6": "^0.5.1",
     "@types/cron": "^2.0.1",

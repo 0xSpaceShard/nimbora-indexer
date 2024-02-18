@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - goerli
 
 env:
   working-directory: .
@@ -13,6 +15,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
       - name: Checkout
         uses: actions/checkout@v2
       - name: Use Node.js
@@ -29,4 +36,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Docker push image
-        run: docker tag ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }} ${{ env.DOCKER_IMAGE }}:latest
+        run: docker tag ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }} ${{ env.DOCKER_IMAGE }}:${{ steps.extract_branch.outputs.branch }}

@@ -47,7 +47,7 @@ export class EnvironmentVariables {
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => value == 'true')
-  RESET_DATABASE = false;
+  DATABASE_RESET = false;
 
   @IsString()
   L2_ALCHEMY_RPC_URL: string;

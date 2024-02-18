@@ -40,7 +40,7 @@ export class CheckpointService {
       dbConnection: this.configService.get('DATABASE_URL') + '/' + this.configService.get('DATABASE_NAME'),
     });
 
-    if (this.configService.get('RESET_DATABASE')) {
+    if (this.configService.get('DATABASE_RESET')) {
       await this.checkpoint.resetMetadata();
       await this.checkpoint.reset();
     }

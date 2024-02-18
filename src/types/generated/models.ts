@@ -1,24 +1,26 @@
 import { Model } from '@snapshot-labs/checkpoint';
 
-export class FeeRecipient extends Model {
-  static tableName = 'feerecipients';
+export class YieldDex_FeeRecipient extends Model {
+  static tableName = 'yielddex_feerecipients';
 
   constructor(id: string) {
-    super(FeeRecipient.tableName);
+    super(YieldDex_FeeRecipient.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('recipient', '');
+    this.initialSet('recipient', "");
   }
 
-  static async loadEntity(id: string): Promise<FeeRecipient | null> {
-    const entity = await super._loadEntity(FeeRecipient.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_FeeRecipient | null> {
+    const entity = await super._loadEntity(YieldDex_FeeRecipient.tableName, id);
     if (!entity) return null;
 
-    const model = new FeeRecipient(id);
+    const model = new YieldDex_FeeRecipient(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -42,25 +44,27 @@ export class FeeRecipient extends Model {
   }
 }
 
-export class L1ReportHash extends Model {
-  static tableName = 'l1reporthashes';
+export class YieldDex_L1ReportHash extends Model {
+  static tableName = 'yielddex_l1reporthashes';
 
   constructor(id: string) {
-    super(L1ReportHash.tableName);
+    super(YieldDex_L1ReportHash.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('hash', '');
+    this.initialSet('hash', "");
   }
 
-  static async loadEntity(id: string): Promise<L1ReportHash | null> {
-    const entity = await super._loadEntity(L1ReportHash.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_L1ReportHash | null> {
+    const entity = await super._loadEntity(YieldDex_L1ReportHash.tableName, id);
     if (!entity) return null;
 
-    const model = new L1ReportHash(id);
+    const model = new YieldDex_L1ReportHash(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -84,33 +88,35 @@ export class L1ReportHash extends Model {
   }
 }
 
-export class StrategyRegistered extends Model {
-  static tableName = 'strategyregistereds';
+export class YieldDex_StrategyRegistered extends Model {
+  static tableName = 'yielddex_strategyregistereds';
 
   constructor(id: string) {
-    super(StrategyRegistered.tableName);
+    super(YieldDex_StrategyRegistered.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('tokenManager', '');
-    this.initialSet('token', '');
-    this.initialSet('l1Strategy', '');
-    this.initialSet('underlying', '');
-    this.initialSet('performanceFees', '');
-    this.initialSet('minDeposit', '');
-    this.initialSet('maxDeposit', '');
-    this.initialSet('minWithdrawal', '');
-    this.initialSet('maxWithdrawal', '');
+    this.initialSet('tokenManager', "");
+    this.initialSet('token', "");
+    this.initialSet('l1Strategy', "");
+    this.initialSet('underlying', "");
+    this.initialSet('performanceFees', "");
+    this.initialSet('minDeposit', "");
+    this.initialSet('maxDeposit', "");
+    this.initialSet('minWithdrawal', "");
+    this.initialSet('maxWithdrawal', "");
   }
 
-  static async loadEntity(id: string): Promise<StrategyRegistered | null> {
-    const entity = await super._loadEntity(StrategyRegistered.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_StrategyRegistered | null> {
+    const entity = await super._loadEntity(YieldDex_StrategyRegistered.tableName, id);
     if (!entity) return null;
 
-    const model = new StrategyRegistered(id);
+    const model = new YieldDex_StrategyRegistered(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -198,27 +204,29 @@ export class StrategyRegistered extends Model {
   }
 }
 
-export class DepositLimitUpdated extends Model {
-  static tableName = 'depositlimitupdateds';
+export class YieldDex_DepositLimitUpdated extends Model {
+  static tableName = 'yielddex_depositlimitupdateds';
 
   constructor(id: string) {
-    super(DepositLimitUpdated.tableName);
+    super(YieldDex_DepositLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newMinDepositLimit', '');
-    this.initialSet('newMaxDepositLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newMinDepositLimit', "");
+    this.initialSet('newMaxDepositLimit', "");
   }
 
-  static async loadEntity(id: string): Promise<DepositLimitUpdated | null> {
-    const entity = await super._loadEntity(DepositLimitUpdated.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_DepositLimitUpdated | null> {
+    const entity = await super._loadEntity(YieldDex_DepositLimitUpdated.tableName, id);
     if (!entity) return null;
 
-    const model = new DepositLimitUpdated(id);
+    const model = new YieldDex_DepositLimitUpdated(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -258,27 +266,29 @@ export class DepositLimitUpdated extends Model {
   }
 }
 
-export class WithdrawLimitUpdated extends Model {
-  static tableName = 'withdrawlimitupdateds';
+export class YieldDex_WithdrawLimitUpdated extends Model {
+  static tableName = 'yielddex_withdrawlimitupdateds';
 
   constructor(id: string) {
-    super(WithdrawLimitUpdated.tableName);
+    super(YieldDex_WithdrawLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newMinWithdrawLimit', '');
-    this.initialSet('newMaxWithdrawLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newMinWithdrawLimit', "");
+    this.initialSet('newMaxWithdrawLimit', "");
   }
 
-  static async loadEntity(id: string): Promise<WithdrawLimitUpdated | null> {
-    const entity = await super._loadEntity(WithdrawLimitUpdated.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_WithdrawLimitUpdated | null> {
+    const entity = await super._loadEntity(YieldDex_WithdrawLimitUpdated.tableName, id);
     if (!entity) return null;
 
-    const model = new WithdrawLimitUpdated(id);
+    const model = new YieldDex_WithdrawLimitUpdated(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -318,26 +328,28 @@ export class WithdrawLimitUpdated extends Model {
   }
 }
 
-export class PerformanceFeeUpdated extends Model {
-  static tableName = 'performancefeeupdateds';
+export class YieldDex_PerformanceFeeUpdated extends Model {
+  static tableName = 'yielddex_performancefeeupdateds';
 
   constructor(id: string) {
-    super(PerformanceFeeUpdated.tableName);
+    super(YieldDex_PerformanceFeeUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newPerfomanceFees', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newPerfomanceFees', "");
   }
 
-  static async loadEntity(id: string): Promise<PerformanceFeeUpdated | null> {
-    const entity = await super._loadEntity(PerformanceFeeUpdated.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_PerformanceFeeUpdated | null> {
+    const entity = await super._loadEntity(YieldDex_PerformanceFeeUpdated.tableName, id);
     if (!entity) return null;
 
-    const model = new PerformanceFeeUpdated(id);
+    const model = new YieldDex_PerformanceFeeUpdated(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -369,26 +381,28 @@ export class PerformanceFeeUpdated extends Model {
   }
 }
 
-export class WithdrawalEpochUpdated extends Model {
-  static tableName = 'withdrawalepochupdateds';
+export class YieldDex_WithdrawalEpochUpdated extends Model {
+  static tableName = 'yielddex_withdrawalepochupdateds';
 
   constructor(id: string) {
-    super(WithdrawalEpochUpdated.tableName);
+    super(YieldDex_WithdrawalEpochUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newWithdrawalEpochDelay', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newWithdrawalEpochDelay', "");
   }
 
-  static async loadEntity(id: string): Promise<WithdrawalEpochUpdated | null> {
-    const entity = await super._loadEntity(WithdrawalEpochUpdated.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_WithdrawalEpochUpdated | null> {
+    const entity = await super._loadEntity(YieldDex_WithdrawalEpochUpdated.tableName, id);
     if (!entity) return null;
 
-    const model = new WithdrawalEpochUpdated(id);
+    const model = new YieldDex_WithdrawalEpochUpdated(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -420,26 +434,28 @@ export class WithdrawalEpochUpdated extends Model {
   }
 }
 
-export class DustLimitUpdated extends Model {
-  static tableName = 'dustlimitupdateds';
+export class YieldDex_DustLimitUpdated extends Model {
+  static tableName = 'yielddex_dustlimitupdateds';
 
   constructor(id: string) {
-    super(DustLimitUpdated.tableName);
+    super(YieldDex_DustLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newDustLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newDustLimit', "");
   }
 
-  static async loadEntity(id: string): Promise<DustLimitUpdated | null> {
-    const entity = await super._loadEntity(DustLimitUpdated.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_DustLimitUpdated | null> {
+    const entity = await super._loadEntity(YieldDex_DustLimitUpdated.tableName, id);
     if (!entity) return null;
 
-    const model = new DustLimitUpdated(id);
+    const model = new YieldDex_DustLimitUpdated(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -471,30 +487,32 @@ export class DustLimitUpdated extends Model {
   }
 }
 
-export class Deposit extends Model {
-  static tableName = 'deposits';
+export class YieldDex_Deposit extends Model {
+  static tableName = 'yielddex_deposits';
 
   constructor(id: string) {
-    super(Deposit.tableName);
+    super(YieldDex_Deposit.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('receiver', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('referal', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('receiver', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('referal', "");
   }
 
-  static async loadEntity(id: string): Promise<Deposit | null> {
-    const entity = await super._loadEntity(Deposit.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_Deposit | null> {
+    const entity = await super._loadEntity(YieldDex_Deposit.tableName, id);
     if (!entity) return null;
 
-    const model = new Deposit(id);
+    const model = new YieldDex_Deposit(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -558,30 +576,32 @@ export class Deposit extends Model {
   }
 }
 
-export class RequestWithdrawal extends Model {
-  static tableName = 'requestwithdrawals';
+export class YieldDex_RequestWithdrawal extends Model {
+  static tableName = 'yielddex_requestwithdrawals';
 
   constructor(id: string) {
-    super(RequestWithdrawal.tableName);
+    super(YieldDex_RequestWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('withdrawalId', '');
-    this.initialSet('epoch', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('withdrawalId', "");
+    this.initialSet('epoch', "");
   }
 
-  static async loadEntity(id: string): Promise<RequestWithdrawal | null> {
-    const entity = await super._loadEntity(RequestWithdrawal.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_RequestWithdrawal | null> {
+    const entity = await super._loadEntity(YieldDex_RequestWithdrawal.tableName, id);
     if (!entity) return null;
 
-    const model = new RequestWithdrawal(id);
+    const model = new YieldDex_RequestWithdrawal(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -645,28 +665,30 @@ export class RequestWithdrawal extends Model {
   }
 }
 
-export class ClaimWithdrawal extends Model {
-  static tableName = 'claimwithdrawals';
+export class YieldDex_ClaimWithdrawal extends Model {
+  static tableName = 'yielddex_claimwithdrawals';
 
   constructor(id: string) {
-    super(ClaimWithdrawal.tableName);
+    super(YieldDex_ClaimWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('claimId', '');
-    this.initialSet('underlyingAmount', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('claimId', "");
+    this.initialSet('underlyingAmount', "");
   }
 
-  static async loadEntity(id: string): Promise<ClaimWithdrawal | null> {
-    const entity = await super._loadEntity(ClaimWithdrawal.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_ClaimWithdrawal | null> {
+    const entity = await super._loadEntity(YieldDex_ClaimWithdrawal.tableName, id);
     if (!entity) return null;
 
-    const model = new ClaimWithdrawal(id);
+    const model = new YieldDex_ClaimWithdrawal(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -714,26 +736,28 @@ export class ClaimWithdrawal extends Model {
   }
 }
 
-export class BridgeInteractionInfo extends Model {
-  static tableName = 'bridgeinteractioninfos';
+export class YieldDex_BridgeInteractionInfo extends Model {
+  static tableName = 'yielddex_bridgeinteractioninfos';
 
   constructor(id: string) {
-    super(BridgeInteractionInfo.tableName);
+    super(YieldDex_BridgeInteractionInfo.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Bridge', '');
-    this.initialSet('amount', '');
+    this.initialSet('l1Bridge', "");
+    this.initialSet('amount', "");
   }
 
-  static async loadEntity(id: string): Promise<BridgeInteractionInfo | null> {
-    const entity = await super._loadEntity(BridgeInteractionInfo.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_BridgeInteractionInfo | null> {
+    const entity = await super._loadEntity(YieldDex_BridgeInteractionInfo.tableName, id);
     if (!entity) return null;
 
-    const model = new BridgeInteractionInfo(id);
+    const model = new YieldDex_BridgeInteractionInfo(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -765,28 +789,30 @@ export class BridgeInteractionInfo extends Model {
   }
 }
 
-export class StrategyL2Report extends Model {
-  static tableName = 'strategyl2reports';
+export class YieldDex_StrategyL2Report extends Model {
+  static tableName = 'yielddex_strategyl2reports';
 
   constructor(id: string) {
-    super(StrategyL2Report.tableName);
+    super(YieldDex_StrategyL2Report.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('actionId', '');
-    this.initialSet('amount', '');
-    this.initialSet('newSharePrice', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('actionId', "");
+    this.initialSet('amount', "");
+    this.initialSet('newSharePrice', "");
   }
 
-  static async loadEntity(id: string): Promise<StrategyL2Report | null> {
-    const entity = await super._loadEntity(StrategyL2Report.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_StrategyL2Report | null> {
+    const entity = await super._loadEntity(YieldDex_StrategyL2Report.tableName, id);
     if (!entity) return null;
 
-    const model = new StrategyL2Report(id);
+    const model = new YieldDex_StrategyL2Report(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -834,30 +860,33 @@ export class StrategyL2Report extends Model {
   }
 }
 
-export class NewL2Report extends Model {
-  static tableName = 'newl2reports';
+export class YieldDex_NewL2Report extends Model {
+  static tableName = 'yielddex_newl2reports';
 
   constructor(id: string) {
-    super(NewL2Report.tableName);
+    super(YieldDex_NewL2Report.tableName);
 
     this.initialSet('id', id);
+    this.initialSet('hash', "");
     this.initialSet('timestamp', 0);
     this.initialSet('blockNumber', 0);
-    this.initialSet('newEpoch', '');
+    this.initialSet('newEpoch', "");
     this.initialSet('newBridgeDeposit', null);
     this.initialSet('newL2Report', null);
     this.initialSet('newBridgeWithdraw', null);
   }
 
-  static async loadEntity(id: string): Promise<NewL2Report | null> {
-    const entity = await super._loadEntity(NewL2Report.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_NewL2Report | null> {
+    const entity = await super._loadEntity(YieldDex_NewL2Report.tableName, id);
     if (!entity) return null;
 
-    const model = new NewL2Report(id);
+    const model = new YieldDex_NewL2Report(id);
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -870,6 +899,14 @@ export class NewL2Report extends Model {
 
   set id(value: string) {
     this.set('id', value);
+  }
+
+  get hash(): string {
+    return this.get('hash');
+  }
+
+  set hash(value: string) {
+    this.set('hash', value);
   }
 
   get timestamp(): number {
@@ -918,5 +955,103 @@ export class NewL2Report extends Model {
 
   set newBridgeWithdraw(value: string[] | null) {
     this.set('newBridgeWithdraw', JSON.stringify(value));
+  }
+}
+
+export class Liquity_Batch extends Model {
+  static tableName = 'liquity_batches';
+
+  constructor(id: string) {
+    super(Liquity_Batch.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('hash', "");
+    this.initialSet('address', "");
+    this.initialSet('block', 0);
+    this.initialSet('nonce', 0);
+    this.initialSet('amountA', "");
+    this.initialSet('amountB', "");
+    this.initialSet('timestamp', 0);
+  }
+
+  static async loadEntity(id: string): Promise<Liquity_Batch | null> {
+    const entity = await super._loadEntity(Liquity_Batch.tableName, id);
+    if (!entity) return null;
+
+    const model = new Liquity_Batch(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get hash(): string {
+    return this.get('hash');
+  }
+
+  set hash(value: string) {
+    this.set('hash', value);
+  }
+
+  get address(): string {
+    return this.get('address');
+  }
+
+  set address(value: string) {
+    this.set('address', value);
+  }
+
+  get block(): number {
+    return this.get('block');
+  }
+
+  set block(value: number) {
+    this.set('block', value);
+  }
+
+  get nonce(): number {
+    return this.get('nonce');
+  }
+
+  set nonce(value: number) {
+    this.set('nonce', value);
+  }
+
+  get amountA(): string {
+    return this.get('amountA');
+  }
+
+  set amountA(value: string) {
+    this.set('amountA', value);
+  }
+
+  get amountB(): string {
+    return this.get('amountB');
+  }
+
+  set amountB(value: string) {
+    this.set('amountB', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
   }
 }

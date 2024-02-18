@@ -1,16 +1,16 @@
 scalar BigInt
 
-type FeeRecipient {
+type YieldDex_FeeRecipient {
   id: ID!
   recipient: String!
 }
 
-type L1ReportHash {
+type YieldDex_L1ReportHash {
   id: ID!
   hash: String!
 }
 
-type StrategyRegistered {
+type YieldDex_StrategyRegistered {
   id: ID!
   tokenManager: String!
   token: String!
@@ -23,39 +23,39 @@ type StrategyRegistered {
   maxWithdrawal: String!
 }
 
-type DepositLimitUpdated {
+type YieldDex_DepositLimitUpdated {
   id: ID!
   l1Strategy: String!
   newMinDepositLimit: String!
   newMaxDepositLimit: String!
 }
 
-type WithdrawLimitUpdated {
+type YieldDex_WithdrawLimitUpdated {
   id: ID!
   l1Strategy: String!
   newMinWithdrawLimit: String!
   newMaxWithdrawLimit: String!
 }
 
-type PerformanceFeeUpdated {
+type YieldDex_PerformanceFeeUpdated {
   id: ID!
   l1Strategy: String!
   newPerfomanceFees: String!
 }
 
-type WithdrawalEpochUpdated {
+type YieldDex_WithdrawalEpochUpdated {
   id: ID!
   l1Strategy: String!
   newWithdrawalEpochDelay: String!
 }
 
-type DustLimitUpdated {
+type YieldDex_DustLimitUpdated {
   id: ID!
   l1Strategy: String!
   newDustLimit: String!
 }
 
-type Deposit {
+type YieldDex_Deposit {
   id: ID!
   l1Strategy: String!
   caller: String!
@@ -65,7 +65,7 @@ type Deposit {
   referal: String!
 }
 
-type RequestWithdrawal {
+type YieldDex_RequestWithdrawal {
   id: ID!
   l1Strategy: String!
   caller: String!
@@ -75,7 +75,7 @@ type RequestWithdrawal {
   epoch: String!
 }
 
-type ClaimWithdrawal {
+type YieldDex_ClaimWithdrawal {
   id: ID!
   l1Strategy: String!
   caller: String!
@@ -83,13 +83,13 @@ type ClaimWithdrawal {
   underlyingAmount: String!
 }
 
-type BridgeInteractionInfo {
+type YieldDex_BridgeInteractionInfo {
   id: ID!
   l1Bridge: String!
   amount: String!
 }
 
-type StrategyL2Report {
+type YieldDex_StrategyL2Report {
   id: ID!
   l1Strategy: String!
   actionId: String!
@@ -97,12 +97,24 @@ type StrategyL2Report {
   newSharePrice: String!
 }
 
-type NewL2Report {
+type YieldDex_NewL2Report {
   id: ID!
+  hash: String!
   timestamp: Int!
   blockNumber: Int!
   newEpoch: String!
-  newBridgeDeposit: [BridgeInteractionInfo!]
-  newL2Report: [StrategyL2Report!]
-  newBridgeWithdraw: [BridgeInteractionInfo!]
+  newBridgeDeposit: [YieldDex_BridgeInteractionInfo!]
+  newL2Report: [YieldDex_StrategyL2Report!]
+  newBridgeWithdraw: [YieldDex_BridgeInteractionInfo!]
+}
+
+type Liquity_Batch {
+  id: ID!
+  hash: String!
+  address: String!
+  block: Int!
+  nonce: Int!
+  amountA: String!
+  amountB: String!
+  timestamp: Int!
 }

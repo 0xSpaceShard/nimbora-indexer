@@ -1,39 +1,53 @@
+# Nimbora Indexer
+This service indexes the Nimbora Starknet contracts and stores the events in a Postgres database. The events are then exposed to the services through a Hasura graphql service.
+
+This indexer indexes the following projects:
+- Liquity
+- YieldDex
+
+### Add a new project
+- Create a new module and rename it `nimbora-XXX` and then 
+- Implements the `Service` interface.
+- Add the schema inside the `[schema](src/schema/checkpoint/schema.gql)` file.
+- Add writters to the `[config](src/config/checkpoint/config.json)` file.
+- Add the new service to the [checkpoint](src/checkpoint/checkpoint.service.ts) service.
+- And voila :)
+
 ## Installation
 
-The first step is to install the necessary dependencies. This can be done by running the command yarn install in the terminal. This command reads the package.json file in the current directory and installs the required packages.
+The first step is to install the necessary dependencies. This can be done by running the command yarn install in the terminal. This command reads the `package.json` file in the current directory and installs the required packages.
 
 ```bash
 $ yarn install
 ```
 
-## Running the app (local)
-
-# Setup
+### ENVs
 
 Clone the `.env.example` file and rename it to `.env` updating its content according to your needs
 
-**Start database and GraphQL dependencies:** Before you can run the multi-indexer, you need to start its dependencies. This can be done by running the command make dev-up in the terminal.
+## Running the app (local)
 
+To start the indexer on your local machine run the following commands
+
+1. Build the project
 ```bash
-# start database and GraphQL deps
+$ make dev-build
+```
+
+2. Start the services. The indexer used hot reload feature that allows you to develop using docker compose files.
+```bash
 $ make dev-up
 ```
 
-**Development mode:** You can run the multi-indexer in development mode by running the command yarn run start in the terminal. This starts the application without any optimizations, which makes it easier to debug.
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
+3. After the services are up, go to `http://0.0.0.0:8080/console` and connect the hasura graphql to the database.
+```sh
+DATABASE_NAME=nimbora
+DATABASE_URL=postgres://postgres:postgres@postgres:5432/nimbora
 ```
 
-**Production mode:** You can run the multi-indexer in production mode by running the command yarn run start:prod in the terminal. This starts the application with optimizations, which makes it faster and more efficient.
-
+4. When you are done with the dev, stop the services using the following cmd:
 ```bash
-# production mode
-$ yarn run start:prod
+$ make dev-down
 ```
 
 ## Test

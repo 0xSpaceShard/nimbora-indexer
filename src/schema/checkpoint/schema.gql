@@ -118,3 +118,11 @@ type Liquity_Batch {
   amountB: String!
   timestamp: Int!
 }
+
+type YieldDex_TM_Transfer {
+  id: ID!
+  constractAddress: String!
+  from: String!
+  to: String!
+  value: String!
+}

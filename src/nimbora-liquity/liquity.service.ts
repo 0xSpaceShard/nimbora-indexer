@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from 'common/config';
 import { liquityAddresses } from './liquity.constants';
-import { Config, Service } from 'types/service';
+import { Service, Source, Template } from 'types/service';
 import { CheckpointWriters, Event } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import { Liquity_Batch } from 'types/generated/models';
@@ -11,14 +11,14 @@ import { uint256 } from 'starknet';
 export class LiquityService implements Service {
   constructor(readonly configService: ConfigService) {}
 
-  config(): Array<Config> {
+  config(): { sources: Array<Source>; templates?: Template } {
     const addresses = liquityAddresses(this.configService.get('NETWORK'));
-    const sources: Array<Config> = [];
+    const sources: Array<Source> = [];
     for (let i = 0; i < addresses.length; i++) {
       const { contract, start, events } = addresses[i];
       sources.push({ contract, start, events });
     }
-    return sources;
+    return { sources };
   }
 
   writers(): CheckpointWriters {

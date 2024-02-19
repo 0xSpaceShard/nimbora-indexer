@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from 'common/config';
-import { Config, Service } from 'types/service';
+import { Service, Source, Template } from 'types/service';
 import { ydAddresses } from './yield-dex.constants';
 import { CheckpointWriters } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import {
+  Transfer,
   YieldDex_ClaimWithdrawal,
   YieldDex_Deposit,
   YieldDex_DepositLimitUpdated,
@@ -24,14 +25,24 @@ import { uint256 } from 'starknet';
 export class YieldDexService implements Service {
   constructor(readonly configService: ConfigService) {}
 
-  config(): Array<Config> {
+  config(): { sources: Array<Source>; templates: Template } {
     const addresses = ydAddresses(this.configService.get('NETWORK'));
-    const sources: Array<Config> = [];
+    const sources: Array<Source> = [];
     for (let i = 0; i < addresses.length; i++) {
       const { contract, start, events } = addresses[i];
       sources.push({ contract, start, events });
     }
-    return sources;
+    const templates: Template = {
+      erc20: {
+        events: [
+          {
+            name: 'Transfer',
+            fn: 'tm_handleTransfer',
+          },
+        ],
+      },
+    };
+    return { sources, templates };
   }
 
   writers(): CheckpointWriters {
@@ -131,7 +142,7 @@ export class YieldDexService implements Service {
         await l2Report.save();
       },
 
-      yd_HandleRegisterStrategy: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+      yd_HandleRegisterStrategy: async ({ tx, block, rawEvent, eventIndex, instance }: CheckpointWriter) => {
         if (!block || !rawEvent) return;
 
         const { data } = rawEvent as any;
@@ -150,6 +161,18 @@ export class YieldDexService implements Service {
         strategy.maxDeposit = uint256.uint256ToBN({ high: data[9], low: data[8] }).toString();
         strategy.minWithdrawal = uint256.uint256ToBN({ high: data[11], low: data[10] }).toString();
         strategy.maxWithdrawal = uint256.uint256ToBN({ high: data[13], low: data[12] }).toString();
+
+        try {
+          await instance.executeTemplate('erc20', {
+            contract: strategy.token,
+            start: block.block_number,
+          });
+          console.error('1111111111');
+          console.error('1111111111');
+        } catch (error) {
+          console.error(error);
+        }
+
         await strategy.save();
       },
 
@@ -284,6 +307,23 @@ export class YieldDexService implements Service {
         claimWithdrawal.underlyingAmount = uint256.uint256ToBN({ high: data[5], low: data[4] }).toString();
 
         await claimWithdrawal.save();
+      },
+
+      tm_handleTransfer: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+        if (!block || !rawEvent) return;
+        const id = `${tx.transaction_hash}_${eventIndex}`;
+
+        let transfer = await Transfer.loadEntity(id);
+        if (transfer) return;
+
+        const { data, keys, from_address } = rawEvent as any;
+        transfer = new Transfer(`${tx.transaction_hash}_${eventIndex}`);
+        transfer.constractAddress = from_address;
+        transfer.from = keys[0];
+        transfer.to = keys[1];
+        transfer.value = uint256.uint256ToBN({ high: data[1], low: data[0] }).toString();
+
+        await transfer.save();
       },
     };
   }

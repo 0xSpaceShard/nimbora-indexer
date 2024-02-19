@@ -22,6 +22,7 @@ export class CheckpointService {
     const schema = fs.readFileSync(schemaFile, 'utf8');
 
     let writers = {};
+    let templates = {};
     const sources = [];
 
     const services = [this.liquityService, this.ydService];
@@ -29,10 +30,18 @@ export class CheckpointService {
     for (let i = 0; i < services.length; i++) {
       const service: Service = services[i];
       writers = { ...writers, ...service.writers() };
-      sources.push(...service.config());
+      const { sources: src, templates: template } = service.config();
+      sources.push(...src);
+      if (templates) {
+        templates = { ...templates, ...template };
+      }
     }
 
-    const config: CheckpointConfig = { network_node_url: this.configService.get('L2_ALCHEMY_RPC_URL'), sources };
+    const config: CheckpointConfig = {
+      network_node_url: this.configService.get('L2_ALCHEMY_RPC_URL'),
+      sources,
+      templates,
+    };
 
     this.checkpoint = new Checkpoint(config, writers, schema, {
       logLevel: LogLevel.Info,

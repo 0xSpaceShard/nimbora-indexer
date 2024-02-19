@@ -52,6 +52,10 @@
     {
       "name": "BatchRequest",
       "fn": "liquity_HandleBatchRequest"
+    },
+    {
+      "name": "Transfer",
+      "fn": "tm_handleTransfer"
     }
   ]
 }

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CronService } from './cron.service';
 import { ScheduleModule } from '@nestjs/schedule';
-import { YieldDexModule } from 'yieldDex/yield-dex.module';
+import { CheckpointModule } from 'checkpoint/checkpoint.module';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), YieldDexModule],
+  imports: [ScheduleModule.forRoot(), CheckpointModule],
   providers: [CronService],
 })
 export class CronModule {}

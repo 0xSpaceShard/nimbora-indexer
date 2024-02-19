@@ -1,11 +1,11 @@
 include .env
 
+# Generate types
 checkpoint-gen:
+	rm -rf src/types/generated && mkdir -p src/types/generated/ && \
 	yarn checkpoint generate \
-		-c src/config/checkpoint/poolingManager.json \
+		-c src/config/checkpoint/config.json \
 		-s src/schema/checkpoint/schema.gql && \
-		rm -rf src/types/generated && \
-		mkdir -p src/types/generated/ && \
 		mv .checkpoint/** src/types/generated/
 
 # Dev
@@ -28,4 +28,4 @@ prod-up: prod-down
 prod-down:
 	docker compose -f docker-compose-prod.yml down -v
 
-.PHONY: checkpoint-gen 
+.PHONY: checkpoint-gen

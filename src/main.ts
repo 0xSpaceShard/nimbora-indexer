@@ -11,9 +11,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ logger: true }));
   const metrics = await NestFactory.create<NestFastifyApplication>(MetricsPrometheusModule, new FastifyAdapter());
 
-  // config
   const configService: ConfigService = app.get(ConfigService);
-  const appPort = configService.get('PORT');
+  const appPort = configService.get('INDEXER_PORT');
   const metricsPort = configService.get('METRICS_PORT');
 
   app.enableVersioning({ type: VersioningType.URI });

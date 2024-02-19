@@ -3,51 +3,55 @@
   "events": [
     {
       "name": "FeesRecipientUpdated",
-      "fn": "handleSetFeeRecipient"
+      "fn": "yd_HandleSetFeeRecipient"
     },
     {
       "name": "NewL1ReportHash",
-      "fn": "handleNewL1ReportHash"
+      "fn": "yd_HandleNewL1ReportHash"
     },
     {
       "name": "NewL2Report",
-      "fn": "handleNewL2Report"
+      "fn": "yd_HandleNewL2Report"
     },
     {
       "name": "StrategyRegistered",
-      "fn": "handleRegisterStrategy"
+      "fn": "yd_HandleRegisterStrategy"
     },
     {
       "name": "DepositLimitUpdated",
-      "fn": "handleDepositLimitUpdated"
+      "fn": "yd_HandleDepositLimitUpdated"
     },
     {
       "name": "WithdrawLimitUpdated",
-      "fn": "handleWithdrawLimitUpdated"
+      "fn": "yd_HandleWithdrawLimitUpdated"
     },
     {
       "name": "PerformanceFeeUpdated",
-      "fn": "handlePerformanceFeeUpdated"
+      "fn": "yd_HandlePerformanceFeeUpdated"
     },
     {
       "name": "WithdrawalEpochUpdated",
-      "fn": "handleWithdrawalEpochUpdated"
+      "fn": "yd_HandleWithdrawalEpochUpdated"
     },
     {
       "name": "DustLimitUpdated",
-      "fn": "handleDustLimitUpdated"
+      "fn": "yd_HandleDustLimitUpdated"
     },
     {
       "name": "Deposit",
-      "fn": "handleDeposit"
+      "fn": "yd_HandleDeposit"
     },
     {
       "name": "RequestWithdrawal",
-      "fn": "handleRequestWithdrawal"
+      "fn": "yd_HandleRequestWithdrawal"
     }, 
     {
       "name": "ClaimWithdrawal",
-      "fn": "handleClaimWithdrawal"
+      "fn": "yd_HandleClaimWithdrawal"
+    },
+    {
+      "name": "BatchRequest",
+      "fn": "liquity_HandleBatchRequest"
     }
   ]
 }

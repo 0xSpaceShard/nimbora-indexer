@@ -1,51 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import Checkpoint, {
-  CheckpointConfig,
-  CheckpointOptions,
-  CheckpointWriters,
-  LogLevel,
-} from '@snapshot-labs/checkpoint';
+import Checkpoint, { CheckpointConfig, LogLevel } from '@snapshot-labs/checkpoint';
 import * as fs from 'fs';
 import * as path from 'path';
-
 import { ConfigService } from 'common/config';
+import { Service } from 'types/service';
+import { LiquityService } from 'nimbora-liquity/liquity.service';
+import { YieldDexService } from 'nimbora-yieldDex/yield-dex.service';
 
 @Injectable()
 export class CheckpointService {
   checkpoint: Checkpoint;
-  schema: string;
 
-  constructor(readonly configService: ConfigService) {}
+  constructor(
+    readonly configService: ConfigService,
+    readonly liquityService: LiquityService,
+    readonly ydService: YieldDexService,
+  ) {}
 
-  async start(
-    config: CheckpointConfig,
-    writer: CheckpointWriters,
-    schemaPath: string,
-    restart = false,
-    opts?: CheckpointOptions,
-  ) {
-    const schemaFile = path.join(process.cwd(), schemaPath);
-    this.schema = fs.readFileSync(schemaFile, 'utf8');
+  async start() {
+    const schemaFile = path.join(process.cwd(), 'src/schema/checkpoint/schema.gql');
+    const schema = fs.readFileSync(schemaFile, 'utf8');
 
-    this.checkpoint = new Checkpoint(
-      { ...config, network_node_url: this.configService.get('ALCHEMY_RPC_URL') },
-      writer,
-      this.schema,
-      {
-        logLevel: LogLevel.Info,
-        prettifyLogs: true,
-        ...opts,
-        dbConnection: this.configService.get('DATABASE_URL') + '/' + this.configService.get('DATABASE_NAME'),
-      },
-    );
-    if (restart) {
-      await this.reset();
+    let writers = {};
+    const sources = [];
+
+    const services = [this.liquityService, this.ydService];
+
+    for (let i = 0; i < services.length; i++) {
+      const service: Service = services[i];
+      writers = { ...writers, ...service.writers() };
+      sources.push(...service.config());
     }
-    await this.checkpoint.start();
-  }
 
-  async reset() {
-    await this.checkpoint.reset();
-    await this.checkpoint.resetMetadata();
+    const config: CheckpointConfig = { network_node_url: this.configService.get('L2_ALCHEMY_RPC_URL'), sources };
+
+    this.checkpoint = new Checkpoint(config, writers, schema, {
+      logLevel: LogLevel.Info,
+      prettifyLogs: true,
+      dbConnection: this.configService.get('DATABASE_URL') + '/' + this.configService.get('DATABASE_NAME'),
+    });
+
+    if (this.configService.get('DATABASE_RESET')) {
+      await this.checkpoint.resetMetadata();
+      await this.checkpoint.reset();
+    }
+
+    await this.checkpoint.start();
   }
 }

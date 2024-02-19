@@ -22,7 +22,7 @@ export class EnvironmentVariables {
   @IsNumber()
   @Min(1)
   @Transform(({ value }) => Number(value))
-  PORT = 3000;
+  INDEXER_PORT = 3000;
 
   @IsOptional()
   @IsNumber()
@@ -35,6 +35,9 @@ export class EnvironmentVariables {
   @Transform(({ value }) => Number(value))
   GLOBAL_THROTTLE_TTL = 5;
 
+  @IsString()
+  NETWORK: string;
+
   @IsOptional()
   @IsNumber()
   @Min(1)
@@ -44,10 +47,10 @@ export class EnvironmentVariables {
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => value == 'true')
-  RESET_DATABASE = false;
+  DATABASE_RESET = false;
 
   @IsString()
-  ALCHEMY_RPC_URL: string;
+  L2_ALCHEMY_RPC_URL: string;
 
   @IsOptional()
   @IsString()
@@ -55,14 +58,7 @@ export class EnvironmentVariables {
 
   @IsOptional()
   @IsString()
-  DATABASE_NAME = 'indexer';
-
-  @IsString()
-  YIELD_DEX_L2_POOLING_MANAGER: string;
-
-  @IsNumber()
-  @Transform(({ value }) => Number(value))
-  YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK: number;
+  DATABASE_NAME = 'nimbora';
 }
 
 export function validate(config: Record<string, unknown>) {

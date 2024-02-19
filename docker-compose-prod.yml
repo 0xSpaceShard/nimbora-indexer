@@ -3,8 +3,6 @@ services:
   postgres:
     image: postgres:15
     restart: always
-    ports:
-      - '${DATABASE_PORT}:${DATABASE_PORT}'
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
@@ -17,11 +15,11 @@ services:
       - '8080:8080'
     restart: always
     environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: ${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME}
-      PG_DATABASE_URL: ${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME}
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: ${DATABASE_URL}/${DATABASE_NAME}
+      PG_DATABASE_URL: ${DATABASE_URL}/${DATABASE_NAME}
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
       HASURA_GRAPHQL_DEV_MODE: 'true'
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: http-log, query-log
       HASURA_GRAPHQL_METADATA_DEFAULTS: '{"backend_configs":{"dataconnector":{"athena":{"uri":"http://data-connector-agent:8081/api/v1/athena"},"mariadb":{"uri":"http://data-connector-agent:8081/api/v1/mariadb"},"mysql8":{"uri":"http://data-connector-agent:8081/api/v1/mysql"},"oracle":{"uri":"http://data-connector-agent:8081/api/v1/oracle"},"snowflake":{"uri":"http://data-connector-agent:8081/api/v1/snowflake"}}}}'
     depends_on:
       data-connector-agent:
@@ -44,18 +42,14 @@ services:
       retries: 5
       start_period: 5s
 
-  multi-indexer:
-    image: spaceshard/nimbora-yielddex-indexer:latest
+  indexer:
+    image: spaceshard/nimbora-yielddex-indexer:${BRANCH}
     container_name: multi-indexer
     restart: always
     environment:
       NETWORK: ${NETWORK}
-      YIELD_DEX_L2_POOLING_MANAGER: ${YIELD_DEX_L2_POOLING_MANAGER}
-      YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK: ${YIELD_DEX_L2_POOLING_MANAGER_START_BLOCK}
       DATABASE_URL: ${DATABASE_URL}
-      DATABASE_NAME: ${DATABASE_NAME}
-      ALCHEMY_RPC_URL: ${ALCHEMY_RPC_URL}
-      AUTH_TOKEN: ${AUTH_TOKEN}
+      L2_ALCHEMY_RPC_URL: ${L2_ALCHEMY_RPC_URL}
     logging:
       driver: 'json-file'
       options:
@@ -63,7 +57,6 @@ services:
         max-size: '10m'
         max-file: '3'
     ports:
-      - '${INDEXER_PORT}:${INDEXER_PORT}'
       - '${METRICS_PORT}:${METRICS_PORT}'
     depends_on:
       - postgres
@@ -72,5 +65,3 @@ services:
 
 volumes:
   db_data:
-  mongo_data:
-  etcd_data:

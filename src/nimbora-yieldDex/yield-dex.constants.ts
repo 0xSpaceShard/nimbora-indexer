@@ -73,5 +73,7 @@ export const ydAddresses = (network: string) => {
       return YDAddressesMainnet;
     case 'goerli':
       return YDAddressesGoerli;
+    default:
+      return YDAddressesGoerli;
   }
 };

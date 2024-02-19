@@ -41,5 +41,7 @@ export const liquityAddresses = (network: string) => {
       return LiquityAddressesMainnet;
     case 'goerli':
       return LiquityAddressesGoerli;
+    default:
+      return LiquityAddressesGoerli;
   }
 };

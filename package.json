@@ -58,7 +58,7 @@
     "prom-client": "^14.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "starknet": "^5.24.3",
+    "starknet": "^5.27.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {

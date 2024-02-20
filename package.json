@@ -56,7 +56,7 @@
     "nest-winston": "^1.9.1",
     "pg": "^8.11.3",
     "prom-client": "^14.2.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.1",
     "rxjs": "^7.2.0",
     "starknet": "^5.24.3",
     "winston": "^3.8.2"

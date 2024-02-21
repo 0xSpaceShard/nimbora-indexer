@@ -8,6 +8,6 @@ export class CronService {
 
   @Timeout(5000)
   async startLiquityIndexer() {
-    await this.checkpointService.start();
+    // await this.checkpointService.start();
   }
 }

@@ -20,12 +20,12 @@ dev-down:
 
 # Prod
 prod-build: prod-down
-	docker compose -f docker-compose-prod.yml build
+	docker compose -f docker-compose.yml build
 
 prod-up: prod-down
-	docker compose -f docker-compose-prod.yml up
+	docker compose -f docker-compose.yml up
 
 prod-down:
-	docker compose -f docker-compose-prod.yml down -v
+	docker compose -f docker-compose.yml down -v
 
 .PHONY: checkpoint-gen

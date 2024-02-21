@@ -8,6 +8,12 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ${DATABASE_NAME}
+    logging:
+      driver: 'json-file'
+      options:
+        tag: '{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}'
+        max-size: '50m'
+        max-file: '100'
 
   graphql-engine:
     image: hasura/graphql-engine:v2.30.0
@@ -21,6 +27,12 @@ services:
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: http-log, query-log
       HASURA_GRAPHQL_METADATA_DEFAULTS: '{"backend_configs":{"dataconnector":{"athena":{"uri":"http://data-connector-agent:8081/api/v1/athena"},"mariadb":{"uri":"http://data-connector-agent:8081/api/v1/mariadb"},"mysql8":{"uri":"http://data-connector-agent:8081/api/v1/mysql"},"oracle":{"uri":"http://data-connector-agent:8081/api/v1/oracle"},"snowflake":{"uri":"http://data-connector-agent:8081/api/v1/snowflake"}}}}'
+    logging:
+      driver: 'json-file'
+      options:
+        tag: '{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}'
+        max-size: '50m'
+        max-file: '100'
     depends_on:
       data-connector-agent:
         condition: service_healthy
@@ -41,6 +53,12 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
+    logging:
+      driver: 'json-file'
+      options:
+        tag: '{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}'
+        max-size: '50m'
+        max-file: '100'
 
   indexer:
     image: spaceshard/nimbora-yielddex-indexer:${BRANCH}
@@ -54,8 +72,8 @@ services:
       driver: 'json-file'
       options:
         tag: '{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}'
-        max-size: '10m'
-        max-file: '3'
+        max-size: '50m'
+        max-file: '100'
     ports:
       - '${METRICS_PORT}:${METRICS_PORT}'
     depends_on:

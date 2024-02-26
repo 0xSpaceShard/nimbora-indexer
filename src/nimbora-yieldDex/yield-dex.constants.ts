@@ -53,7 +53,7 @@ const YDAddressesMainnet = [
   {
     name: 'l2-pooling-manager',
     contract: '0x065a953f89a314a427e960114c4b9bb83e0e4195f801f12c25e4a323a76da0a9',
-    start: 531422,
+    start: 553937,
     events: YDEvents,
   },
 ];

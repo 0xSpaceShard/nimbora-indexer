@@ -5,7 +5,7 @@ import { ydAddresses } from './yield-dex.constants';
 import { CheckpointWriters } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import {
-  Transfer,
+  YieldDex_TM_Transfer,
   YieldDex_ClaimWithdrawal,
   YieldDex_Deposit,
   YieldDex_DepositLimitUpdated,
@@ -18,6 +18,8 @@ import {
   YieldDex_StrategyRegistered,
   YieldDex_WithdrawLimitUpdated,
   YieldDex_WithdrawalEpochUpdated,
+  YieldDex_TM_balanceOf,
+  YieldDex_TM_holders,
 } from 'types/generated/models';
 import { uint256 } from 'starknet';
 
@@ -162,16 +164,10 @@ export class YieldDexService implements Service {
         strategy.minWithdrawal = uint256.uint256ToBN({ high: data[11], low: data[10] }).toString();
         strategy.maxWithdrawal = uint256.uint256ToBN({ high: data[13], low: data[12] }).toString();
 
-        try {
-          await instance.executeTemplate('erc20', {
-            contract: strategy.token,
-            start: block.block_number,
-          });
-          console.error('1111111111');
-          console.error('1111111111');
-        } catch (error) {
-          console.error(error);
-        }
+        await instance.executeTemplate('erc20', {
+          contract: strategy.token,
+          start: block.block_number,
+        });
 
         await strategy.save();
       },
@@ -258,7 +254,7 @@ export class YieldDexService implements Service {
 
         const { data } = rawEvent as any;
         const id = `${tx.transaction_hash}_${eventIndex}`;
-        let deposit = await YieldDex_Deposit.loadEntity(id);
+        let deposit: YieldDex_Deposit = await YieldDex_Deposit.loadEntity(id);
         if (deposit) return;
 
         deposit = new YieldDex_Deposit(id);
@@ -268,6 +264,7 @@ export class YieldDexService implements Service {
         deposit.assets = uint256.uint256ToBN({ high: data[4], low: data[3] }).toString();
         deposit.shares = uint256.uint256ToBN({ high: data[6], low: data[5] }).toString();
         deposit.referal = data[7];
+        deposit.timestamp = block.timestamp;
 
         await deposit.save();
       },
@@ -287,6 +284,7 @@ export class YieldDexService implements Service {
         requestWithdrawal.shares = uint256.uint256ToBN({ high: data[5], low: data[4] }).toString();
         requestWithdrawal.withdrawalId = uint256.uint256ToBN({ high: data[7], low: data[6] }).toString();
         requestWithdrawal.epoch = uint256.uint256ToBN({ high: data[9], low: data[8] }).toString();
+        requestWithdrawal.timestamp = block.timestamp;
 
         await requestWithdrawal.save();
       },
@@ -305,6 +303,7 @@ export class YieldDexService implements Service {
         claimWithdrawal.caller = data[1];
         claimWithdrawal.claimId = uint256.uint256ToBN({ high: data[3], low: data[2] }).toString();
         claimWithdrawal.underlyingAmount = uint256.uint256ToBN({ high: data[5], low: data[4] }).toString();
+        claimWithdrawal.timestamp = block.timestamp;
 
         await claimWithdrawal.save();
       },
@@ -313,16 +312,68 @@ export class YieldDexService implements Service {
         if (!block || !rawEvent) return;
         const id = `${tx.transaction_hash}_${eventIndex}`;
 
-        let transfer = await Transfer.loadEntity(id);
+        let transfer = await YieldDex_TM_Transfer.loadEntity(id);
         if (transfer) return;
 
         const { data, keys, from_address } = rawEvent as any;
-        transfer = new Transfer(`${tx.transaction_hash}_${eventIndex}`);
+        transfer = new YieldDex_TM_Transfer(`${tx.transaction_hash}_${eventIndex}`);
         transfer.constractAddress = from_address;
-        transfer.from = keys[0];
-        transfer.to = keys[1];
+        transfer.to = keys[0];
+        transfer.from = keys[1];
         transfer.value = uint256.uint256ToBN({ high: data[1], low: data[0] }).toString();
+        transfer.timestamp = block.timestamp;
 
+        let fromBalanceInfo: YieldDex_TM_balanceOf = await YieldDex_TM_balanceOf.loadEntity(transfer.from);
+        let toBalanceInfo: YieldDex_TM_balanceOf = await YieldDex_TM_balanceOf.loadEntity(transfer.to);
+        let holdersInfo: YieldDex_TM_holders = await YieldDex_TM_holders.loadEntity(from_address);
+
+        let fromBalance = BigInt(0);
+        let toBalance = BigInt(0);
+        let holders = 0;
+
+        if (fromBalanceInfo) {
+          fromBalance = BigInt(fromBalanceInfo.balance);
+        }
+        if (toBalanceInfo) {
+          toBalance = BigInt(toBalanceInfo.balance);
+        }
+
+        const newFromBalance = fromBalance - BigInt(transfer.value);
+        const newtoBalance = toBalance + BigInt(transfer.value);
+
+        if (!fromBalanceInfo) {
+          fromBalanceInfo = new YieldDex_TM_balanceOf(transfer.from);
+        }
+        if (!toBalanceInfo) {
+          toBalanceInfo = new YieldDex_TM_balanceOf(transfer.to);
+        }
+        if (!holdersInfo) {
+          holdersInfo = new YieldDex_TM_holders(from_address);
+        }
+
+        if (holdersInfo) {
+          if (toBalance == BigInt(0) && transfer.to != '0x0') {
+            holders++;
+          }
+          if (newFromBalance == BigInt(0) && transfer.from != '0x0') {
+            holders--;
+          }
+        } else {
+          holders = 1;
+        }
+
+        fromBalanceInfo.balance = String(newFromBalance);
+        toBalanceInfo.balance = String(newtoBalance);
+        holdersInfo.holders = holders;
+
+        if (transfer.from != '0x0') {
+          await fromBalanceInfo.save();
+        }
+
+        if (transfer.to != '0x0') {
+          await toBalanceInfo.save();
+        }
+        await holdersInfo.save();
         await transfer.save();
       },
     };

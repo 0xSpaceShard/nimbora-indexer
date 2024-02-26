@@ -484,6 +484,7 @@ export class YieldDex_Deposit extends Model {
     this.initialSet('assets', '');
     this.initialSet('shares', '');
     this.initialSet('referal', '');
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_Deposit | null> {
@@ -556,6 +557,14 @@ export class YieldDex_Deposit extends Model {
   set referal(value: string) {
     this.set('referal', value);
   }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
 }
 
 export class YieldDex_RequestWithdrawal extends Model {
@@ -571,6 +580,7 @@ export class YieldDex_RequestWithdrawal extends Model {
     this.initialSet('shares', '');
     this.initialSet('withdrawalId', '');
     this.initialSet('epoch', '');
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_RequestWithdrawal | null> {
@@ -643,6 +653,14 @@ export class YieldDex_RequestWithdrawal extends Model {
   set epoch(value: string) {
     this.set('epoch', value);
   }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
 }
 
 export class YieldDex_ClaimWithdrawal extends Model {
@@ -656,6 +674,7 @@ export class YieldDex_ClaimWithdrawal extends Model {
     this.initialSet('caller', '');
     this.initialSet('claimId', '');
     this.initialSet('underlyingAmount', '');
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_ClaimWithdrawal | null> {
@@ -712,6 +731,14 @@ export class YieldDex_ClaimWithdrawal extends Model {
   set underlyingAmount(value: string) {
     this.set('underlyingAmount', value);
   }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
 }
 
 export class YieldDex_BridgeInteractionInfo extends Model {
@@ -723,6 +750,7 @@ export class YieldDex_BridgeInteractionInfo extends Model {
     this.initialSet('id', id);
     this.initialSet('l1Bridge', '');
     this.initialSet('amount', '');
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_BridgeInteractionInfo | null> {
@@ -763,6 +791,14 @@ export class YieldDex_BridgeInteractionInfo extends Model {
   set amount(value: string) {
     this.set('amount', value);
   }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
 }
 
 export class YieldDex_StrategyL2Report extends Model {
@@ -776,6 +812,7 @@ export class YieldDex_StrategyL2Report extends Model {
     this.initialSet('actionId', '');
     this.initialSet('amount', '');
     this.initialSet('newSharePrice', '');
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_StrategyL2Report | null> {
@@ -831,6 +868,14 @@ export class YieldDex_StrategyL2Report extends Model {
 
   set newSharePrice(value: string) {
     this.set('newSharePrice', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
   }
 }
 
@@ -1026,24 +1071,25 @@ export class Liquity_Batch extends Model {
   }
 }
 
-export class Transfer extends Model {
-  static tableName = 'transfers';
+export class YieldDex_TM_Transfer extends Model {
+  static tableName = 'yielddex_tm_transfers';
 
   constructor(id: string) {
-    super(Transfer.tableName);
+    super(YieldDex_TM_Transfer.tableName);
 
     this.initialSet('id', id);
     this.initialSet('constractAddress', '');
     this.initialSet('from', '');
     this.initialSet('to', '');
     this.initialSet('value', '');
+    this.initialSet('timestamp', 0);
   }
 
-  static async loadEntity(id: string): Promise<Transfer | null> {
-    const entity = await super._loadEntity(Transfer.tableName, id);
+  static async loadEntity(id: string): Promise<YieldDex_TM_Transfer | null> {
+    const entity = await super._loadEntity(YieldDex_TM_Transfer.tableName, id);
     if (!entity) return null;
 
-    const model = new Transfer(id);
+    const model = new YieldDex_TM_Transfer(id);
     model.setExists();
 
     for (const key in entity) {
@@ -1092,5 +1138,97 @@ export class Transfer extends Model {
 
   set value(value: string) {
     this.set('value', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
+}
+
+export class YieldDex_TM_balanceOf extends Model {
+  static tableName = 'yielddex_tm_balanceoves';
+
+  constructor(id: string) {
+    super(YieldDex_TM_balanceOf.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('balance', '');
+  }
+
+  static async loadEntity(id: string): Promise<YieldDex_TM_balanceOf | null> {
+    const entity = await super._loadEntity(YieldDex_TM_balanceOf.tableName, id);
+    if (!entity) return null;
+
+    const model = new YieldDex_TM_balanceOf(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get balance(): string {
+    return this.get('balance');
+  }
+
+  set balance(value: string) {
+    this.set('balance', value);
+  }
+}
+
+export class YieldDex_TM_holders extends Model {
+  static tableName = 'yielddex_tm_holders';
+
+  constructor(id: string) {
+    super(YieldDex_TM_holders.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('holders', 0);
+  }
+
+  static async loadEntity(id: string): Promise<YieldDex_TM_holders | null> {
+    const entity = await super._loadEntity(YieldDex_TM_holders.tableName, id);
+    if (!entity) return null;
+
+    const model = new YieldDex_TM_holders(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get holders(): number {
+    return this.get('holders');
+  }
+
+  set holders(value: number) {
+    this.set('holders', value);
   }
 }

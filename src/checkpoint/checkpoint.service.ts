@@ -6,6 +6,7 @@ import { ConfigService } from 'common/config';
 import { Service } from 'types/service';
 import { LiquityService } from 'nimbora-liquity/liquity.service';
 import { YieldDexService } from 'nimbora-yieldDex/yield-dex.service';
+import { serviceStatusPerNetwork } from 'config/checkpoint';
 
 @Injectable()
 export class CheckpointService {
@@ -24,8 +25,19 @@ export class CheckpointService {
     let writers = {};
     let templates = {};
     const sources = [];
+    const services = [];
 
-    const services = [this.liquityService, this.ydService];
+    if (serviceStatusPerNetwork[this.configService.get('NETWORK')].liquity) {
+      services.push(this.liquityService);
+    }
+
+    if (serviceStatusPerNetwork[this.configService.get('NETWORK')].yieldDex) {
+      services.push(this.ydService);
+    }
+
+    if (services.length === 0) {
+      return;
+    }
 
     for (let i = 0; i < services.length; i++) {
       const service: Service = services[i];

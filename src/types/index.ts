@@ -18,3 +18,14 @@ export interface CheckpointWriter {
   pg: PgPool;
   instance: Checkpoint;
 }
+
+export interface ServiceStatus {
+  liquity: boolean;
+  yieldDex: boolean;
+}
+
+export type Network = 'mainnet' | 'sepolia';
+
+export interface ServiceStatusPerNetwork {
+  [network: string]: ServiceStatus;
+}

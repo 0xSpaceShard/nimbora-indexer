@@ -58,11 +58,11 @@ const YDAddressesMainnet = [
   },
 ];
 
-const YDAddressesGoerli = [
+const YDAddressesSepolia = [
   {
     name: 'l2-pooling-manager',
-    contract: '0x0504d072f8d10a19be9248dbbc034a0bb6a087426a73718307510e3eb81cbd00',
-    start: 934841,
+    contract: '0x384ec344325e87627749e26d1c7c4eeaa086e9b61af2cdffd8f8c7ad83656d0',
+    start: 37625,
     events: YDEvents,
   },
 ];
@@ -71,9 +71,7 @@ export const ydAddresses = (network: string) => {
   switch (network) {
     case 'mainnet':
       return YDAddressesMainnet;
-    case 'goerli':
-      return YDAddressesGoerli;
-    default:
-      return YDAddressesGoerli;
+    case 'sepolia':
+      return YDAddressesSepolia;
   }
 };

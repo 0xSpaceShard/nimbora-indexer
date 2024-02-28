@@ -5,7 +5,7 @@ export const LiquityEvents = [
   },
 ];
 
-const LiquityAddressesMainnet = [
+const liquityAddressesMainnet = [
   {
     name: 'trove_275',
     contract: '0x03580a65260563b5511ddf2eafb83d6b309dce7fc25271df8c040a437f09a399',
@@ -20,17 +20,17 @@ const LiquityAddressesMainnet = [
   },
 ];
 
-const LiquityAddressesGoerli = [
+const liquityAddressesSepolia = [
   {
     name: 'trove_400',
-    contract: '0x043acb79a8436b35d98a9231be51ee69e7aaea6e0feb3eaf186ef0d3ba4d8c7f',
-    start: 888100,
+    contract: '',
+    start: 0,
     events: LiquityEvents,
   },
   {
     name: 'trove_275',
-    contract: '0x03b3e6f26fa0b0e932a356d5394d3bc43b098962bf7982f4204350c561aada2f',
-    start: 882377,
+    contract: '',
+    start: 0,
     events: LiquityEvents,
   },
 ];
@@ -38,10 +38,8 @@ const LiquityAddressesGoerli = [
 export const liquityAddresses = (network: string) => {
   switch (network) {
     case 'mainnet':
-      return LiquityAddressesMainnet;
-    case 'goerli':
-      return LiquityAddressesGoerli;
-    default:
-      return LiquityAddressesGoerli;
+      return liquityAddressesMainnet;
+    case 'sepolia':
+      return liquityAddressesSepolia;
   }
 };

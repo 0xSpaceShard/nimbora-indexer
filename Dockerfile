@@ -10,8 +10,6 @@ RUN yarn install --frozen-lockfile --non-interactive && yarn cache clean
 
 RUN yarn run build
 
-RUN ls
-
 ################
 ## PRODUCTION ##
 ################
@@ -23,6 +21,8 @@ WORKDIR /app
 COPY --from=development /app/dist ./dist
 COPY --from=development /app/node_modules ./node_modules
 COPY ./package.json /app/
+RUN mkdir -p /app/src/schema/checkpoint
+COPY ./src/schema/checkpoint/schema.gql /app/src/schema/checkpoint/schema.gql
 
 USER node
 

@@ -10,3 +10,4 @@ README.md
 generated
 docker-copmose-dev.yml
 docker-copmose-prod.yml
+Dockerfile

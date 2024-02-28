@@ -34,5 +34,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Docker push image
-        run: docker tag ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }} ${{ env.DOCKER_IMAGE }}:${{ steps.extract_branch.outputs.branch }}
+      - name: Docker Push image
+        run: |
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            docker tag ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }} ${{ env.DOCKER_IMAGE }}:latest
+            docker push ${{ env.DOCKER_IMAGE }}:latest
+          fi
+          docker push ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }}

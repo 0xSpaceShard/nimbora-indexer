@@ -18,7 +18,7 @@ services:
   graphql-engine:
     image: hasura/graphql-engine:v2.30.0
     ports:
-      - '8080:8080'
+      - ${GRAPHQL_PORT}:${GRAPHQL_PORT}
     restart: always
     environment:
       HASURA_GRAPHQL_METADATA_DATABASE_URL: ${DATABASE_URL}/${DATABASE_NAME}
@@ -68,6 +68,7 @@ services:
       NETWORK: ${NETWORK}
       DATABASE_URL: ${DATABASE_URL}
       L2_ALCHEMY_RPC_URL: ${L2_ALCHEMY_RPC_URL}
+      INDEXER_PORT: ${INDEXER_PORT}
     logging:
       driver: 'json-file'
       options:

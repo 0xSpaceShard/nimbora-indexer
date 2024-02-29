@@ -41,3 +41,45 @@ jobs:
             docker push ${{ env.DOCKER_IMAGE }}:latest
           fi
           docker push ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref_name == ${{ github.ref_name }}
+    steps:
+      - name: Deploy the service to "${{ github.ref_name }}"
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets[format('SSH_HOST_{0}', github.ref_name)] }}
+          username: ${{ secrets[format('SSH_USER_{0}', github.ref_name)] }}
+          key: ${{ secrets[format('SSH_PRIVATE_KEY_{0}', github.ref_name)] }}
+          port: ${{ secrets[format('SSH_PORT_{0}', github.ref_name)] }}
+          script: |
+            SSH_NESTED_HOST="${{ secrets[format('SSH_NESTED_HOST_{0}', github.ref_name)] }}"
+            ssh $SSH_NESTED_HOST -T <<EOA
+              echo "### Deployment started"
+              if [ -d "${{ secrets.BASE_PATH }}/${{ github.repository }}-${{ github.ref_name }}" ]; then
+                  cd ${{ secrets.BASE_PATH }}/${{ github.repository }}-${{ github.ref_name }} && \
+                  echo "### Generate ENV file"
+                  > .env
+
+                  echo BRANCH=${{ github.ref_name }} >> .env
+                  echo NETWORK=${{ secrets[format('NETWORK_{0}', github.ref_name)] }} >> .env
+                  echo L2_ALCHEMY_RPC_URL=${{ secrets[format('L2_ALCHEMY_RPC_URL_{0}', github.ref_name)] }} >> .env
+                  echo INDEXER_PORT=${{ secrets[format('INDEXER_PORT_{0}', github.ref_name)] }} >> .env
+                  echo METRICS_PORT=${{ vars[format('METRICS_PORT_{0}', github.ref_name)] }} >> .env
+                  echo GRAPHQL_PORT=${{ vars[format('GRAPHQL_PORT_{0}', github.ref_name)] }} >> .env
+                  echo DATABASE_URL=${{ secrets[format('DATABASE_URL_{0}', github.ref_name)] }} >> .env
+                  echo DATABASE_NAME=${{ secrets[format('DATABASE_NAME_{0}', github.ref_name)] }} >> .env
+                  echo NODE_ENV=${{ vars[format('NODE_ENV_{0}', github.ref_name)] }} >> .env
+                  echo DATA_CONNECTOR_AGENT_PORT=${{ vars[format('DATA_CONNECTOR_AGENT_PORT_{0}', github.ref_name)] }} >> .env
+                  
+                  git fetch && \
+                  git checkout ${{ github.ref_name }} && \
+                  git reset --hard origin/${{ github.ref_name }} && \
+                  docker-compose -f docker-compose.yml pull ${{ vars[format('SERVICES_{0}', github.ref_name)] }} && \
+                  docker-compose -f docker-compose.yml up -d --build  ${{ vars[format('SERVICES_{0}', github.ref_name)] }}
+              else
+                  echo "Directory does not exist, aborting script."
+                  exit 1
+              fi
+            EOA

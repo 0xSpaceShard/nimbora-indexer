@@ -2,6 +2,7 @@ version: '3.6'
 services:
   postgres:
     image: postgres:15
+    container_name: nimbora-indexer-postgres_${BRANCH}
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
@@ -17,6 +18,7 @@ services:
 
   graphql-engine:
     image: hasura/graphql-engine:v2.30.0
+    container_name: nimbora-indexer-graphql-engine_${BRANCH}
     ports:
       - ${GRAPHQL_PORT}:${GRAPHQL_PORT}
     restart: always
@@ -39,9 +41,8 @@ services:
 
   data-connector-agent:
     image: hasura/graphql-data-connector:v2.30.0
+    container_name: nimbora-indexer-data-connector-agent_${BRANCH}
     restart: always
-    ports:
-      - ${DATA_CONNECTOR_AGENT_PORT}:${DATA_CONNECTOR_AGENT_PORT}
     environment:
       QUARKUS_LOG_LEVEL: ERROR # FATAL, ERROR, WARN, INFO, DEBUG, TRACE
       ## https://quarkus.io/guides/opentelemetry#configuration-reference
@@ -62,7 +63,7 @@ services:
 
   indexer:
     image: spaceshard/nimbora-yielddex-indexer:${BRANCH}
-    container_name: multi-indexer
+    container_name: nimbora-indexer_${BRANCH}
     restart: always
     environment:
       NETWORK: ${NETWORK}

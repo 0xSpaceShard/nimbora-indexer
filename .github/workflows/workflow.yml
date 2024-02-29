@@ -71,13 +71,12 @@ jobs:
                   echo DATABASE_URL=${{ secrets[format('DATABASE_URL_{0}', github.ref_name)] }} >> .env
                   echo DATABASE_NAME=${{ secrets[format('DATABASE_NAME_{0}', github.ref_name)] }} >> .env
                   echo NODE_ENV=${{ vars[format('NODE_ENV_{0}', github.ref_name)] }} >> .env
-                  echo DATA_CONNECTOR_AGENT_PORT=${{ vars[format('DATA_CONNECTOR_AGENT_PORT_{0}', github.ref_name)] }} >> .env
                   
                   git fetch && \
                   git checkout ${{ github.ref_name }} && \
                   git reset --hard origin/${{ github.ref_name }} && \
-                  docker-compose -f docker-compose.yml pull ${{ vars[format('SERVICES_{0}', github.ref_name)] }} && \
-                  docker-compose -f docker-compose.yml up -d --build  ${{ vars[format('SERVICES_{0}', github.ref_name)] }}
+                  docker-compose -f docker-compose.yml pull && \
+                  docker-compose -f docker-compose.yml up -d --build
               else
                   echo "Directory does not exist, aborting script."
                   exit 1

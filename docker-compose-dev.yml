@@ -51,6 +51,7 @@ services:
       NETWORK: ${NETWORK}
       DATABASE_URL: ${DATABASE_URL}
       L2_ALCHEMY_RPC_URL: ${L2_ALCHEMY_RPC_URL}
+      INDEXER_PORT: ${INDEXER_PORT}
     ports:
       - '${INDEXER_PORT}:${INDEXER_PORT}'
       - '${METRICS_PORT}:${METRICS_PORT}'

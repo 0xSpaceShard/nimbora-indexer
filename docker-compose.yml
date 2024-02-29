@@ -68,6 +68,7 @@ services:
     environment:
       NETWORK: ${NETWORK}
       DATABASE_URL: ${DATABASE_URL}
+      DATABASE_NAME: ${DATABASE_NAME}
       L2_ALCHEMY_RPC_URL: ${L2_ALCHEMY_RPC_URL}
       INDEXER_PORT: ${INDEXER_PORT}
     logging:

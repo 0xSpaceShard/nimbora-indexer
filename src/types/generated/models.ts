@@ -91,15 +91,12 @@ export class YieldDex_StrategyRegistered extends Model {
     super(YieldDex_StrategyRegistered.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('tokenManager', '');
-    this.initialSet('token', '');
     this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
+    this.initialSet('token', '');
     this.initialSet('underlying', '');
     this.initialSet('performanceFees', '');
-    this.initialSet('minDeposit', '');
-    this.initialSet('maxDeposit', '');
-    this.initialSet('minWithdrawal', '');
-    this.initialSet('maxWithdrawal', '');
+    this.initialSet('tvlLimit', '');
   }
 
   static async loadEntity(id: string): Promise<YieldDex_StrategyRegistered | null> {
@@ -125,12 +122,20 @@ export class YieldDex_StrategyRegistered extends Model {
     this.set('id', value);
   }
 
-  get tokenManager(): string {
-    return this.get('tokenManager');
+  get l1Strategy(): string {
+    return this.get('l1Strategy');
   }
 
-  set tokenManager(value: string) {
-    this.set('tokenManager', value);
+  set l1Strategy(value: string) {
+    this.set('l1Strategy', value);
+  }
+
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
   }
 
   get token(): string {
@@ -139,14 +144,6 @@ export class YieldDex_StrategyRegistered extends Model {
 
   set token(value: string) {
     this.set('token', value);
-  }
-
-  get l1Strategy(): string {
-    return this.get('l1Strategy');
-  }
-
-  set l1Strategy(value: string) {
-    this.set('l1Strategy', value);
   }
 
   get underlying(): string {
@@ -165,156 +162,12 @@ export class YieldDex_StrategyRegistered extends Model {
     this.set('performanceFees', value);
   }
 
-  get minDeposit(): string {
-    return this.get('minDeposit');
+  get tvlLimit(): string {
+    return this.get('tvlLimit');
   }
 
-  set minDeposit(value: string) {
-    this.set('minDeposit', value);
-  }
-
-  get maxDeposit(): string {
-    return this.get('maxDeposit');
-  }
-
-  set maxDeposit(value: string) {
-    this.set('maxDeposit', value);
-  }
-
-  get minWithdrawal(): string {
-    return this.get('minWithdrawal');
-  }
-
-  set minWithdrawal(value: string) {
-    this.set('minWithdrawal', value);
-  }
-
-  get maxWithdrawal(): string {
-    return this.get('maxWithdrawal');
-  }
-
-  set maxWithdrawal(value: string) {
-    this.set('maxWithdrawal', value);
-  }
-}
-
-export class YieldDex_DepositLimitUpdated extends Model {
-  static tableName = 'yielddex_depositlimitupdateds';
-
-  constructor(id: string) {
-    super(YieldDex_DepositLimitUpdated.tableName);
-
-    this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newMinDepositLimit', '');
-    this.initialSet('newMaxDepositLimit', '');
-  }
-
-  static async loadEntity(id: string): Promise<YieldDex_DepositLimitUpdated | null> {
-    const entity = await super._loadEntity(YieldDex_DepositLimitUpdated.tableName, id);
-    if (!entity) return null;
-
-    const model = new YieldDex_DepositLimitUpdated(id);
-    model.setExists();
-
-    for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
-      model.set(key, value);
-    }
-
-    return model;
-  }
-
-  get id(): string {
-    return this.get('id');
-  }
-
-  set id(value: string) {
-    this.set('id', value);
-  }
-
-  get l1Strategy(): string {
-    return this.get('l1Strategy');
-  }
-
-  set l1Strategy(value: string) {
-    this.set('l1Strategy', value);
-  }
-
-  get newMinDepositLimit(): string {
-    return this.get('newMinDepositLimit');
-  }
-
-  set newMinDepositLimit(value: string) {
-    this.set('newMinDepositLimit', value);
-  }
-
-  get newMaxDepositLimit(): string {
-    return this.get('newMaxDepositLimit');
-  }
-
-  set newMaxDepositLimit(value: string) {
-    this.set('newMaxDepositLimit', value);
-  }
-}
-
-export class YieldDex_WithdrawLimitUpdated extends Model {
-  static tableName = 'yielddex_withdrawlimitupdateds';
-
-  constructor(id: string) {
-    super(YieldDex_WithdrawLimitUpdated.tableName);
-
-    this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newMinWithdrawLimit', '');
-    this.initialSet('newMaxWithdrawLimit', '');
-  }
-
-  static async loadEntity(id: string): Promise<YieldDex_WithdrawLimitUpdated | null> {
-    const entity = await super._loadEntity(YieldDex_WithdrawLimitUpdated.tableName, id);
-    if (!entity) return null;
-
-    const model = new YieldDex_WithdrawLimitUpdated(id);
-    model.setExists();
-
-    for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
-      model.set(key, value);
-    }
-
-    return model;
-  }
-
-  get id(): string {
-    return this.get('id');
-  }
-
-  set id(value: string) {
-    this.set('id', value);
-  }
-
-  get l1Strategy(): string {
-    return this.get('l1Strategy');
-  }
-
-  set l1Strategy(value: string) {
-    this.set('l1Strategy', value);
-  }
-
-  get newMinWithdrawLimit(): string {
-    return this.get('newMinWithdrawLimit');
-  }
-
-  set newMinWithdrawLimit(value: string) {
-    this.set('newMinWithdrawLimit', value);
-  }
-
-  get newMaxWithdrawLimit(): string {
-    return this.get('newMaxWithdrawLimit');
-  }
-
-  set newMaxWithdrawLimit(value: string) {
-    this.set('newMaxWithdrawLimit', value);
+  set tvlLimit(value: string) {
+    this.set('tvlLimit', value);
   }
 }
 
@@ -326,6 +179,7 @@ export class YieldDex_PerformanceFeeUpdated extends Model {
 
     this.initialSet('id', id);
     this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
     this.initialSet('newPerfomanceFees', '');
   }
 
@@ -360,6 +214,14 @@ export class YieldDex_PerformanceFeeUpdated extends Model {
     this.set('l1Strategy', value);
   }
 
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
+  }
+
   get newPerfomanceFees(): string {
     return this.get('newPerfomanceFees');
   }
@@ -377,6 +239,7 @@ export class YieldDex_WithdrawalEpochUpdated extends Model {
 
     this.initialSet('id', id);
     this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
     this.initialSet('newWithdrawalEpochDelay', '');
   }
 
@@ -409,6 +272,14 @@ export class YieldDex_WithdrawalEpochUpdated extends Model {
 
   set l1Strategy(value: string) {
     this.set('l1Strategy', value);
+  }
+
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
   }
 
   get newWithdrawalEpochDelay(): string {
@@ -479,6 +350,7 @@ export class YieldDex_Deposit extends Model {
 
     this.initialSet('id', id);
     this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
     this.initialSet('caller', '');
     this.initialSet('receiver', '');
     this.initialSet('assets', '');
@@ -516,6 +388,14 @@ export class YieldDex_Deposit extends Model {
 
   set l1Strategy(value: string) {
     this.set('l1Strategy', value);
+  }
+
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
   }
 
   get caller(): string {
@@ -575,11 +455,12 @@ export class YieldDex_RequestWithdrawal extends Model {
 
     this.initialSet('id', id);
     this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
     this.initialSet('caller', '');
     this.initialSet('assets', '');
     this.initialSet('shares', '');
     this.initialSet('withdrawalId', '');
-    this.initialSet('epoch', '');
+    this.initialSet('epoch', 0);
     this.initialSet('timestamp', 0);
   }
 
@@ -614,6 +495,14 @@ export class YieldDex_RequestWithdrawal extends Model {
     this.set('l1Strategy', value);
   }
 
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
+  }
+
   get caller(): string {
     return this.get('caller');
   }
@@ -646,11 +535,11 @@ export class YieldDex_RequestWithdrawal extends Model {
     this.set('withdrawalId', value);
   }
 
-  get epoch(): string {
+  get epoch(): number {
     return this.get('epoch');
   }
 
-  set epoch(value: string) {
+  set epoch(value: number) {
     this.set('epoch', value);
   }
 
@@ -671,6 +560,7 @@ export class YieldDex_ClaimWithdrawal extends Model {
 
     this.initialSet('id', id);
     this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
     this.initialSet('caller', '');
     this.initialSet('claimId', '');
     this.initialSet('underlyingAmount', '');
@@ -706,6 +596,14 @@ export class YieldDex_ClaimWithdrawal extends Model {
 
   set l1Strategy(value: string) {
     this.set('l1Strategy', value);
+  }
+
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
   }
 
   get caller(): string {
@@ -798,6 +696,66 @@ export class YieldDex_BridgeInteractionInfo extends Model {
 
   set timestamp(value: number) {
     this.set('timestamp', value);
+  }
+}
+
+export class YieldDex_TvlLimitUpdated extends Model {
+  static tableName = 'yielddex_tvllimitupdateds';
+
+  constructor(id: string) {
+    super(YieldDex_TvlLimitUpdated.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('l1Strategy', '');
+    this.initialSet('l2Strategy', '');
+    this.initialSet('newTvlLimit', '');
+  }
+
+  static async loadEntity(id: string): Promise<YieldDex_TvlLimitUpdated | null> {
+    const entity = await super._loadEntity(YieldDex_TvlLimitUpdated.tableName, id);
+    if (!entity) return null;
+
+    const model = new YieldDex_TvlLimitUpdated(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get l1Strategy(): string {
+    return this.get('l1Strategy');
+  }
+
+  set l1Strategy(value: string) {
+    this.set('l1Strategy', value);
+  }
+
+  get l2Strategy(): string {
+    return this.get('l2Strategy');
+  }
+
+  set l2Strategy(value: string) {
+    this.set('l2Strategy', value);
+  }
+
+  get newTvlLimit(): string {
+    return this.get('newTvlLimit');
+  }
+
+  set newTvlLimit(value: string) {
+    this.set('newTvlLimit', value);
   }
 }
 
@@ -986,8 +944,8 @@ export class Liquity_Batch extends Model {
     this.initialSet('address', '');
     this.initialSet('block', 0);
     this.initialSet('nonce', 0);
-    this.initialSet('amountA', '');
-    this.initialSet('amountB', '');
+    this.initialSet('eth', '');
+    this.initialSet('lusd', '');
     this.initialSet('timestamp', 0);
   }
 
@@ -1046,20 +1004,20 @@ export class Liquity_Batch extends Model {
     this.set('nonce', value);
   }
 
-  get amountA(): string {
-    return this.get('amountA');
+  get eth(): string {
+    return this.get('eth');
   }
 
-  set amountA(value: string) {
-    this.set('amountA', value);
+  set eth(value: string) {
+    this.set('eth', value);
   }
 
-  get amountB(): string {
-    return this.get('amountB');
+  get lusd(): string {
+    return this.get('lusd');
   }
 
-  set amountB(value: string) {
-    this.set('amountB', value);
+  set lusd(value: string) {
+    this.set('lusd', value);
   }
 
   get timestamp(): number {
@@ -1078,7 +1036,7 @@ export class YieldDex_TM_Transfer extends Model {
     super(YieldDex_TM_Transfer.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('constractAddress', '');
+    this.initialSet('contractAddress', '');
     this.initialSet('from', '');
     this.initialSet('to', '');
     this.initialSet('value', '');
@@ -1108,12 +1066,12 @@ export class YieldDex_TM_Transfer extends Model {
     this.set('id', value);
   }
 
-  get constractAddress(): string {
-    return this.get('constractAddress');
+  get contractAddress(): string {
+    return this.get('contractAddress');
   }
 
-  set constractAddress(value: string) {
-    this.set('constractAddress', value);
+  set contractAddress(value: string) {
+    this.set('contractAddress', value);
   }
 
   get from(): string {

@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from 'common/config';
 import { Service, Source, Template } from 'types/service';
-import { ydAddresses } from './yield-dex.constants';
+import { UpgradeEventsBlock, ZeroAddress, ydAddresses } from './yield-dex.constants';
 import { CheckpointWriters } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import {
   YieldDex_TM_Transfer,
   YieldDex_ClaimWithdrawal,
   YieldDex_Deposit,
-  YieldDex_DepositLimitUpdated,
   YieldDex_DustLimitUpdated,
   YieldDex_FeeRecipient,
   YieldDex_L1ReportHash,
@@ -16,7 +15,6 @@ import {
   YieldDex_PerformanceFeeUpdated,
   YieldDex_RequestWithdrawal,
   YieldDex_StrategyRegistered,
-  YieldDex_WithdrawLimitUpdated,
   YieldDex_WithdrawalEpochUpdated,
   YieldDex_TM_balanceOf,
   YieldDex_TM_holders,
@@ -154,15 +152,14 @@ export class YieldDexService implements Service {
         if (strategy) return;
         strategy = new YieldDex_StrategyRegistered(id);
 
-        strategy.tokenManager = data[0];
+        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+
+        strategy.l2Strategy = data[0];
         strategy.token = data[1];
         strategy.l1Strategy = data[2];
         strategy.underlying = data[3];
         strategy.performanceFees = uint256.uint256ToBN({ high: data[5], low: data[4] }).toString();
-        strategy.minDeposit = uint256.uint256ToBN({ high: data[7], low: data[6] }).toString();
-        strategy.maxDeposit = uint256.uint256ToBN({ high: data[9], low: data[8] }).toString();
-        strategy.minWithdrawal = uint256.uint256ToBN({ high: data[11], low: data[10] }).toString();
-        strategy.maxWithdrawal = uint256.uint256ToBN({ high: data[13], low: data[12] }).toString();
+        strategy.tvlLimit = afterUpgrade ? '0' : uint256.uint256ToBN({ high: data[7], low: data[6] }).toString();
 
         await instance.executeTemplate('erc20', {
           contract: strategy.token,
@@ -170,39 +167,6 @@ export class YieldDexService implements Service {
         });
 
         await strategy.save();
-      },
-
-      yd_HandleDepositLimitUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
-        if (!block || !rawEvent) return;
-
-        const { data } = rawEvent as any;
-        const id = `${tx.transaction_hash}_${eventIndex}`;
-        let depositLimit = await YieldDex_DepositLimitUpdated.loadEntity(id);
-        if (depositLimit) return;
-
-        depositLimit = new YieldDex_DepositLimitUpdated(`${tx.transaction_hash}_${eventIndex}`);
-        depositLimit.l1Strategy = data[0];
-        depositLimit.newMinDepositLimit = uint256.uint256ToBN({ high: data[2], low: data[1] }).toString();
-        depositLimit.newMaxDepositLimit = uint256.uint256ToBN({ high: data[4], low: data[3] }).toString();
-
-        await depositLimit.save();
-      },
-
-      yd_HandleWithdrawLimitUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
-        if (!block || !rawEvent) return;
-
-        const { data } = rawEvent as any;
-        const id = `${tx.transaction_hash}_${eventIndex}`;
-        let withdrawLimit = await YieldDex_WithdrawLimitUpdated.loadEntity(id);
-        if (withdrawLimit) return;
-
-        withdrawLimit = new YieldDex_WithdrawLimitUpdated(id);
-
-        withdrawLimit.l1Strategy = data[0];
-        withdrawLimit.newMinWithdrawLimit = uint256.uint256ToBN({ high: data[2], low: data[1] }).toString();
-        withdrawLimit.newMaxWithdrawLimit = uint256.uint256ToBN({ high: data[4], low: data[3] }).toString();
-
-        await withdrawLimit.save();
       },
 
       yd_HandlePerformanceFeeUpdated: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
@@ -214,8 +178,15 @@ export class YieldDexService implements Service {
         if (performance) return;
         performance = new YieldDex_PerformanceFeeUpdated(id);
 
+        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+
         performance.l1Strategy = data[0];
-        performance.newPerfomanceFees = uint256.uint256ToBN({ high: data[2], low: data[1] }).toString();
+        performance.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
+        let shift = 0;
+        if (afterUpgrade) {
+          shift++;
+        }
+        performance.newPerfomanceFees = uint256.uint256ToBN({ high: data[2 + shift], low: data[1 + shift] }).toString();
 
         await performance.save();
       },
@@ -227,9 +198,17 @@ export class YieldDexService implements Service {
         const id = `${tx.transaction_hash}_${eventIndex}`;
         let withdrawal = await YieldDex_WithdrawalEpochUpdated.loadEntity(id);
         if (withdrawal) return;
+        const afterUpgrade = UpgradeEventsBlock < block.block_number;
         withdrawal = new YieldDex_WithdrawalEpochUpdated(id);
         withdrawal.l1Strategy = data[0];
-        withdrawal.newWithdrawalEpochDelay = uint256.uint256ToBN({ high: data[2], low: data[1] }).toString();
+        withdrawal.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
+        let shift = 0;
+        if (afterUpgrade) {
+          shift++;
+        }
+        withdrawal.newWithdrawalEpochDelay = uint256
+          .uint256ToBN({ high: data[2 + shift], low: data[1 + shift] })
+          .toString();
 
         await withdrawal.save();
       },
@@ -256,20 +235,26 @@ export class YieldDexService implements Service {
         const id = `${tx.transaction_hash}_${eventIndex}`;
         let deposit: YieldDex_Deposit = await YieldDex_Deposit.loadEntity(id);
         if (deposit) return;
+        const afterUpgrade = UpgradeEventsBlock < block.block_number;
 
         deposit = new YieldDex_Deposit(id);
         deposit.l1Strategy = data[0];
-        deposit.caller = data[1];
-        deposit.receiver = data[2];
-        deposit.assets = uint256.uint256ToBN({ high: data[4], low: data[3] }).toString();
-        deposit.shares = uint256.uint256ToBN({ high: data[6], low: data[5] }).toString();
-        deposit.referal = data[7];
+        deposit.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
+        let shift = 0;
+        if (afterUpgrade) {
+          shift++;
+        }
+        deposit.caller = data[1 + shift];
+        deposit.receiver = data[2 + shift];
+        deposit.assets = uint256.uint256ToBN({ high: data[4 + shift], low: data[3 + shift] }).toString();
+        deposit.shares = uint256.uint256ToBN({ high: data[6 + shift], low: data[5 + shift] }).toString();
+        deposit.referal = data[7 + shift];
         deposit.timestamp = block.timestamp;
 
         await deposit.save();
       },
 
-      yd_HandleRequestWithdrawal: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
+      yd_HandleRequestWithdrawal: async ({ tx, block, rawEvent, eventIndex, source }: CheckpointWriter) => {
         if (!block || !rawEvent) return;
 
         const { data } = rawEvent as any;
@@ -277,13 +262,24 @@ export class YieldDexService implements Service {
         let requestWithdrawal = await YieldDex_RequestWithdrawal.loadEntity(id);
         if (requestWithdrawal) return;
 
+        const afterUpgrade = UpgradeEventsBlock < block.block_number;
         requestWithdrawal = new YieldDex_RequestWithdrawal(id);
         requestWithdrawal.l1Strategy = data[0];
-        requestWithdrawal.caller = data[1];
-        requestWithdrawal.assets = uint256.uint256ToBN({ high: data[3], low: data[2] }).toString();
-        requestWithdrawal.shares = uint256.uint256ToBN({ high: data[5], low: data[4] }).toString();
-        requestWithdrawal.withdrawalId = uint256.uint256ToBN({ high: data[7], low: data[6] }).toString();
-        requestWithdrawal.epoch = uint256.uint256ToBN({ high: data[9], low: data[8] }).toString();
+        requestWithdrawal.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
+        let shift = 0;
+        if (afterUpgrade) {
+          shift++;
+        }
+
+        requestWithdrawal.caller = data[1 + shift];
+        requestWithdrawal.assets = uint256.uint256ToBN({ high: data[3 + shift], low: data[2 + shift] }).toString();
+        requestWithdrawal.shares = uint256.uint256ToBN({ high: data[5 + shift], low: data[4 + shift] }).toString();
+        requestWithdrawal.withdrawalId = uint256
+          .uint256ToBN({ high: data[7 + shift], low: data[6 + shift] })
+          .toString();
+        requestWithdrawal.epoch = Number(
+          uint256.uint256ToBN({ high: data[9 + shift], low: data[8 + shift] }).toString(),
+        );
         requestWithdrawal.timestamp = block.timestamp;
 
         await requestWithdrawal.save();
@@ -298,11 +294,19 @@ export class YieldDexService implements Service {
         let claimWithdrawal = await YieldDex_ClaimWithdrawal.loadEntity(id);
         if (claimWithdrawal) return;
 
+        const afterUpgrade = UpgradeEventsBlock < block.block_number;
         claimWithdrawal = new YieldDex_ClaimWithdrawal(id);
         claimWithdrawal.l1Strategy = data[0];
-        claimWithdrawal.caller = data[1];
-        claimWithdrawal.claimId = uint256.uint256ToBN({ high: data[3], low: data[2] }).toString();
-        claimWithdrawal.underlyingAmount = uint256.uint256ToBN({ high: data[5], low: data[4] }).toString();
+        claimWithdrawal.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
+        let shift = 0;
+        if (afterUpgrade) {
+          shift++;
+        }
+        claimWithdrawal.caller = data[1 + shift];
+        claimWithdrawal.claimId = uint256.uint256ToBN({ high: data[3 + shift], low: data[2 + shift] }).toString();
+        claimWithdrawal.underlyingAmount = uint256
+          .uint256ToBN({ high: data[5 + shift], low: data[4 + shift] })
+          .toString();
         claimWithdrawal.timestamp = block.timestamp;
 
         await claimWithdrawal.save();
@@ -317,7 +321,7 @@ export class YieldDexService implements Service {
 
         const { data, keys, from_address } = rawEvent as any;
         transfer = new YieldDex_TM_Transfer(`${tx.transaction_hash}_${eventIndex}`);
-        transfer.constractAddress = from_address;
+        transfer.contractAddress = from_address;
         transfer.to = keys[0];
         transfer.from = keys[1];
         transfer.value = uint256.uint256ToBN({ high: data[1], low: data[0] }).toString();

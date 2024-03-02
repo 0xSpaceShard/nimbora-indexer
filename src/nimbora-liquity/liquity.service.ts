@@ -41,15 +41,16 @@ export class LiquityService implements Service {
         if (batch) return;
 
         batch = new Liquity_Batch(id);
+        batch.nonce = nonce;
 
-        batch.amountA = uint256
+        batch.eth = uint256
           .uint256ToBN({
             low: data[2],
             high: data[3],
           })
           .toString();
 
-        batch.amountB = uint256
+        batch.lusd = uint256
           .uint256ToBN({
             low: data[4],
             high: data[5],

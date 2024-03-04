@@ -72,6 +72,8 @@ services:
       L2_ALCHEMY_RPC_URL: ${L2_ALCHEMY_RPC_URL}
       INDEXER_PORT: ${INDEXER_PORT}
       METRICS_PORT: ${METRICS_PORT}
+      DATABASE_RESET: ${DATABASE_RESET}
+      DATABASE_RESET_METADATA: ${DATABASE_RESET_METADATA}
     logging:
       driver: 'json-file'
       options:

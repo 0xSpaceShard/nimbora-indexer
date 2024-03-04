@@ -39,6 +39,7 @@
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/terminus": "^9.2.1",
     "@nestjs/throttler": "^4.0.0",
+    "@nestjs/typeorm": "^10.0.2",
     "@prisma/client": "^5.8.1",
     "@snapshot-labs/checkpoint": "^0.1.0-beta.27",
     "@types/cron": "^2.0.1",
@@ -55,10 +56,12 @@
     "lodash": "^4.17.21",
     "nest-winston": "^1.9.1",
     "pg": "^8.11.3",
+    "postgresql": "^0.0.1",
     "prom-client": "^14.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "starknet": "^5.24.3",
+    "typeorm": "^0.3.20",
     "winston": "^3.8.2"
   },
   "devDependencies": {

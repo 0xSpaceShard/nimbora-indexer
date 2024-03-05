@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { CheckpointService } from './checkpoint.service';
 import { LiquityModule } from 'nimbora-liquity/liquity.module';
 import { YieldDexModule } from 'nimbora-yieldDex/yield-dex.module';
+import { StorageModule } from 'storage/storage.module';
+import { ConfigModule } from 'common/config';
 
 @Module({
-  imports: [LiquityModule, YieldDexModule],
+  imports: [LiquityModule, YieldDexModule, StorageModule, ConfigModule],
   exports: [CheckpointService],
   providers: [CheckpointService],
 })

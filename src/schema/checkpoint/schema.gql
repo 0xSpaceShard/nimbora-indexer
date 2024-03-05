@@ -12,40 +12,25 @@ type YieldDex_L1ReportHash {
 
 type YieldDex_StrategyRegistered {
   id: ID!
-  tokenManager: String!
-  token: String!
   l1Strategy: String!
+  l2Strategy: String!
+  token: String!
   underlying: String!
   performanceFees: String!
-  minDeposit: String!
-  maxDeposit: String!
-  minWithdrawal: String!
-  maxWithdrawal: String!
-}
-
-type YieldDex_DepositLimitUpdated {
-  id: ID!
-  l1Strategy: String!
-  newMinDepositLimit: String!
-  newMaxDepositLimit: String!
-}
-
-type YieldDex_WithdrawLimitUpdated {
-  id: ID!
-  l1Strategy: String!
-  newMinWithdrawLimit: String!
-  newMaxWithdrawLimit: String!
+  tvlLimit: String!
 }
 
 type YieldDex_PerformanceFeeUpdated {
   id: ID!
   l1Strategy: String!
+  l2Strategy: String!
   newPerfomanceFees: String!
 }
 
 type YieldDex_WithdrawalEpochUpdated {
   id: ID!
   l1Strategy: String!
+  l2Strategy: String!
   newWithdrawalEpochDelay: String!
 }
 
@@ -58,6 +43,7 @@ type YieldDex_DustLimitUpdated {
 type YieldDex_Deposit {
   id: ID!
   l1Strategy: String!
+  l2Strategy: String!
   caller: String!
   receiver: String!
   assets: String!
@@ -69,17 +55,19 @@ type YieldDex_Deposit {
 type YieldDex_RequestWithdrawal {
   id: ID!
   l1Strategy: String!
+  l2Strategy: String!
   caller: String!
   assets: String!
   shares: String!
   withdrawalId: String!
-  epoch: String!
+  epoch: Int!
   timestamp: Int!
 }
 
 type YieldDex_ClaimWithdrawal {
   id: ID!
   l1Strategy: String!
+  l2Strategy: String!
   caller: String!
   claimId: String!
   underlyingAmount: String!
@@ -91,6 +79,13 @@ type YieldDex_BridgeInteractionInfo {
   l1Bridge: String!
   amount: String!
   timestamp: Int!
+}
+
+type YieldDex_TvlLimitUpdated {
+  id: ID!
+  l1Strategy: String!
+  l2Strategy: String!
+  newTvlLimit: String!
 }
 
 type YieldDex_StrategyL2Report {
@@ -119,8 +114,8 @@ type Liquity_Batch {
   address: String!
   block: Int!
   nonce: Int!
-  amountA: String!
-  amountB: String!
+  eth: String!
+  lusd: String!
   timestamp: Int!
 }
 
@@ -132,7 +127,7 @@ type Liquity_Debt {
 
 type YieldDex_TM_Transfer {
   id: ID!
-  constractAddress: String!
+  contractAddress: String!
   from: String!
   to: String!
   value: String!

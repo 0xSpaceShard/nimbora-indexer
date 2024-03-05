@@ -1,3 +1,6 @@
+export const ZeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
+export const UpgradeEventsBlock = 597506;
+
 export const YDEvents = [
   {
     name: 'FeesRecipientUpdated',
@@ -14,14 +17,6 @@ export const YDEvents = [
   {
     name: 'StrategyRegistered',
     fn: 'yd_HandleRegisterStrategy',
-  },
-  {
-    name: 'DepositLimitUpdated',
-    fn: 'yd_HandleDepositLimitUpdated',
-  },
-  {
-    name: 'WithdrawLimitUpdated',
-    fn: 'yd_HandleWithdrawLimitUpdated',
   },
   {
     name: 'PerformanceFeeUpdated',

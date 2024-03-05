@@ -29,3 +29,11 @@ export type Network = 'mainnet' | 'sepolia';
 export interface ServiceStatusPerNetwork {
   [network: string]: ServiceStatus;
 }
+
+export interface Checkpoints {
+  _checkpoints: Array<CheckpointBlock>;
+}
+
+export interface CheckpointBlock {
+  block_number: number;
+}

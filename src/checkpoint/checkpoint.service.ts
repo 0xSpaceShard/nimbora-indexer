@@ -64,6 +64,7 @@ export class CheckpointService {
       logLevel: LogLevel.Info,
       prettifyLogs: true,
       dbConnection: this.configService.get('DATABASE_URL') + '/' + this.configService.get('DATABASE_NAME'),
+      fetchInterval: 90000,
     });
 
     if (this.configService.get('DATABASE_RESET_METADATA')) {

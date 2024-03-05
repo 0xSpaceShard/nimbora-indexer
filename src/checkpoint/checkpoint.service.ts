@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, LoggerService } from '@nestjs/common';
 import Checkpoint, { CheckpointConfig, LogLevel } from '@snapshot-labs/checkpoint';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -8,12 +8,15 @@ import { LiquityService } from 'nimbora-liquity/liquity.service';
 import { YieldDexService } from 'nimbora-yieldDex/yield-dex.service';
 import { serviceStatusPerNetwork } from 'config/checkpoint';
 import { StorageService } from 'storage/storage.service';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Injectable()
 export class CheckpointService {
   checkpoint: Checkpoint;
 
   constructor(
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
     readonly configService: ConfigService,
     readonly liquityService: LiquityService,
     readonly storageService: StorageService,
@@ -61,20 +64,34 @@ export class CheckpointService {
       logLevel: LogLevel.Info,
       prettifyLogs: true,
       dbConnection: this.configService.get('DATABASE_URL') + '/' + this.configService.get('DATABASE_NAME'),
+      fetchInterval: 90000,
     });
 
-    const seedData = await this.getSeedDatabase();
-
     if (this.configService.get('DATABASE_RESET_METADATA')) {
+      this.logger.log('Reset checkpoint metadata');
+      const seedData = await this.getSeedDatabase();
+      this.logger.log('Recover checkpoints', { seedData });
       await this.checkpoint.resetMetadata();
+      await this.checkpoint.seedCheckpoints(seedData);
     }
 
     if (this.configService.get('DATABASE_RESET')) {
+      this.logger.log('Reset checkpoint database');
       await this.checkpoint.reset();
     }
 
-    await this.checkpoint.seedCheckpoints(seedData);
-    await this.checkpoint.start();
+    while (true) {
+      try {
+        await this.checkpoint.start();
+      } catch (error) {
+        this.logger.warn('Error during indexing', { error });
+        await this.sleep(60000);
+      }
+    }
+  }
+
+  sleep(ms: number) {
+    return new Promise((r) => setTimeout(r, ms));
   }
 
   async getSeedDatabase() {

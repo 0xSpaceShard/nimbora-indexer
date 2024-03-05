@@ -124,6 +124,12 @@ type Liquity_Batch {
   timestamp: Int!
 }
 
+type Liquity_Debt {
+  id: ID!
+  amount: String!
+  timestamp: Int!
+}
+
 type YieldDex_TM_Transfer {
   id: ID!
   constractAddress: String!

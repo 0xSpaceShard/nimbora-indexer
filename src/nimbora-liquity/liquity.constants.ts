@@ -5,19 +5,32 @@ export const LiquityEvents = [
   },
 ];
 
+export const lusdEvents = [
+  {
+    name: 'Transfer',
+    fn: 'liquity_Transfer',
+  }
+]
+
 const liquityAddressesMainnet = [
   {
     name: 'trove_275',
-    contract: '0x03580a65260563b5511ddf2eafb83d6b309dce7fc25271df8c040a437f09a399',
+    contract: '0x3580a65260563b5511ddf2eafb83d6b309dce7fc25271df8c040a437f09a399',
     start: 219200,
     events: LiquityEvents,
   },
   {
     name: 'trove_400',
-    contract: '0x02a67288e48a8c4e2881aee422da7841fc11fef195e0a81f929871c77f07509d',
+    contract: '0x2a67288e48a8c4e2881aee422da7841fc11fef195e0a81f929871c77f07509d',
     start: 219200,
     events: LiquityEvents,
   },
+  {
+    name: 'lusd',
+    contract: '0x070a76fd48ca0ef910631754d77dd822147fe98a569b826ec85e3c33fde586ac',
+    start: 594160,
+    events: lusdEvents,
+  }
 ];
 
 const liquityAddressesSepolia = [

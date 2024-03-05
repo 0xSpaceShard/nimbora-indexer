@@ -95,12 +95,12 @@ export class YieldDex_StrategyRegistered extends Model {
     super(YieldDex_StrategyRegistered.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('token', '');
-    this.initialSet('underlying', '');
-    this.initialSet('performanceFees', '');
-    this.initialSet('tvlLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('token', "");
+    this.initialSet('underlying', "");
+    this.initialSet('performanceFees', "");
+    this.initialSet('tvlLimit', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_StrategyRegistered | null> {
@@ -184,9 +184,9 @@ export class YieldDex_PerformanceFeeUpdated extends Model {
     super(YieldDex_PerformanceFeeUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('newPerfomanceFees', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('newPerfomanceFees', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_PerformanceFeeUpdated | null> {
@@ -246,9 +246,9 @@ export class YieldDex_WithdrawalEpochUpdated extends Model {
     super(YieldDex_WithdrawalEpochUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('newWithdrawalEpochDelay', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('newWithdrawalEpochDelay', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_WithdrawalEpochUpdated | null> {
@@ -361,13 +361,13 @@ export class YieldDex_Deposit extends Model {
     super(YieldDex_Deposit.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('receiver', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('referal', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('receiver', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('referal', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -468,12 +468,12 @@ export class YieldDex_RequestWithdrawal extends Model {
     super(YieldDex_RequestWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('withdrawalId', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('withdrawalId', "");
     this.initialSet('epoch', 0);
     this.initialSet('timestamp', 0);
   }
@@ -575,11 +575,11 @@ export class YieldDex_ClaimWithdrawal extends Model {
     super(YieldDex_ClaimWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('claimId', '');
-    this.initialSet('underlyingAmount', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('claimId', "");
+    this.initialSet('underlyingAmount', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -726,9 +726,9 @@ export class YieldDex_TvlLimitUpdated extends Model {
     super(YieldDex_TvlLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('newTvlLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('newTvlLimit', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_TvlLimitUpdated | null> {
@@ -739,7 +739,9 @@ export class YieldDex_TvlLimitUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -968,8 +970,8 @@ export class Liquity_Batch extends Model {
     this.initialSet('address', "");
     this.initialSet('block', 0);
     this.initialSet('nonce', 0);
-    this.initialSet('eth', '');
-    this.initialSet('lusd', '');
+    this.initialSet('eth', "");
+    this.initialSet('lusd', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -1115,10 +1117,10 @@ export class YieldDex_TM_Transfer extends Model {
     super(YieldDex_TM_Transfer.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('contractAddress', '');
-    this.initialSet('from', '');
-    this.initialSet('to', '');
-    this.initialSet('value', '');
+    this.initialSet('contractAddress', "");
+    this.initialSet('from', "");
+    this.initialSet('to', "");
+    this.initialSet('value', "");
     this.initialSet('timestamp', 0);
   }
 

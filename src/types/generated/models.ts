@@ -1198,6 +1198,7 @@ export class YieldDex_TM_balanceOf extends Model {
 
     this.initialSet('id', id);
     this.initialSet('balance', "");
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_TM_balanceOf | null> {
@@ -1232,6 +1233,14 @@ export class YieldDex_TM_balanceOf extends Model {
   set balance(value: string) {
     this.set('balance', value);
   }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
 }
 
 export class YieldDex_TM_holders extends Model {
@@ -1242,6 +1251,7 @@ export class YieldDex_TM_holders extends Model {
 
     this.initialSet('id', id);
     this.initialSet('holders', 0);
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_TM_holders | null> {
@@ -1275,5 +1285,13 @@ export class YieldDex_TM_holders extends Model {
 
   set holders(value: number) {
     this.set('holders', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
   }
 }

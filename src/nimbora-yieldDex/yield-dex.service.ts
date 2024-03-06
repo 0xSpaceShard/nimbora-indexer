@@ -367,8 +367,13 @@ export class YieldDexService implements Service {
         }
 
         fromBalanceInfo.balance = String(newFromBalance);
+        fromBalanceInfo.timestamp = block.timestamp;
+
         toBalanceInfo.balance = String(newtoBalance);
+        toBalanceInfo.timestamp = block.timestamp;
+
         holdersInfo.holders = holders;
+        holdersInfo.timestamp = block.timestamp;
 
         if (transfer.from != '0x0') {
           await fromBalanceInfo.save();

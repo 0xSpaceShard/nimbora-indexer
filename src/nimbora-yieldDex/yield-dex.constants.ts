@@ -1,5 +1,6 @@
 export const ZeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
-export const UpgradeEventsBlock = 597506;
+export const UpgradeEventsBlock_1 = 597506;
+export const UpgradeEventsBlock_2 = 602094;
 
 export const YDEvents = [
   {

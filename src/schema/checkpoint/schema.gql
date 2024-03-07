@@ -93,6 +93,7 @@ type YieldDex_StrategyL2Report {
   l1Strategy: String!
   actionId: String!
   amount: String!
+  processed: Boolean!
   newSharePrice: String!
   timestamp: Int!
 }

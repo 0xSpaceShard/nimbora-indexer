@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from 'common/config';
 import { Service, Source, Template } from 'types/service';
-import { UpgradeEventsBlock, ZeroAddress, ydAddresses } from './yield-dex.constants';
+import { UpgradeEventsBlock_2, UpgradeEventsBlock_1, ZeroAddress, ydAddresses } from './yield-dex.constants';
 import { CheckpointWriters } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
 import {
@@ -106,12 +106,16 @@ export class YieldDexService implements Service {
         }
         index = parseInt(data[eventPointer++]);
 
+        const afterUpgrade = UpgradeEventsBlock_2 < block.block_number;
         for (let i = 0; i < index; i++) {
           reports.push(
             JSON.stringify({
               l1Strategy: data[eventPointer++],
               actionId: uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString(),
               amount: uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString(),
+              processed: afterUpgrade
+                ? uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString()
+                : true,
               newSharePrice: uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString(),
             }),
           );
@@ -152,7 +156,7 @@ export class YieldDexService implements Service {
         if (strategy) return;
         strategy = new YieldDex_StrategyRegistered(id);
 
-        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+        const afterUpgrade = UpgradeEventsBlock_1 < block.block_number;
 
         strategy.l2Strategy = data[0];
         strategy.token = data[1];
@@ -178,7 +182,7 @@ export class YieldDexService implements Service {
         if (performance) return;
         performance = new YieldDex_PerformanceFeeUpdated(id);
 
-        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+        const afterUpgrade = UpgradeEventsBlock_1 < block.block_number;
 
         performance.l1Strategy = data[0];
         performance.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
@@ -198,7 +202,7 @@ export class YieldDexService implements Service {
         const id = `${tx.transaction_hash}_${eventIndex}`;
         let withdrawal = await YieldDex_WithdrawalEpochUpdated.loadEntity(id);
         if (withdrawal) return;
-        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+        const afterUpgrade = UpgradeEventsBlock_1 < block.block_number;
         withdrawal = new YieldDex_WithdrawalEpochUpdated(id);
         withdrawal.l1Strategy = data[0];
         withdrawal.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
@@ -235,7 +239,7 @@ export class YieldDexService implements Service {
         const id = `${tx.transaction_hash}_${eventIndex}`;
         let deposit: YieldDex_Deposit = await YieldDex_Deposit.loadEntity(id);
         if (deposit) return;
-        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+        const afterUpgrade = UpgradeEventsBlock_1 < block.block_number;
 
         deposit = new YieldDex_Deposit(id);
         deposit.l1Strategy = data[0];
@@ -262,7 +266,7 @@ export class YieldDexService implements Service {
         let requestWithdrawal = await YieldDex_RequestWithdrawal.loadEntity(id);
         if (requestWithdrawal) return;
 
-        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+        const afterUpgrade = UpgradeEventsBlock_1 < block.block_number;
         requestWithdrawal = new YieldDex_RequestWithdrawal(id);
         requestWithdrawal.l1Strategy = data[0];
         requestWithdrawal.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;
@@ -294,7 +298,7 @@ export class YieldDexService implements Service {
         let claimWithdrawal = await YieldDex_ClaimWithdrawal.loadEntity(id);
         if (claimWithdrawal) return;
 
-        const afterUpgrade = UpgradeEventsBlock < block.block_number;
+        const afterUpgrade = UpgradeEventsBlock_1 < block.block_number;
         claimWithdrawal = new YieldDex_ClaimWithdrawal(id);
         claimWithdrawal.l1Strategy = data[0];
         claimWithdrawal.l2Strategy = afterUpgrade ? data[1] : ZeroAddress;

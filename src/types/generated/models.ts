@@ -769,6 +769,7 @@ export class YieldDex_StrategyL2Report extends Model {
     this.initialSet('l1Strategy', '');
     this.initialSet('actionId', '');
     this.initialSet('amount', '');
+    this.initialSet('processed', false);
     this.initialSet('newSharePrice', '');
     this.initialSet('timestamp', 0);
   }
@@ -818,6 +819,14 @@ export class YieldDex_StrategyL2Report extends Model {
 
   set amount(value: string) {
     this.set('amount', value);
+  }
+
+  get processed(): boolean {
+    return this.get('processed');
+  }
+
+  set processed(value: boolean) {
+    this.set('processed', value);
   }
 
   get newSharePrice(): string {

@@ -9,6 +9,13 @@ import { YieldDexService } from 'nimbora-yieldDex/yield-dex.service';
 import { serviceStatusPerNetwork } from 'config/checkpoint';
 import { StorageService } from 'storage/storage.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { PrometheusService } from 'common/prometheus';
+import { RpcProvider } from 'starknet';
+import { ethers } from 'ethers';
+import { coreContracts } from 'web3/web3.constants';
+import { StarknetCore__factory } from 'web3/generated';
+
+let providerName: string;
 
 @Injectable()
 export class CheckpointService {
@@ -21,7 +28,18 @@ export class CheckpointService {
     readonly liquityService: LiquityService,
     readonly storageService: StorageService,
     readonly ydService: YieldDexService,
-  ) {}
+    private readonly prometheusService: PrometheusService,
+  ) {
+    providerName = this.configService.get('L1_ALCHEMY_RPC_URL');
+    prometheusService.web3ProviderRequest.labels({ provider: providerName}).inc(0);
+    prometheusService.web3ProviderRequestError.labels({ provider: providerName }).inc(0);
+
+    providerName = this.configService.get('L2_ALCHEMY_RPC_URL');
+    prometheusService.web3ProviderRequest.labels({ provider: providerName}).inc(0);
+    prometheusService.web3ProviderRequestError.labels({ provider: providerName }).inc(0);
+    prometheusService.serviceErrors.labels().inc(0);
+
+  }
 
   async start() {
     const schemaFile = path.join(process.cwd(), 'src/schema/checkpoint/schema.gql');
@@ -45,13 +63,13 @@ export class CheckpointService {
     }
 
     for (let i = 0; i < services.length; i++) {
-      const service: Service = services[i];
-      writers = { ...writers, ...service.writers() };
-      const { sources: src, templates: template } = service.config();
-      sources.push(...src);
-      if (templates) {
-        templates = { ...templates, ...template };
-      }
+        const service: Service = services[i];
+        writers = { ...writers, ...service.writers() };
+        const { sources: src, templates: template } = service.config();
+        sources.push(...src);
+        if (templates) {
+          templates = { ...templates, ...template };
+        }
     }
 
     const config: CheckpointConfig = {
@@ -71,8 +89,14 @@ export class CheckpointService {
       this.logger.log('Reset checkpoint metadata');
       const seedData = await this.getSeedDatabase();
       this.logger.log('Recover checkpoints', { seedData });
+
+      const lastIndexedBlock = await this.lastIndexedBlock();
+      this.logger.log('Recover last indexed block', { lastIndexedBlock });
+
       await this.checkpoint.resetMetadata();
       await this.checkpoint.seedCheckpoints(seedData);
+      await this.checkpoint.setLastIndexedBlock(lastIndexedBlock);
+
     }
 
     if (this.configService.get('DATABASE_RESET')) {
@@ -85,6 +109,7 @@ export class CheckpointService {
         await this.checkpoint.start();
       } catch (error) {
         this.logger.warn('Error during indexing', { error });
+        this.prometheusService.serviceErrors.labels().inc();
         await this.sleep(60000);
       }
     }
@@ -131,4 +156,56 @@ export class CheckpointService {
     }
     return seedData;
   }
+
+  lastIndexedBlock = async() => {
+    const lastIndexedBlock = await this.storageService.lastIndexedBlockNumber()
+    
+    this.logger.log('Last Indexed Block', { lastIndexedBlock });
+    this.prometheusService.lastIndexedBlockNumber.labels().set(Number(lastIndexedBlock));
+
+    return lastIndexedBlock;
+  }
+
+  currentStarknetBlock = async () => {
+    this.logger.log('Current starknet block');
+    const url = this.configService.get('L2_ALCHEMY_RPC_URL');
+
+    try {
+      const provider = new RpcProvider({ nodeUrl: url });
+      const currentBlock = (await provider.getBlockLatestAccepted()).block_number;
+      
+      this.logger.log('Current Starknet Block', { currentBlock });
+      this.prometheusService.currentStarknetBlock
+          .labels()
+          .set(Number(currentBlock));
+      this.prometheusService.web3ProviderRequest.labels({ provider: url }).inc();
+
+    } catch (error) {
+      this.logger.warn('Current Starknet Block', { error });
+      this.prometheusService.web3ProviderRequestError.labels({ provider: url }).inc();
+
+    }
+  };
+
+  lastAcceptedBlockOnL1 = async () => {
+    this.logger.log('Last accepted block on l1');
+    const url = this.configService.get('L1_ALCHEMY_RPC_URL');
+
+    try {
+      const provider = new ethers.JsonRpcProvider(url);
+      const coreContractAddress = coreContracts[this.configService.get('NETWORK')];
+      const starknetCoreContract = StarknetCore__factory.connect(coreContractAddress, provider);
+      const lastAcceptedBlockOnL1 = await starknetCoreContract.stateBlockNumber();
+
+      this.logger.log('Last accepted block on l1', { lastAcceptedBlockOnL1 });
+      this.prometheusService.lastAcceptedBlockOnL1
+          .labels()
+          .set(Number(lastAcceptedBlockOnL1));
+      this.prometheusService.web3ProviderRequest.labels({ provider: url }).inc();
+
+    } catch (error) {
+      this.logger.warn('Last accepted block on l1', { error });
+      this.prometheusService.web3ProviderRequestError.labels({ provider: url }).inc();
+    }
+  };
 }

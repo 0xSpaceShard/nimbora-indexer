@@ -20,4 +20,47 @@ export class PrometheusService {
     help: 'Build information',
     labelNames: ['name', 'version', 'env'],
   });
+
+  public serviceErrors = this.getOrCreateMetric('Counter', {
+    prefix: true,
+    name: 'service_errors',
+    help: 'Global counter for service errors',
+    labelNames: [],
+  });
+
+  public web3ProviderRequest = this.getOrCreateMetric('Counter', {
+    prefix: true,
+    name: 'web3_provider_request',
+    help: 'Increase the count each time a successful call is made to the web3 provider.',
+    labelNames: ['provider'],
+  });
+
+  public web3ProviderRequestError = this.getOrCreateMetric('Counter', {
+    prefix: true,
+    name: 'web3_provider_request_error',
+    help: 'Increase the count each time a call to the web3 provider fails.',
+    labelNames: ['provider'],
+  });
+
+
+  public lastIndexedBlockNumber = this.getOrCreateMetric('Gauge', {
+    prefix: true,
+    name: 'last_indexed_block_number',
+    help: 'The last indexed block number',
+    labelNames: [],
+  });
+
+  public currentStarknetBlock = this.getOrCreateMetric('Gauge', {
+    prefix: true,
+    name: 'current_starknet_block',
+    help: 'The current starknet block',
+    labelNames: [],
+  });
+
+  public lastAcceptedBlockOnL1 = this.getOrCreateMetric('Gauge', {
+    prefix: true,
+    name: 'last_accepted_block_on_l1',
+    help: 'The last accepted block on l1',
+    labelNames: [],
+  });
 }

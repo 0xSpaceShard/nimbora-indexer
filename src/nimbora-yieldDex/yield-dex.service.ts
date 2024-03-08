@@ -76,6 +76,11 @@ export class YieldDexService implements Service {
       yd_HandleNewL2Report: async ({ tx, block, rawEvent, eventIndex }: CheckpointWriter) => {
         if (!block || !rawEvent) return;
 
+        if (block.block_number == 602724) {
+          // Ignore this block becaue it conatins an invalid block data.
+          return;
+        }
+
         const { data } = rawEvent as any;
 
         const id = `${tx.transaction_hash}_${eventIndex}`;
@@ -113,9 +118,7 @@ export class YieldDexService implements Service {
               l1Strategy: data[eventPointer++],
               actionId: uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString(),
               amount: uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString(),
-              processed: afterUpgrade
-                ? uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString()
-                : true,
+              processed: afterUpgrade ? (data[eventPointer++] == 0x1 ? true : false) : true,
               newSharePrice: uint256.uint256ToBN({ low: data[eventPointer++], high: data[eventPointer++] }).toString(),
             }),
           );

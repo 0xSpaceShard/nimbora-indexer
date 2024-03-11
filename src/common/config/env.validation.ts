@@ -57,6 +57,9 @@ export class EnvironmentVariables {
   @IsString()
   L2_ALCHEMY_RPC_URL: string;
 
+  @IsString()
+  L1_ALCHEMY_RPC_URL: string;
+
   @IsOptional()
   @IsString()
   DATABASE_URL = 'postgres://postgres:postgres@postgres:5432';

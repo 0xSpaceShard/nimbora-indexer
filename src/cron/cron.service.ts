@@ -10,4 +10,20 @@ export class CronService {
   async startLiquityIndexer() {
     await this.checkpointService.start();
   }
+
+  @Timeout(5000)
+  async LastIndexedBlock() {
+    await this.checkpointService.lastIndexedBlock();
+  }
+
+  @Timeout(5000)
+  async currentStarknetBlock() {
+    await this.checkpointService.currentStarknetBlock();
+  }
+
+  @Timeout(5000)
+  async lastAcceptedBlockOnL1() {
+    await this.checkpointService.lastAcceptedBlockOnL1();
+  }
+  
 }

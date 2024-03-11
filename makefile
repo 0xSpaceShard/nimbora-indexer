@@ -3,6 +3,7 @@ include .env
 # Generate types
 checkpoint-gen:
 	rm -rf src/types/generated && mkdir -p src/types/generated/ && \
+	yarn typechain && \
 	yarn checkpoint generate \
 		-c src/config/checkpoint/config.json \
 		-s src/schema/checkpoint/schema.gql && \

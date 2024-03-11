@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./e2e/test/jest-e2e.json",
     "prepare": "husky install",
-    "generate": "make checkpoint-gen"
+    "generate": "make checkpoint-gen",
+    "typechain": "typechain --target=ethers-v6 --out-dir ./src/web3/generated ./src/web3/abis/*.json"
   },
   "dependencies": {
     "@commitlint/config-conventional": "^17.4.4",
@@ -51,6 +52,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
+    "ethers": "^6.11.1",
     "graphql": "^16.6.0",
     "graphql-request": "^5.2.0",
     "lodash": "^4.17.21",
@@ -68,6 +70,7 @@
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.3.12",
+    "@typechain/ethers-v6": "^0.5.1",
     "@types/express": "^4.17.13",
     "@types/jest": "29.2.4",
     "@types/node": "18.11.18",
@@ -87,6 +90,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.1",
+    "typechain": "^8.3.2",
     "typescript": "^5.3.3"
   },
   "jest": {

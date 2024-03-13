@@ -57,7 +57,7 @@ const YDAddressesMainnet = [
 const YDAddressesSepolia = [
   {
     name: 'l2-pooling-manager',
-    contract: '0x384ec344325e87627749e26d1c7c4eeaa086e9b61af2cdffd8f8c7ad83656d0',
+    contract: '0x0384ec344325e87627749e26d1c7c4eeaa086e9b61af2cdffd8f8c7ad83656d0',
     start: 37625,
     events: YDEvents,
   },

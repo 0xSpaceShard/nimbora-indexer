@@ -120,6 +120,18 @@ type Liquity_Batch {
   timestamp: Int!
 }
 
+type Liquity_UserAction {
+  id: ID!
+  hash: String!
+  block: Int!
+  address: String!
+  nonce: Int!
+  action: Int!
+  user: String!
+  amount: String!
+  timestamp: Int!
+}
+
 type YieldDex_TM_Transfer {
   id: ID!
   contractAddress: String!

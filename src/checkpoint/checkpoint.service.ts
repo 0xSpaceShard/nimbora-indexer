@@ -7,7 +7,6 @@ import { Service } from 'types/service';
 import { LiquityService } from 'nimbora-liquity/liquity.service';
 import { YieldDexService } from 'nimbora-yieldDex/yield-dex.service';
 import { serviceStatusPerNetwork } from 'config/checkpoint';
-import { StorageService } from 'storage/storage.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Injectable()
@@ -19,7 +18,6 @@ export class CheckpointService {
     private readonly logger: LoggerService,
     readonly configService: ConfigService,
     readonly liquityService: LiquityService,
-    readonly storageService: StorageService,
     readonly ydService: YieldDexService,
   ) {}
 
@@ -69,15 +67,16 @@ export class CheckpointService {
 
     if (this.configService.get('DATABASE_RESET_METADATA')) {
       this.logger.log('Reset checkpoint metadata');
-      const seedData = await this.getSeedDatabase();
-      this.logger.log('Recover checkpoints', { seedData });
       await this.checkpoint.resetMetadata();
-      await this.checkpoint.seedCheckpoints(seedData);
     }
 
     if (this.configService.get('DATABASE_RESET')) {
       this.logger.log('Reset checkpoint database');
       await this.checkpoint.reset();
+    }
+
+    if (this.liquityService.seed().length > 0) {
+      await this.checkpoint.seedCheckpoints(this.liquityService.seed());
     }
 
     while (true) {
@@ -92,43 +91,5 @@ export class CheckpointService {
 
   sleep(ms: number) {
     return new Promise((r) => setTimeout(r, ms));
-  }
-
-  async getSeedDatabase() {
-    const { sources } = this.checkpoint.config;
-    const checkpoints: Record<string, Array<number>> = {};
-    for (let i = 0; i < sources.length; i++) {
-      const { contract } = sources[i];
-      if (!checkpoints[contract]) {
-        checkpoints[contract] = [];
-      }
-      let index = 0;
-      const limit = 50;
-      while (true) {
-        const offset = index * limit;
-        const res = await this.storageService.findCheckpointsByContractAddress(contract, limit, offset);
-        if (res.length === 0) {
-          break;
-        }
-        for (let i = 0; i < res.length; i++) {
-          const { block_number } = res[i];
-          checkpoints[contract].push(block_number);
-        }
-        index++;
-      }
-    }
-
-    const keys = Object.keys(checkpoints);
-
-    const seedData = [];
-
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      seedData.push({
-        contract: key,
-        blocks: checkpoints[key],
-      });
-    }
-    return seedData;
   }
 }

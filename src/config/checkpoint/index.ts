@@ -3,7 +3,7 @@ import { ServiceStatusPerNetwork } from 'types';
 export const serviceStatusPerNetwork: ServiceStatusPerNetwork = {
   mainnet: {
     liquity: true,
-    yieldDex: true,
+    yieldDex: false,
   },
   sepolia: {
     liquity: false,

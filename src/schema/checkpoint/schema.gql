@@ -93,6 +93,7 @@ type YieldDex_StrategyL2Report {
   l1Strategy: String!
   actionId: String!
   amount: String!
+  processed: Boolean!
   newSharePrice: String!
   timestamp: Int!
 }
@@ -121,6 +122,18 @@ type Liquity_Batch {
 
 type Liquity_Debt {
   id: ID!
+  amount: String!
+  timestamp: Int!
+}
+
+type Liquity_UserAction {
+  id: ID!
+  hash: String!
+  block: Int!
+  address: String!
+  nonce: Int!
+  action: Int!
+  user: String!
   amount: String!
   timestamp: Int!
 }

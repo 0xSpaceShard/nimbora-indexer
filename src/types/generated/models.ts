@@ -791,6 +791,7 @@ export class YieldDex_StrategyL2Report extends Model {
     this.initialSet('l1Strategy', "");
     this.initialSet('actionId', "");
     this.initialSet('amount', "");
+    this.initialSet('processed', false);
     this.initialSet('newSharePrice', "");
     this.initialSet('timestamp', 0);
   }
@@ -842,6 +843,14 @@ export class YieldDex_StrategyL2Report extends Model {
 
   set amount(value: string) {
     this.set('amount', value);
+  }
+
+  get processed(): boolean {
+    return this.get('processed');
+  }
+
+  set processed(value: boolean) {
+    this.set('processed', value);
   }
 
   get newSharePrice(): string {
@@ -1091,6 +1100,113 @@ export class Liquity_Debt extends Model {
 
   set id(value: string) {
     this.set('id', value);
+  }
+
+  get amount(): string {
+    return this.get('amount');
+  }
+
+  set amount(value: string) {
+    this.set('amount', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
+}
+
+export class Liquity_UserAction extends Model {
+  static tableName = 'liquity_useractions';
+
+  constructor(id: string) {
+    super(Liquity_UserAction.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('hash', "");
+    this.initialSet('block', 0);
+    this.initialSet('address', "");
+    this.initialSet('nonce', 0);
+    this.initialSet('action', 0);
+    this.initialSet('user', "");
+    this.initialSet('amount', "");
+    this.initialSet('timestamp', 0);
+  }
+
+  static async loadEntity(id: string): Promise<Liquity_UserAction | null> {
+    const entity = await super._loadEntity(Liquity_UserAction.tableName, id);
+    if (!entity) return null;
+
+    const model = new Liquity_UserAction(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get hash(): string {
+    return this.get('hash');
+  }
+
+  set hash(value: string) {
+    this.set('hash', value);
+  }
+
+  get block(): number {
+    return this.get('block');
+  }
+
+  set block(value: number) {
+    this.set('block', value);
+  }
+
+  get address(): string {
+    return this.get('address');
+  }
+
+  set address(value: string) {
+    this.set('address', value);
+  }
+
+  get nonce(): number {
+    return this.get('nonce');
+  }
+
+  set nonce(value: number) {
+    this.set('nonce', value);
+  }
+
+  get action(): number {
+    return this.get('action');
+  }
+
+  set action(value: number) {
+    this.set('action', value);
+  }
+
+  get user(): string {
+    return this.get('user');
+  }
+
+  set user(value: string) {
+    this.set('user', value);
   }
 
   get amount(): string {

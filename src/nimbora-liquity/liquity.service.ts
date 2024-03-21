@@ -4,7 +4,7 @@ import { liquityAddresses } from './liquity.constants';
 import { Service, Source, Template } from 'types/service';
 import { CheckpointWriters, Event } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
-import { Liquity_Batch, Liquity_Debt } from 'types/generated/models';
+import { Liquity_Batch, Liquity_Debt, Liquity_UserAction } from 'types/generated/models';
 import { uint256 } from 'starknet';
 
 @Injectable()
@@ -19,6 +19,16 @@ export class LiquityService implements Service {
       sources.push({ contract, start, events });
     }
     return { sources };
+  }
+
+  seed(): Array<{ contract: string; blocks: Array<number> }> {
+    const addresses = liquityAddresses(this.configService.get('NETWORK'));
+    const data: Array<{ contract: string; blocks: Array<number> }> = [];
+    for (let i = 0; i < addresses.length; i++) {
+      const { blocks, contract } = addresses[i];
+      data.push({ contract, blocks });
+    }
+    return data;
   }
 
   writers(): CheckpointWriters {
@@ -89,6 +99,40 @@ export class LiquityService implements Service {
         }
         debt.timestamp = block.timestamp;
         await debt.save();
+      },
+
+      liquity_actionProcessed: async ({ tx, block, rawEvent, source }: CheckpointWriter) => {
+        const { data } = rawEvent as Event;
+
+        const nonce = Number(
+          uint256
+            .uint256ToBN({
+              low: data[0],
+              high: data[1],
+            })
+            .toString(),
+        );
+
+        const id = `${tx.transaction_hash}_${nonce}`;
+        let userAction: Liquity_UserAction = await Liquity_UserAction.loadEntity(id);
+        if (userAction) return;
+
+        userAction = new Liquity_UserAction(id);
+
+        userAction.action = Number(data[2]);
+        userAction.user = data[3];
+        userAction.amount = uint256
+          .uint256ToBN({
+            low: data[4],
+            high: data[5],
+          })
+          .toString();
+        userAction.hash = tx.transaction_hash;
+        userAction.address = source.contract;
+        userAction.block = block.block_number;
+        userAction.timestamp = block.timestamp;
+
+        await userAction.save();
       },
     };
   }

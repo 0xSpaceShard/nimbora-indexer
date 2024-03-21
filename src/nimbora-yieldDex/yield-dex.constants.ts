@@ -1,5 +1,6 @@
 export const ZeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
-export const UpgradeEventsBlock = 597506;
+export const UpgradeEventsBlock_1 = 597506;
+export const UpgradeEventsBlock_2 = 602094;
 
 export const YDEvents = [
   {
@@ -56,7 +57,7 @@ const YDAddressesMainnet = [
 const YDAddressesSepolia = [
   {
     name: 'l2-pooling-manager',
-    contract: '0x384ec344325e87627749e26d1c7c4eeaa086e9b61af2cdffd8f8c7ad83656d0',
+    contract: '0x0384ec344325e87627749e26d1c7c4eeaa086e9b61af2cdffd8f8c7ad83656d0',
     start: 37625,
     events: YDEvents,
   },

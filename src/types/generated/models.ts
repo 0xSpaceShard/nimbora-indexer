@@ -7,7 +7,7 @@ export class YieldDex_FeeRecipient extends Model {
     super(YieldDex_FeeRecipient.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('recipient', '');
+    this.initialSet('recipient', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_FeeRecipient | null> {
@@ -18,7 +18,9 @@ export class YieldDex_FeeRecipient extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -49,7 +51,7 @@ export class YieldDex_L1ReportHash extends Model {
     super(YieldDex_L1ReportHash.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('hash', '');
+    this.initialSet('hash', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_L1ReportHash | null> {
@@ -60,7 +62,9 @@ export class YieldDex_L1ReportHash extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -91,12 +95,12 @@ export class YieldDex_StrategyRegistered extends Model {
     super(YieldDex_StrategyRegistered.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('token', '');
-    this.initialSet('underlying', '');
-    this.initialSet('performanceFees', '');
-    this.initialSet('tvlLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('token', "");
+    this.initialSet('underlying', "");
+    this.initialSet('performanceFees', "");
+    this.initialSet('tvlLimit', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_StrategyRegistered | null> {
@@ -107,7 +111,9 @@ export class YieldDex_StrategyRegistered extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -178,9 +184,9 @@ export class YieldDex_PerformanceFeeUpdated extends Model {
     super(YieldDex_PerformanceFeeUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('newPerfomanceFees', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('newPerfomanceFees', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_PerformanceFeeUpdated | null> {
@@ -191,7 +197,9 @@ export class YieldDex_PerformanceFeeUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -238,9 +246,9 @@ export class YieldDex_WithdrawalEpochUpdated extends Model {
     super(YieldDex_WithdrawalEpochUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('newWithdrawalEpochDelay', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('newWithdrawalEpochDelay', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_WithdrawalEpochUpdated | null> {
@@ -251,7 +259,9 @@ export class YieldDex_WithdrawalEpochUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -298,8 +308,8 @@ export class YieldDex_DustLimitUpdated extends Model {
     super(YieldDex_DustLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('newDustLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('newDustLimit', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_DustLimitUpdated | null> {
@@ -310,7 +320,9 @@ export class YieldDex_DustLimitUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -349,13 +361,13 @@ export class YieldDex_Deposit extends Model {
     super(YieldDex_Deposit.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('receiver', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('referal', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('receiver', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('referal', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -367,7 +379,9 @@ export class YieldDex_Deposit extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -454,12 +468,12 @@ export class YieldDex_RequestWithdrawal extends Model {
     super(YieldDex_RequestWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('assets', '');
-    this.initialSet('shares', '');
-    this.initialSet('withdrawalId', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('assets', "");
+    this.initialSet('shares', "");
+    this.initialSet('withdrawalId', "");
     this.initialSet('epoch', 0);
     this.initialSet('timestamp', 0);
   }
@@ -472,7 +486,9 @@ export class YieldDex_RequestWithdrawal extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -559,11 +575,11 @@ export class YieldDex_ClaimWithdrawal extends Model {
     super(YieldDex_ClaimWithdrawal.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('caller', '');
-    this.initialSet('claimId', '');
-    this.initialSet('underlyingAmount', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('caller', "");
+    this.initialSet('claimId', "");
+    this.initialSet('underlyingAmount', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -575,7 +591,9 @@ export class YieldDex_ClaimWithdrawal extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -646,8 +664,8 @@ export class YieldDex_BridgeInteractionInfo extends Model {
     super(YieldDex_BridgeInteractionInfo.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Bridge', '');
-    this.initialSet('amount', '');
+    this.initialSet('l1Bridge', "");
+    this.initialSet('amount', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -659,7 +677,9 @@ export class YieldDex_BridgeInteractionInfo extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -706,9 +726,9 @@ export class YieldDex_TvlLimitUpdated extends Model {
     super(YieldDex_TvlLimitUpdated.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('l2Strategy', '');
-    this.initialSet('newTvlLimit', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('l2Strategy', "");
+    this.initialSet('newTvlLimit', "");
   }
 
   static async loadEntity(id: string): Promise<YieldDex_TvlLimitUpdated | null> {
@@ -719,7 +739,9 @@ export class YieldDex_TvlLimitUpdated extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -766,11 +788,11 @@ export class YieldDex_StrategyL2Report extends Model {
     super(YieldDex_StrategyL2Report.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('l1Strategy', '');
-    this.initialSet('actionId', '');
-    this.initialSet('amount', '');
+    this.initialSet('l1Strategy', "");
+    this.initialSet('actionId', "");
+    this.initialSet('amount', "");
     this.initialSet('processed', false);
-    this.initialSet('newSharePrice', '');
+    this.initialSet('newSharePrice', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -782,7 +804,9 @@ export class YieldDex_StrategyL2Report extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -853,10 +877,10 @@ export class YieldDex_NewL2Report extends Model {
     super(YieldDex_NewL2Report.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('hash', '');
+    this.initialSet('hash', "");
     this.initialSet('timestamp', 0);
     this.initialSet('blockNumber', 0);
-    this.initialSet('newEpoch', '');
+    this.initialSet('newEpoch', "");
     this.initialSet('newBridgeDeposit', null);
     this.initialSet('newL2Report', null);
     this.initialSet('newBridgeWithdraw', null);
@@ -870,7 +894,9 @@ export class YieldDex_NewL2Report extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -949,12 +975,12 @@ export class Liquity_Batch extends Model {
     super(Liquity_Batch.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('hash', '');
-    this.initialSet('address', '');
+    this.initialSet('hash', "");
+    this.initialSet('address', "");
     this.initialSet('block', 0);
     this.initialSet('nonce', 0);
-    this.initialSet('eth', '');
-    this.initialSet('lusd', '');
+    this.initialSet('eth', "");
+    this.initialSet('lusd', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -966,7 +992,9 @@ export class Liquity_Batch extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -1038,6 +1066,59 @@ export class Liquity_Batch extends Model {
   }
 }
 
+export class Liquity_Debt extends Model {
+  static tableName = 'liquity_debts';
+
+  constructor(id: string) {
+    super(Liquity_Debt.tableName);
+
+    this.initialSet('id', id);
+    this.initialSet('amount', "");
+    this.initialSet('timestamp', 0);
+  }
+
+  static async loadEntity(id: string): Promise<Liquity_Debt | null> {
+    const entity = await super._loadEntity(Liquity_Debt.tableName, id);
+    if (!entity) return null;
+
+    const model = new Liquity_Debt(id);
+    model.setExists();
+
+    for (const key in entity) {
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
+      model.set(key, value);
+    }
+
+    return model;
+  }
+
+  get id(): string {
+    return this.get('id');
+  }
+
+  set id(value: string) {
+    this.set('id', value);
+  }
+
+  get amount(): string {
+    return this.get('amount');
+  }
+
+  set amount(value: string) {
+    this.set('amount', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
+}
+
 export class Liquity_UserAction extends Model {
   static tableName = 'liquity_useractions';
 
@@ -1045,13 +1126,13 @@ export class Liquity_UserAction extends Model {
     super(Liquity_UserAction.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('hash', '');
+    this.initialSet('hash', "");
     this.initialSet('block', 0);
-    this.initialSet('address', '');
+    this.initialSet('address', "");
     this.initialSet('nonce', 0);
     this.initialSet('action', 0);
-    this.initialSet('user', '');
-    this.initialSet('amount', '');
+    this.initialSet('user', "");
+    this.initialSet('amount', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -1063,7 +1144,9 @@ export class Liquity_UserAction extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -1150,10 +1233,10 @@ export class YieldDex_TM_Transfer extends Model {
     super(YieldDex_TM_Transfer.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('contractAddress', '');
-    this.initialSet('from', '');
-    this.initialSet('to', '');
-    this.initialSet('value', '');
+    this.initialSet('contractAddress', "");
+    this.initialSet('from', "");
+    this.initialSet('to', "");
+    this.initialSet('value', "");
     this.initialSet('timestamp', 0);
   }
 
@@ -1165,7 +1248,9 @@ export class YieldDex_TM_Transfer extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -1228,7 +1313,8 @@ export class YieldDex_TM_balanceOf extends Model {
     super(YieldDex_TM_balanceOf.tableName);
 
     this.initialSet('id', id);
-    this.initialSet('balance', '');
+    this.initialSet('balance', "");
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_TM_balanceOf | null> {
@@ -1239,7 +1325,9 @@ export class YieldDex_TM_balanceOf extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -1261,6 +1349,14 @@ export class YieldDex_TM_balanceOf extends Model {
   set balance(value: string) {
     this.set('balance', value);
   }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
+  }
 }
 
 export class YieldDex_TM_holders extends Model {
@@ -1271,6 +1367,7 @@ export class YieldDex_TM_holders extends Model {
 
     this.initialSet('id', id);
     this.initialSet('holders', 0);
+    this.initialSet('timestamp', 0);
   }
 
   static async loadEntity(id: string): Promise<YieldDex_TM_holders | null> {
@@ -1281,7 +1378,9 @@ export class YieldDex_TM_holders extends Model {
     model.setExists();
 
     for (const key in entity) {
-      const value = entity[key] !== null && typeof entity[key] === 'object' ? JSON.stringify(entity[key]) : entity[key];
+      const value = entity[key] !== null && typeof entity[key] === 'object'
+        ? JSON.stringify(entity[key])
+        : entity[key];
       model.set(key, value);
     }
 
@@ -1302,5 +1401,13 @@ export class YieldDex_TM_holders extends Model {
 
   set holders(value: number) {
     this.set('holders', value);
+  }
+
+  get timestamp(): number {
+    return this.get('timestamp');
+  }
+
+  set timestamp(value: number) {
+    this.set('timestamp', value);
   }
 }

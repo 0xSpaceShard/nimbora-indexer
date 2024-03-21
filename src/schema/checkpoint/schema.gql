@@ -120,6 +120,12 @@ type Liquity_Batch {
   timestamp: Int!
 }
 
+type Liquity_Debt {
+  id: ID!
+  amount: String!
+  timestamp: Int!
+}
+
 type Liquity_UserAction {
   id: ID!
   hash: String!
@@ -144,9 +150,11 @@ type YieldDex_TM_Transfer {
 type YieldDex_TM_balanceOf {
   id: ID!
   balance: String!
+  timestamp: Int!
 }
 
 type YieldDex_TM_holders {
   id: ID!
   holders: Int!
+  timestamp: Int!
 }

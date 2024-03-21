@@ -4,7 +4,7 @@ import { liquityAddresses } from './liquity.constants';
 import { Service, Source, Template } from 'types/service';
 import { CheckpointWriters, Event } from '@snapshot-labs/checkpoint';
 import { CheckpointWriter } from 'types';
-import { Liquity_Batch, Liquity_UserAction } from 'types/generated/models';
+import { Liquity_Batch, Liquity_Debt, Liquity_UserAction } from 'types/generated/models';
 import { uint256 } from 'starknet';
 
 @Injectable()
@@ -35,7 +35,6 @@ export class LiquityService implements Service {
     return {
       liquity_HandleBatchRequest: async ({ tx, block, rawEvent, source }: CheckpointWriter) => {
         if (!block || !rawEvent) return;
-
         const { data } = rawEvent as Event;
         const nonce = Number(
           uint256
@@ -72,6 +71,34 @@ export class LiquityService implements Service {
         batch.timestamp = block.timestamp;
 
         await batch.save();
+      },
+
+      liquity_Transfer: async ({ tx, block, rawEvent, source }: CheckpointWriter) => {
+        if (!block || !rawEvent) return;
+
+        const { data } = rawEvent as Event;
+        const from = data[0];
+        const to = data[1];
+        const amount = uint256.uint256ToBN({low: data[2], high: data[3]});
+        const troves = liquityAddresses(this.configService.get('NETWORK'));
+        let debt: Liquity_Debt;
+        if (from === troves[0].contract || from === troves[1].contract) {
+          debt = await Liquity_Debt.loadEntity(to);
+          if (!debt) {
+            debt = new Liquity_Debt(to);
+          }
+          debt.amount = (BigInt(debt.amount) + amount).toString();
+        } else if (to === troves[0].contract || to === troves[1].contract) {
+          debt = await Liquity_Debt.loadEntity(from);
+          if (!debt) {
+            debt = new Liquity_Debt(from);
+          }
+          debt.amount = (BigInt(debt.amount) - amount).toString();
+        } else {
+          return;
+        }
+        debt.timestamp = block.timestamp;
+        await debt.save();
       },
 
       liquity_actionProcessed: async ({ tx, block, rawEvent, source }: CheckpointWriter) => {

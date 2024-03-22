@@ -58,7 +58,7 @@
     "pg": "^8.11.3",
     "postgresql": "^0.0.1",
     "prom-client": "^14.2.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.1",
     "rxjs": "^7.2.0",
     "starknet": "^5.24.3",
     "typeorm": "^0.3.20",

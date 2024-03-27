@@ -120,12 +120,6 @@ type Liquity_Batch {
   timestamp: Int!
 }
 
-type Liquity_Debt {
-  id: ID!
-  amount: String!
-  timestamp: Int!
-}
-
 type Liquity_UserAction {
   id: ID!
   hash: String!
@@ -134,6 +128,25 @@ type Liquity_UserAction {
   nonce: Int!
   action: Int!
   user: String!
+  amount: String!
+  timestamp: Int!
+}
+
+type Liquity_Debt {
+  id: ID!
+  trove: String!
+  user: String!
+  block: Int!
+  amount: String!
+  count: Int!
+  timestamp: Int!
+}
+
+type Liquity_Daily_Debt {
+  id: ID!
+  trove: String!
+  user: String!
+  block: Int!
   amount: String!
   timestamp: Int!
 }

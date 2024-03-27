@@ -73,10 +73,9 @@ export class CheckpointService {
     if (this.configService.get('DATABASE_RESET')) {
       this.logger.log('Reset checkpoint database');
       await this.checkpoint.reset();
-    }
-
-    if (this.liquityService.seed().length > 0) {
-      await this.checkpoint.seedCheckpoints(this.liquityService.seed());
+      if (this.liquityService.seed().length > 0) {
+        await this.checkpoint.seedCheckpoints(this.liquityService.seed());
+      }
     }
 
     while (true) {
